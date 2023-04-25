@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAgzyo-_1l_PFD0fxl1DXsmK9Ct4t3mb2c",
-    authDomain: "dish-licious.firebaseapp.com",
-    projectId: "dish-licious",
-    storageBucket: "dish-licious.appspot.com",
-    messagingSenderId: "245027540950",
-    appId: "1:245027540950:web:fb87abae77c500c4ec1e77",
-    measurementId: "G-F1690LWF5M"
-  };
+  apiKey: "AIzaSyCMkF-jIdQ3egqehoZUXqePsmZdK7Nfobw",
+  authDomain: "dish-licous.firebaseapp.com",
+  projectId: "dish-licous",
+  storageBucket: "dish-licous.appspot.com",
+  messagingSenderId: "17275476772",
+  appId: "1:17275476772:web:507696febc6633c5e4f1b1"
+};
+
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

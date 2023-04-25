@@ -39,6 +39,7 @@ function App() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setLoggedIn(true);
+      console.log("ok")
     } catch (error) {
       console.error(error);
     }
