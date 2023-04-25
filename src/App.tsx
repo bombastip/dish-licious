@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import 'firebase/auth';
+import { useState, useEffect } from "react";
+import "firebase/auth";
 import { auth } from "./firebase-config";
+import { Input, Container, Card, Button, Spacer } from "@nextui-org/react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
 function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -60,18 +61,45 @@ function App() {
           <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (
-        <div>
-          <label>
-            Email:
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </label>
-          <label>
-            Password:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-          <button onClick={handleRegister}>Register</button>
-          <button onClick={handleLogin}>Login</button>
-        </div>
+        <Container
+          css={{ minHeight: "100vh" }}
+          display="flex"
+          alignItems="center"
+          justify="center"
+        >
+          <Card>
+            <Card.Body>
+              Email:
+              <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Spacer y={1} />
+              Password:
+              <Input
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Spacer y={1} />
+              <Button onClick={handleRegister}>Register</Button>
+              <Spacer y={1} />
+              <Button onClick={handleLogin}>Login</Button>
+            </Card.Body>
+          </Card>
+        </Container>
       )}
     </div>
   );
