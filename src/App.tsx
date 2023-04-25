@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'firebase/auth';
 import { auth } from "./firebase-config";
 import {
@@ -10,6 +10,20 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Add an observer for changes to the user's authentication state
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+
+    // Unsubscribe from the observer when the component unmounts
+    return unsubscribe;
+  }, []);
 
   const handleRegister = async () => {
     try {
