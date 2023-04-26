@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 src/vite-env.d.ts
+pnpm-lock.yaml
 
 # Editor directories and files
 .vscode/*
