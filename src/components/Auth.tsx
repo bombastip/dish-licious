@@ -102,6 +102,7 @@ function Auth() {
                                 shadow={false}
                                 bordered
                                 fullWidth
+                                size='lg'
                                 status={helper.color}
                                 color={helper.color}
                                 helperColor={helper.color}
@@ -112,7 +113,7 @@ function Auth() {
                                 onChange={e => setEmail(e.target.value)}
                             />
                             <Spacer y={1} />
-                            <Input
+                            <Input.Password
                                 label="Password"
                                 clearable
                                 bordered
