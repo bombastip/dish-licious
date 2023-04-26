@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import 'firebase/auth';
-import { auth } from '../config/firebase-config';
-import { Input, Container, Card, Image, Button, Spacer, createTheme } from '@nextui-org/react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { actionCodeSettings, auth } from '../config/firebase-config';
+import { Input, Container, Card, Image, Button, Spacer } from '@nextui-org/react';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 import Logo from '../assets/logo.jpg';
 import { Helper } from '../interfaces/helper';
+import { lightRetroTheme } from '../assets/themes';
 
 function Auth() {
     const [email, setEmail] = useState('');
@@ -28,24 +29,52 @@ function Auth() {
     const handleRegister = async () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            auth.currentUser &&
-                sendEmailVerification(auth.currentUser).then(() => {
-                    console.log('Email verification sent');
-                });
             setLoggedIn(true);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const handleLogin = async () => {
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            setLoggedIn(true);
-            console.log('ok');
-        } catch (error) {
-            console.error(error);
-        }
+    const handleLogin = () => {
+        sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        .then(() => {
+          window.localStorage.setItem('emailForSignIn', email);
+          console.log(window.localStorage.emailForSignIn);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error(errorCode)
+          console.log(errorMessage)
+        });
+        if (isSignInWithEmailLink(auth, window.location.href)) {
+            // Additional state parameters can also be passed via URL.
+            // This can be used to continue the user's intended action before triggering
+            // the sign-in operation.
+            // Get the email if available. This should be available if the user completes
+            // the flow on the same device where they started it.
+            let email = window.localStorage.getItem('emailForSignIn');
+            if (!email) {
+              // User opened the link on a different device. To prevent session fixation
+              // attacks, ask the user to provide the associated email again. For example:
+              email = window.prompt('Please provide your email for confirmation');
+            }
+            // The client SDK will parse the code from the link for you.
+            signInWithEmailLink(auth, email, window.location.href)
+              .then((result) => {
+                // Clear email from storage.
+                window.localStorage.removeItem('emailForSignIn');
+                // You can access the new user via result.user
+                // Additional user info profile not available via:
+                // result.additionalUserInfo.profile == null
+                // You can check if the user is new or existing:
+                // result.additionalUserInfo.isNewUser
+              })
+              .catch((error) => {
+                // Some error occurred, you can inspect the code: error.code
+                // Common errors could be invalid email and invalid or expired OTPs.
+              });
+          }
     };
 
     const handleLogout = async () => {
@@ -56,18 +85,6 @@ function Auth() {
             console.error(error);
         }
     };
-
-    const lightRetroTheme = createTheme({
-        type: 'light',
-        className: 'light-retro',
-        theme: {
-            colors: {
-                primary: '#ec9127',
-                primaryLight: 'transparent',
-                error: '#EE457E',
-            },
-        },
-    });
 
     const validateEmail = (value: string) => {
         return value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i);
@@ -102,7 +119,7 @@ function Auth() {
                                 shadow={false}
                                 bordered
                                 fullWidth
-                                size='lg'
+                                size="lg"
                                 status={helper.color}
                                 color={helper.color}
                                 helperColor={helper.color}
