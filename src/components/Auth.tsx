@@ -5,6 +5,7 @@ import { Input, Container, Card, Image, Button, Spacer, createTheme } from '@nex
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import Logo from '../assets/logo.jpg';
 import { Helper } from '../interfaces/helper';
+import { createUserCollection } from '../database/firestore-db';
 
 function Auth() {
     const [email, setEmail] = useState('');
@@ -27,11 +28,12 @@ function Auth() {
 
     const handleRegister = async () => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const result = await createUserWithEmailAndPassword(auth, email, password);
             auth.currentUser &&
                 sendEmailVerification(auth.currentUser).then(() => {
                     console.log('Email verification sent');
                 });
+            createUserCollection(result.user);
             setLoggedIn(true);
         } catch (error) {
             console.error(error);
@@ -120,7 +122,6 @@ function Auth() {
                                 fullWidth
                                 color="default"
                                 size="lg"
-                                placeholder="Password"
                                 type="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
