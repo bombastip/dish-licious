@@ -20,6 +20,7 @@ import {
 import Logo from "../assets/logo.jpg";
 import { Helper } from "../interfaces/helper";
 import { lightRetroTheme } from "../assets/themes";
+import { createUserCollection } from '../database/firestore-db';
 
 function Auth() {
   const [email, setEmail] = useState("");
@@ -73,7 +74,8 @@ function Auth() {
 
   const handleRegister = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+            createUserCollection(result.user);
       setLoggedIn(true);
     } catch (error) {
       console.error(error);
