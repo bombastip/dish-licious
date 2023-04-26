@@ -104,7 +104,7 @@ function Auth() {
                                 shadow={false}
                                 bordered
                                 fullWidth
-                                size='lg'
+                                size="lg"
                                 status={helper.color}
                                 color={helper.color}
                                 helperColor={helper.color}
