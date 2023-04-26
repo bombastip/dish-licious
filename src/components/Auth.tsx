@@ -4,7 +4,7 @@ import { auth } from '../config/firebase-config';
 import { Input, Container, Card, Image, Button, Spacer, createTheme } from '@nextui-org/react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import Logo from '../assets/logo.jpg';
-import { Helper } from '../interfaces/helper'
+import { Helper } from '../interfaces/helper';
 
 function Auth() {
     const [email, setEmail] = useState('');
@@ -72,11 +72,11 @@ function Auth() {
     const validateEmail = (value: string) => {
         return value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i);
     };
-    const helper:Helper = useMemo(() => {
+    const helper: Helper = useMemo(() => {
         if (!email)
             return {
                 text: '',
-                color: 'default'
+                color: 'default',
             };
         const isValid = validateEmail(email);
         return {
