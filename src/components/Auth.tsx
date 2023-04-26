@@ -12,7 +12,6 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
@@ -20,7 +19,7 @@ import {
 import Logo from "../assets/logo.jpg";
 import { Helper } from "../interfaces/helper";
 import { lightRetroTheme } from "../assets/themes";
-import { createUserCollection } from '../database/firestore-db';
+import { createUserCollection } from "../database/firestore-db";
 
 function Auth() {
   const [email, setEmail] = useState("");
@@ -35,10 +34,9 @@ function Auth() {
       // the sign-in operation.
       // Get the email if available. This should be available if the user completes
       // the flow on the same device where they started it.
-      let email = window.localStorage.getItem("emailForSignIn");
+      const email = window.localStorage.getItem("emailForSignIn");
       // The client SDK will parse the code from the link for you.
-      // @ts-ignore
-      signInWithEmailLink(auth, email, window.location.href)
+      signInWithEmailLink(auth, email as string, window.location.href)
         .then((result) => {
           // Clear email from storage.
           window.localStorage.removeItem("emailForSignIn");
@@ -74,8 +72,12 @@ function Auth() {
 
   const handleRegister = async () => {
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-            createUserCollection(result.user);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      createUserCollection(result.user);
       setLoggedIn(true);
     } catch (error) {
       console.error(error);
@@ -83,26 +85,27 @@ function Auth() {
   };
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password).then(() => {
-        auth.updateCurrentUser(null)
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        auth.updateCurrentUser(null);
         sendSignInLinkToEmail(auth, email, actionCodeSettings)
-        .then(() => {
+          .then(() => {
             window.localStorage.setItem("emailForSignIn", email);
             console.log(window.localStorage.emailForSignIn);
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error(errorCode);
             console.log(errorMessage);
-        });
-    })
-    .catch((error) => {
+          });
+      })
+      .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error(errorCode);
         console.log(errorMessage);
-    });
+      });
   };
 
   const handleLogout = async () => {
@@ -177,7 +180,6 @@ function Auth() {
                 fullWidth
                 color="default"
                 size="lg"
-                placeholder="Password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
