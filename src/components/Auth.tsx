@@ -1,157 +1,195 @@
-import { useState, useEffect, useMemo } from 'react';
-import 'firebase/auth';
-import { actionCodeSettings, auth } from '../config/firebase-config';
-import { Input, Container, Card, Image, Button, Spacer } from '@nextui-org/react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-import Logo from '../assets/logo.jpg';
-import { Helper } from '../interfaces/helper';
-import { lightRetroTheme } from '../assets/themes';
+import { useState, useEffect, useMemo } from "react";
+import "firebase/auth";
+import { actionCodeSettings, auth } from "../config/firebase-config";
+import {
+  Input,
+  Container,
+  Card,
+  Image,
+  Button,
+  Spacer,
+} from "@nextui-org/react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+} from "firebase/auth";
+import Logo from "../assets/logo.jpg";
+import { Helper } from "../interfaces/helper";
+import { lightRetroTheme } from "../assets/themes";
 
 function Auth() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
-    useEffect(() => {
-        // Add an observer for changes to the user's authentication state
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                setLoggedIn(true);
-            } else {
-                setLoggedIn(false);
-            }
-        });
-
-        // Unsubscribe from the observer when the component unmounts
-        return unsubscribe;
-    }, []);
-
-    const handleRegister = async () => {
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
+  useEffect(() => {
+    // Add an observer for changes to the user's authentication state
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      let email = window.localStorage.getItem("emailForSignIn");
+      // The client SDK will parse the code from the link for you.
+      // @ts-ignore
+      signInWithEmailLink(auth, email, window.location.href)
+        .then((result) => {
+          // Clear email from storage.
+          window.localStorage.removeItem("emailForSignIn");
+          // You can access the new user via result.user
+          // Additional user info profile not available via:
+          // result.additionalUserInfo.profile == null
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+          if (result.user) {
             setLoggedIn(true);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleLogin = () => {
-        sendSignInLinkToEmail(auth, email, actionCodeSettings)
-        .then(() => {
-          window.localStorage.setItem('emailForSignIn', email);
-          console.log(window.localStorage.emailForSignIn);
+          }
         })
         .catch((error) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.error(errorCode)
-          console.log(errorMessage)
+          console.error(errorCode);
+          console.log(errorMessage);
         });
-        if (isSignInWithEmailLink(auth, window.location.href)) {
-            // Additional state parameters can also be passed via URL.
-            // This can be used to continue the user's intended action before triggering
-            // the sign-in operation.
-            // Get the email if available. This should be available if the user completes
-            // the flow on the same device where they started it.
-            let email = window.localStorage.getItem('emailForSignIn');
-            if (!email) {
-              // User opened the link on a different device. To prevent session fixation
-              // attacks, ask the user to provide the associated email again. For example:
-              email = window.prompt('Please provide your email for confirmation');
-            }
-            // The client SDK will parse the code from the link for you.
-            signInWithEmailLink(auth, email, window.location.href)
-              .then((result) => {
-                // Clear email from storage.
-                window.localStorage.removeItem('emailForSignIn');
-                // You can access the new user via result.user
-                // Additional user info profile not available via:
-                // result.additionalUserInfo.profile == null
-                // You can check if the user is new or existing:
-                // result.additionalUserInfo.isNewUser
-              })
-              .catch((error) => {
-                // Some error occurred, you can inspect the code: error.code
-                // Common errors could be invalid email and invalid or expired OTPs.
-              });
-          }
-    };
+    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
 
-    const handleLogout = async () => {
-        try {
-            await auth.signOut();
-            setLoggedIn(false);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // Unsubscribe from the observer when the component unmounts
+    return unsubscribe;
+  }, []);
 
-    const validateEmail = (value: string) => {
-        return value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i);
-    };
-    const helper: Helper = useMemo(() => {
-        if (!email)
-            return {
-                text: '',
-                color: 'default',
-            };
-        const isValid = validateEmail(email);
-        return {
-            text: isValid ? 'Correct email' : 'Enter a valid email',
-            color: isValid ? 'success' : 'error',
-        };
-    }, [email]);
+  const handleRegister = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      setLoggedIn(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    return (
-        <div className={lightRetroTheme}>
-            <Image showSkeleton width={640} height={360} maxDelay={10000} src={Logo} alt="logo" />
-            {loggedIn ? (
-                <div>
-                    <h1>You are logged in!</h1>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            ) : (
-                <Container display="flex" alignItems="center" justify="center" css={{ mw: '600px' }}>
-                    <Card>
-                        <Card.Body>
-                            <Input
-                                clearable
-                                shadow={false}
-                                bordered
-                                fullWidth
-                                size="lg"
-                                status={helper.color}
-                                color={helper.color}
-                                helperColor={helper.color}
-                                helperText={helper.text}
-                                type="email"
-                                label="Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                            />
-                            <Spacer y={1} />
-                            <Input.Password
-                                label="Password"
-                                clearable
-                                bordered
-                                fullWidth
-                                color="default"
-                                size="lg"
-                                placeholder="Password"
-                                type="password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                            />
-                            <Spacer y={1} />
-                            <Button onClick={handleRegister}>Register</Button>
-                            <Spacer y={1} />
-                            <Button onClick={handleLogin}>Login</Button>
-                        </Card.Body>
-                    </Card>
-                </Container>
-            )}
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password).then(() => {
+        auth.updateCurrentUser(null)
+        sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        .then(() => {
+            window.localStorage.setItem("emailForSignIn", email);
+            console.log(window.localStorage.emailForSignIn);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error(errorCode);
+            console.log(errorMessage);
+        });
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode);
+        console.log(errorMessage);
+    });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      setLoggedIn(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const validateEmail = (value: string) => {
+    return value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i);
+  };
+  const helper: Helper = useMemo(() => {
+    if (!email)
+      return {
+        text: "",
+        color: "default",
+      };
+    const isValid = validateEmail(email);
+    return {
+      text: isValid ? "Correct email" : "Enter a valid email",
+      color: isValid ? "success" : "error",
+    };
+  }, [email]);
+
+  return (
+    <div className={lightRetroTheme}>
+      <Image
+        showSkeleton
+        width={640}
+        height={360}
+        maxDelay={10000}
+        src={Logo}
+        alt="logo"
+      />
+      {loggedIn ? (
+        <div>
+          <h1>You are logged in!</h1>
+          <button onClick={handleLogout}>Logout</button>
         </div>
-    );
+      ) : (
+        <Container
+          display="flex"
+          alignItems="center"
+          justify="center"
+          css={{ mw: "600px" }}
+        >
+          <Card>
+            <Card.Body>
+              <Input
+                clearable
+                shadow={false}
+                bordered
+                fullWidth
+                size="lg"
+                status={helper.color}
+                color={helper.color}
+                helperColor={helper.color}
+                helperText={helper.text}
+                type="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Spacer y={1} />
+              <Input.Password
+                label="Password"
+                clearable
+                bordered
+                fullWidth
+                color="default"
+                size="lg"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Spacer y={1} />
+              <Button onClick={handleRegister}>Register</Button>
+              <Spacer y={1} />
+              <Button onClick={handleLogin}>Login</Button>
+            </Card.Body>
+          </Card>
+        </Container>
+      )}
+    </div>
+  );
 }
 
 export default Auth;
