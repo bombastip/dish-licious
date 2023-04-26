@@ -33,7 +33,6 @@ function Auth() {
                 sendEmailVerification(auth.currentUser).then(() => {
                     console.log('Email verification sent');
                 });
-            setLoggedIn(true);
         } catch (error) {
             console.error(error);
         }
