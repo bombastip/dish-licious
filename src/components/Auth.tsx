@@ -70,7 +70,7 @@ function Auth() {
     });
 
     const validateEmail = (value: string) => {
-        return value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i);
+        return value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i);
     };
     const helper: Helper = useMemo(() => {
         if (!email)
