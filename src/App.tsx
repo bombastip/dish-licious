@@ -2,6 +2,7 @@ import Auth from './components/Auth';
 import { NextUIProvider } from '@nextui-org/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
+import { lightRetroTheme } from './assets/themes';
 
 const router = createBrowserRouter([
     {
@@ -11,9 +12,10 @@ const router = createBrowserRouter([
     },
 ]);
 
+
 function App() {
     return (
-        <NextUIProvider>
+        <NextUIProvider theme={lightRetroTheme}>
             <RouterProvider router={router} />
         </NextUIProvider>
     );

@@ -5,6 +5,7 @@ import { Input, Container, Card, Image, Button, Spacer, createTheme } from '@nex
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import Logo from '../assets/logo.jpg';
 import { Helper } from '../interfaces/helper'
+import { lightRetroTheme } from '../assets/themes';
 
 function Auth() {
     const [email, setEmail] = useState('');
@@ -57,18 +58,6 @@ function Auth() {
         }
     };
 
-    const lightRetroTheme = createTheme({
-        type: 'light',
-        className: 'light-retro',
-        theme: {
-            colors: {
-                primary: '#ec9127',
-                primaryLight: 'transparent',
-                error: '#EE457E',
-            },
-        },
-    });
-
     const validateEmail = (value: string) => {
         return value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i);
     };
@@ -108,18 +97,18 @@ function Auth() {
                                 helperText={helper.text}
                                 type="email"
                                 label="Email"
+                                size="lg"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                             />
                             <Spacer y={1} />
-                            <Input
+                            <Input.Password
                                 label="Password"
                                 clearable
                                 bordered
                                 fullWidth
                                 color="default"
                                 size="lg"
-                                placeholder="Password"
                                 type="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
