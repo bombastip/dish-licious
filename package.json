@@ -6,8 +6,9 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "lint": "eslint src --ext ts,tsx --ignore-path .gitignore",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
+        "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\""
     },
     "dependencies": {
         "@nextui-org/react": "^1.0.0-beta.12",
@@ -20,21 +21,17 @@
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
         "@typescript-eslint/eslint-plugin": "^5.59.1",
-        "@typescript-eslint/parser": "^5.57.1",
+        "@typescript-eslint/parser": "^5.59.1",
         "@vitejs/plugin-react": "^4.0.0-beta.0",
         "eslint": "^8.39.0",
-        "eslint-config-standard-with-typescript": "^34.0.1",
-        "eslint-plugin-import": "^2.27.5",
-        "eslint-plugin-n": "^15.7.0",
-        "eslint-plugin-promise": "^6.1.1",
-        "eslint-plugin-react": "^7.32.2",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.3.4",
+        "eslint-config-prettier": "^8.8.0",
+        "prettier": "^2.8.8",
         "typescript": "^5.0.4",
         "vite": "^4.3.0"
     },
     "engines": {
         "node": ">=18.15.0",
-        "npm": ">=9.6.5"
+        "npm": ">=9.6.5",
+        "pnpm": ">=8.3.1"
     }
 }
