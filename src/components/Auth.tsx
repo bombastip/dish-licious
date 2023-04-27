@@ -196,6 +196,56 @@ function Auth() {
       )}
     </div>
   );
+    return (
+        <div className={lightRetroTheme}>
+            <Image showSkeleton width={640} height={360} maxDelay={10000} src={Logo} alt="logo" />
+            {loggedIn ? (
+                <div>
+                    <h1>You are logged in!</h1>
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+            ) : (
+                <Container display="flex" alignItems="center" justify="center" css={{ mw: '600px' }}>
+                    <Card>
+                        <Card.Body>
+                            <Input
+                                clearable
+                                shadow={false}
+                                bordered
+                                fullWidth
+                                size="lg"
+                                status={helper.color}
+                                color={helper.color}
+                                helperColor={helper.color}
+                                helperText={helper.text}
+                                type="email"
+                                label="Email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                            />
+                            <Spacer y={1} />
+                            <Input.Password
+                                label="Password"
+                                clearable
+                                bordered
+                                fullWidth
+                                color="default"
+                                size="lg"
+                                placeholder="Password"
+                                type="password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                            />
+                            <Spacer y={1} />
+                            <Button onClick={handleRegister}>Register</Button>
+                            <Spacer y={1} />
+                            <Button onClick={handleLogin}>Login</Button>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            )}
+        </div>
+    );
 }
 
 export default Auth;
