@@ -1,7 +1,7 @@
 import { Navbar, Link, Text, Avatar, Dropdown } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { auth, db } from '../config/firebase-config';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 export const Box = styled('div', {
@@ -25,29 +25,24 @@ function NavbarF() {
 
     useEffect(() => {
         if (auth.currentUser) {
-            console.log(`User is signed in: ${auth.currentUser}`)
+            console.log(`User is signed in: ${auth.currentUser}`);
             const docRef = doc(db, 'users', auth.currentUser.uid);
-            getDoc(docRef).then(doc => {
-                if (doc.exists()) {
-                    setUsername(doc.data().username);
-                    console.log(username);
-                } else {
-                    console.log(`User documentnot found`);
-                }
-            }).catch(error => {
-                console.log(`Error retrieving user document: ${error}`);
-            });
+            getDoc(docRef)
+                .then(doc => {
+                    if (doc.exists()) {
+                        setUsername(doc.data().username);
+                        console.log(username);
+                    } else {
+                        console.log(`User documentnot found`);
+                    }
+                })
+                .catch(error => {
+                    console.log(`Error retrieving user document: ${error}`);
+                });
         }
     }, [auth.currentUser]);
     console.log('Rendering NavbarF', username);
-    const collapseItems = [
-        'Profile',
-        'Dashboard',
-        'Activity',
-        'Deployments',
-        'My Settings',
-        'Log Out',
-    ];
+    const collapseItems = ['Profile', 'Dashboard', 'Activity', 'Deployments', 'My Settings', 'Log Out'];
 
     return (
         <div>
