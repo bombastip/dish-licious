@@ -17,7 +17,7 @@ import {
   signInWithEmailLink,
   sendEmailVerification,
 } from "firebase/auth";
-import Logo from "../assets/logo.jpg";
+import Logo from "../assets/logo.svg";
 import { Helper } from "../interfaces/helper";
 import { lightRetroTheme } from "../assets/themes";
 import { createUserCollection } from "../database/firestore-db";
@@ -60,7 +60,7 @@ function Auth() {
         });
     }
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
@@ -90,7 +90,10 @@ function Auth() {
     // TODO: 2FA - fot later; uncomment when app is almost done
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {setLoggedIn(true)
+      .then(() => {
+        if (auth.currentUser?.emailVerified) {
+          setLoggedIn(true)
+        }
         // auth.updateCurrentUser(null);
         // sendSignInLinkToEmail(auth, email, actionCodeSettings)
         //   .then(() => {
@@ -137,70 +140,9 @@ function Auth() {
     };
   }, [email]);
 
-  return (
-    <div className={lightRetroTheme}>
-      <Image
-        showSkeleton
-        width={640}
-        height={360}
-        maxDelay={10000}
-        src={Logo}
-        alt="logo"
-      />
-      {loggedIn ? (
-        <div>
-          <h1>You are logged in!</h1>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <Container
-          display="flex"
-          alignItems="center"
-          justify="center"
-          css={{ mw: "600px" }}
-        >
-          <Card>
-            <Card.Body>
-              <Input
-                clearable
-                shadow={false}
-                bordered
-                fullWidth
-                size="lg"
-                status={helper.color}
-                color={helper.color}
-                helperColor={helper.color}
-                helperText={helper.text}
-                type="email"
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Spacer y={1} />
-              <Input.Password
-                label="Password"
-                clearable
-                bordered
-                fullWidth
-                color="default"
-                size="lg"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Spacer y={1} />
-              <Button onClick={handleRegister}>Register</Button>
-              <Spacer y={1} />
-              <Button onClick={handleLogin}>Login</Button>
-            </Card.Body>
-          </Card>
-        </Container>
-      )}
-    </div>
-  );
     return (
         <div className={lightRetroTheme}>
-            <Image showSkeleton width={640} height={360} maxDelay={10000} src={Logo} alt="logo" />
+            <Image showSkeleton width={300} height={250} maxDelay={10000} src={Logo} alt="logo" />
             {loggedIn ? (
                 <div>
                     <h1>You are logged in!</h1>
@@ -233,7 +175,6 @@ function Auth() {
                                 fullWidth
                                 color="default"
                                 size="lg"
-                                placeholder="Password"
                                 type="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
