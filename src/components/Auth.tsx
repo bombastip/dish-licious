@@ -3,7 +3,7 @@ import 'firebase/auth';
 import { auth } from '../config/firebase-config';
 import { Input, Container, Card, Image, Button, Spacer, createTheme } from '@nextui-org/react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import Logo from '../assets/logo.jpg';
+import Logo from '../assets/logo.svg';
 import { Helper } from '../interfaces/helper';
 import { createUserCollection } from '../database/firestore-db';
 
@@ -89,7 +89,7 @@ function Auth() {
 
     return (
         <div className={lightRetroTheme}>
-            <Image showSkeleton width={640} height={360} maxDelay={10000} src={Logo} alt="logo" />
+            <Image showSkeleton width={300} height={250} maxDelay={10000} src={Logo} alt="logo" />
             {loggedIn ? (
                 <div>
                     <h1>You are logged in!</h1>
@@ -122,7 +122,6 @@ function Auth() {
                                 fullWidth
                                 color="default"
                                 size="lg"
-                                placeholder="Password"
                                 type="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
