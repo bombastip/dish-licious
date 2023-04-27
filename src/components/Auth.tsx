@@ -15,6 +15,7 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
+  sendEmailVerification,
 } from "firebase/auth";
 import Logo from "../assets/logo.jpg";
 import { Helper } from "../interfaces/helper";
@@ -28,7 +29,7 @@ function Auth() {
 
   useEffect(() => {
     // Add an observer for changes to the user's authentication state
-    if (isSignInWithEmailLink(auth, window.location.href)) {
+    if (isSignInWithEmailLink(auth, window.location.href) && auth.currentUser?.emailVerified) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
       // the sign-in operation.
@@ -77,8 +78,9 @@ function Auth() {
         email,
         password
       );
+
       createUserCollection(result.user);
-      setLoggedIn(true);
+      sendEmailVerification(result.user, actionCodeSettings)
     } catch (error) {
       console.error(error);
     }
