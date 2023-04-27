@@ -12,7 +12,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendSignInLinkToEmail,
+  //   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
   sendEmailVerification,
@@ -29,7 +29,10 @@ function Auth() {
 
   useEffect(() => {
     // Add an observer for changes to the user's authentication state
-    if (isSignInWithEmailLink(auth, window.location.href) && auth.currentUser?.emailVerified) {
+    if (
+      isSignInWithEmailLink(auth, window.location.href) &&
+      auth.currentUser?.emailVerified
+    ) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
       // the sign-in operation.
@@ -80,7 +83,7 @@ function Auth() {
       );
 
       createUserCollection(result.user);
-      sendEmailVerification(result.user, actionCodeSettings)
+      sendEmailVerification(result.user, actionCodeSettings);
     } catch (error) {
       console.error(error);
     }
@@ -92,7 +95,7 @@ function Auth() {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         if (auth.currentUser?.emailVerified) {
-          setLoggedIn(true)
+          setLoggedIn(true);
         }
         // auth.updateCurrentUser(null);
         // sendSignInLinkToEmail(auth, email, actionCodeSettings)
@@ -140,55 +143,67 @@ function Auth() {
     };
   }, [email]);
 
-    return (
-        <div className={lightRetroTheme}>
-            <Image showSkeleton width={300} height={250} maxDelay={10000} src={Logo} alt="logo" />
-            {loggedIn ? (
-                <div>
-                    <h1>You are logged in!</h1>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            ) : (
-                <Container display="flex" alignItems="center" justify="center" css={{ mw: '600px' }}>
-                    <Card>
-                        <Card.Body>
-                            <Input
-                                clearable
-                                shadow={false}
-                                bordered
-                                fullWidth
-                                size="lg"
-                                status={helper.color}
-                                color={helper.color}
-                                helperColor={helper.color}
-                                helperText={helper.text}
-                                type="email"
-                                label="Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                            />
-                            <Spacer y={1} />
-                            <Input.Password
-                                label="Password"
-                                clearable
-                                bordered
-                                fullWidth
-                                color="default"
-                                size="lg"
-                                type="password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                            />
-                            <Spacer y={1} />
-                            <Button onClick={handleRegister}>Register</Button>
-                            <Spacer y={1} />
-                            <Button onClick={handleLogin}>Login</Button>
-                        </Card.Body>
-                    </Card>
-                </Container>
-            )}
+  return (
+    <div className={lightRetroTheme}>
+      <Image
+        showSkeleton
+        width={300}
+        height={250}
+        maxDelay={10000}
+        src={Logo}
+        alt="logo"
+      />
+      {loggedIn ? (
+        <div>
+          <h1>You are logged in!</h1>
+          <button onClick={handleLogout}>Logout</button>
         </div>
-    );
+      ) : (
+        <Container
+          display="flex"
+          alignItems="center"
+          justify="center"
+          css={{ mw: "600px" }}
+        >
+          <Card>
+            <Card.Body>
+              <Input
+                clearable
+                shadow={false}
+                bordered
+                fullWidth
+                size="lg"
+                status={helper.color}
+                color={helper.color}
+                helperColor={helper.color}
+                helperText={helper.text}
+                type="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Spacer y={1} />
+              <Input.Password
+                label="Password"
+                clearable
+                bordered
+                fullWidth
+                color="default"
+                size="lg"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Spacer y={1} />
+              <Button onClick={handleRegister}>Register</Button>
+              <Spacer y={1} />
+              <Button onClick={handleLogin}>Login</Button>
+            </Card.Body>
+          </Card>
+        </Container>
+      )}
+    </div>
+  );
 }
 
 export default Auth;
