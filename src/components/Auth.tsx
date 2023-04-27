@@ -87,8 +87,10 @@ function Auth() {
   };
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+    // TODO: 2FA - fot later; uncomment when app is almost done
+
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then(() => {
         auth.updateCurrentUser(null);
         sendSignInLinkToEmail(auth, email, actionCodeSettings)
           .then(() => {
@@ -101,13 +103,13 @@ function Auth() {
             console.error(errorCode);
             console.log(errorMessage);
           });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode);
-        console.log(errorMessage);
-      });
+      // })
+      // .catch((error) => {
+      //   const errorCode = error.code;
+      //   const errorMessage = error.message;
+      //   console.error(errorCode);
+      //   console.log(errorMessage);
+      // });
   };
 
   const handleLogout = async () => {
