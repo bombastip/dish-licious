@@ -15,6 +15,11 @@ const router = createBrowserRouter([
         element: <Auth />,
         loader: signOutLoader,
     },
+    {
+        path: '/profile',
+        //element: <Profile />,
+        loader: signOutLoader,
+    },
 ]);
 
 const App = () => <RouterProvider router={router} />;
