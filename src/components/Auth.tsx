@@ -89,27 +89,27 @@ function Auth() {
   const handleLogin = () => {
     // TODO: 2FA - fot later; uncomment when app is almost done
 
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then(() => {
-        auth.updateCurrentUser(null);
-        sendSignInLinkToEmail(auth, email, actionCodeSettings)
-          .then(() => {
-            window.localStorage.setItem("emailForSignIn", email);
-            console.log(window.localStorage.emailForSignIn);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error(errorCode);
-            console.log(errorMessage);
-          });
-      // })
-      // .catch((error) => {
-      //   const errorCode = error.code;
-      //   const errorMessage = error.message;
-      //   console.error(errorCode);
-      //   console.log(errorMessage);
-      // });
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {setLoggedIn(true)
+        // auth.updateCurrentUser(null);
+        // sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        //   .then(() => {
+        //     window.localStorage.setItem("emailForSignIn", email);
+        //     console.log(window.localStorage.emailForSignIn);
+        //   })
+        //   .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+        //     console.error(errorCode);
+        //     console.log(errorMessage);
+        //   });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode);
+        console.log(errorMessage);
+      });
   };
 
   const handleLogout = async () => {
