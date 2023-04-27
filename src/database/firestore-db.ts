@@ -1,6 +1,6 @@
-import 'firebase/compat/firestore';
-import { db } from '../config/firebase-config';
-import { doc, setDoc } from 'firebase/firestore';
+import "firebase/compat/firestore";
+import { db } from "../config/firebase-config";
+import { doc, setDoc } from "firebase/firestore";
 import { User } from 'firebase/auth';
 
 export async function createUserCollection(user: User) {
