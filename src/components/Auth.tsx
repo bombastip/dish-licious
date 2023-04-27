@@ -60,7 +60,7 @@ function Auth() {
         });
     }
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
@@ -90,7 +90,10 @@ function Auth() {
     // TODO: 2FA - fot later; uncomment when app is almost done
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {setLoggedIn(true)
+      .then(() => {
+        if (auth.currentUser?.emailVerified) {
+          setLoggedIn(true)
+        }
         // auth.updateCurrentUser(null);
         // sendSignInLinkToEmail(auth, email, actionCodeSettings)
         //   .then(() => {
