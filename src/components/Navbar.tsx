@@ -97,15 +97,8 @@ function NavbarF() {
                             >
                                 <Dropdown.Item key="username" css={{ height: '$18' }}>
                                     <Text b color="#ec9127" css={{ d: 'flex' }}>
-                                        Signed in as
+                                        Signed in as {username}
                                     </Text>
-                                    <>
-                                        {username && (
-                                            <Text b color="#ec9127" css={{ d: 'flex' }}>
-                                                {username}
-                                            </Text>
-                                        )}
-                                    </>
                                 </Dropdown.Item>
                                 <Dropdown.Item key="profile" withDivider>
                                     My Profile
