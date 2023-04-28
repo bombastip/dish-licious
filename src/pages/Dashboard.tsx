@@ -1,19 +1,39 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/Context";
-import { User } from "firebase/auth";
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../context';
+import { redirect } from 'react-router-dom';
+import { auth } from '../config/firebase-config';
+import { useNavigate } from 'react-router-dom';
+import { Loading } from '@nextui-org/react';
+// import { User } from 'firebase/auth';
 
 const Dashboard = () => {
-  const user: User | null = useContext(AuthContext);
+    const { user, userLoading } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-  return user ? (
-    <div>
-      <h1>You are logged in {user.email}</h1>
-    </div>
-  ) : (
-    <div>
-      <h1>You not logged in!</h1>
-    </div>
-  );
+    useEffect(() => {
+        if (!userLoading && !user) {
+            navigate('/login');
+        }
+    }, [userLoading, user]);
+
+    const handleLogOut = async () => {
+        try {
+            await auth.updateCurrentUser(null);
+            await auth.signOut();
+            redirect('/login');
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    return userLoading ? (
+        <Loading />
+    ) : (
+        <div>
+            <h1>Dashboard</h1>
+            <button onClick={handleLogOut}>Log Out</button>
+        </div>
+    );
 };
 
 export default Dashboard;
