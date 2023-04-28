@@ -1,25 +1,35 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./pages/ErrorPage";
-import Dashboard from "./pages/Dashboard";
-import Auth from "./components/Auth";
-import { authLoader, signOutLoader } from "./route/loader";
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { ErrorPage, Dashboard, Login, Register } from './pages';
+import { Navbar } from './components';
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Dashboard />,
-    errorElement: <ErrorPage />,
-    // loader: authLoader,
-  },
-  {
-    path: "/authentication",
-    element: <Auth />,
-    // loader: signOutLoader,
-  },
-  {
-    path: "/profile",
-    //element: <Profile />,
-    loader: signOutLoader,
-  },
+    {
+        element: (
+            <>
+                <Navbar />
+                <Outlet />
+            </>
+        ),
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: '/',
+                element: <Dashboard />,
+            },
+            {
+                path: 'login',
+                element: <Login />,
+            },
+            {
+                path: 'register',
+                element: <Register />,
+            },
+            {
+                path: 'profile',
+                //element: <Profile />,
+            },
+        ],
+    },
 ]);
 
 const App = () => <RouterProvider router={router} />;
