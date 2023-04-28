@@ -34,7 +34,7 @@ export async function createFollowCollection(user: User) {
         });
 }
 
-async function checkUsername(username: string) {
+export async function checkUsername(username: string) {
     const q = query(collection(db, 'users'), where('username', '==', username));
 
     const querySnapshot = await getDocs(q);

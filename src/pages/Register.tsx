@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, actionCodeSettings } from '../config/firebase-config';
-import { createUserCollection } from '../database/firestore-db';
+import { createUserCollection, checkUsername } from '../database/firestore-db';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context';
 import { FirebaseError } from 'firebase/app';
@@ -16,7 +16,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userLoading && user) {
+        if (!userLoading && user && user.emailVerified) {
             navigate('/');
         }
     }, [userLoading, user]);
@@ -28,8 +28,13 @@ const Register = () => {
                 alert('You completed the fields wrong!');
                 return;
             }
+            const ret = await checkUsername(username);
+            if (!ret) {
+                alert('Username already taken!');
+                return;
+            }
             const result = await createUserWithEmailAndPassword(auth, email, password);
-            createUserCollection(result.user);
+            createUserCollection(result.user, username);
             // TODO check into our database if the username is already taken, if yes return and alert
             // TODO add into our users database the username and the user id
             sendEmailVerification(result.user, actionCodeSettings);
