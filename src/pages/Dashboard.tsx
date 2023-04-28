@@ -18,6 +18,7 @@ const Dashboard = () => {
 
     const handleLogOut = async () => {
         try {
+            await auth.updateCurrentUser(null);
             await auth.signOut();
             redirect('/login');
         } catch (error) {

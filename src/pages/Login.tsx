@@ -5,6 +5,7 @@ import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
 import { EmailInput, PasswordInput, AuthCard } from '../components';
+import { FirebaseError } from 'firebase/app';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -26,34 +27,36 @@ const Login = () => {
                     window.localStorage.removeItem('emailForSignIn');
                 })
                 .catch(error => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error(errorCode);
-                    console.log(errorMessage);
+                    console.error(error);
                 });
         }
     }, []);
 
-    const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                redirect('/');
-                // if (auth.currentUser?.emailVerified) {
-                //     setLoggedIn(true);
-                // }
-                // auth.updateCurrentUser(null);
-                // sendSignInLinkToEmail(auth, email, actionCodeSettings)
-                //   .then(() => {
-                //     window.localStorage.setItem("emailForSignIn", email);
-                //     console.log(window.localStorage.emailForSignIn);
-                //   })
-                //   .catch((error) => {
-                //     console.log(error)
-                //   });
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    const handleLogin = async () => {
+        try {
+            // FIXME: email and password regex alert
+            if (email.length < 4 || password.length < 6) {
+                alert('You completed the fields wrong!');
+                return;
+            }
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            if (!userCredential.user.emailVerified) {
+                alert('Please verify your email address!');
+                return;
+            }
+
+            // auth.updateCurrentUser(null);
+            // sendSignInLinkToEmail(auth, email, actionCodeSettings)
+            //   .then(() => {
+            //     window.localStorage.setItem("emailForSignIn", email);
+            //     console.log(window.localStorage.emailForSignIn);
+            //   })
+            redirect('/');
+        } catch (error: unknown) {
+            // TODO: alert the user if the email is wrong
+            // TODO: alert the user if the password is wrong
+            alert((error as FirebaseError).message);
+        }
     };
 
     return (
