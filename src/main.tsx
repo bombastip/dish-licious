@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { NextUIProvider } from '@nextui-org/react';
-import { Navbar } from './components/Navbar.tsx';
+import { AuthContextProvider } from './context/provider';
+import { mainTheme } from './themes';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <NextUIProvider>
-            <Navbar />
-        </NextUIProvider>
+        <AuthContextProvider>
+            <NextUIProvider theme={mainTheme}>
+                <App />
+            </NextUIProvider>
+        </AuthContextProvider>
     </React.StrictMode>,
 );
