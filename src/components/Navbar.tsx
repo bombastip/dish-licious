@@ -77,6 +77,7 @@ function NavbarF() {
             <Navbar.Link isActive href="#">
               Feed
             </Navbar.Link>
+            <Navbar.Link href="#">Add post</Navbar.Link>
             <Navbar.Link href="#">Favourites</Navbar.Link>
             <Navbar.Link href="#">Notifications</Navbar.Link>
             <Navbar.Link href="#">Search</Navbar.Link>
