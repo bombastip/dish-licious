@@ -14,7 +14,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userLoading && user) {
+        if (!userLoading && user && user.emailVerified) {
             navigate('/');
         }
     }, [userLoading, user]);
@@ -42,6 +42,7 @@ const Login = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             if (!userCredential.user.emailVerified) {
                 alert('Please verify your email address!');
+                auth.signOut();
                 return;
             }
 

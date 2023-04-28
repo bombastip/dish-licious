@@ -43,7 +43,7 @@ function NavbarF() {
         }
     }, [auth.currentUser, username]);
     console.log('Rendering NavbarF', username);
-    const collapseItems = ['Profile', 'Dashboard', 'Activity', 'My Settings', 'Log Out'];
+    const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
 
     return (
         <div>
@@ -71,6 +71,7 @@ function NavbarF() {
                         <Navbar.Link isActive href="#">
                             Feed
                         </Navbar.Link>
+                        <Navbar.Link href="#">Add post</Navbar.Link>
                         <Navbar.Link href="#">Favourites</Navbar.Link>
                         <Navbar.Link href="#">Notifications</Navbar.Link>
                         <Navbar.Link href="#">Search</Navbar.Link>
@@ -109,8 +110,11 @@ function NavbarF() {
                                 <Dropdown.Item key="profile" withDivider>
                                     My Profile
                                 </Dropdown.Item>
-                                <Dropdown.Item key="friends" withDivider>
-                                    Friends
+                                <Dropdown.Item key="followers" withDivider>
+                                    Followers
+                                </Dropdown.Item>
+                                <Dropdown.Item key="following" withDivider>
+                                    Following
                                 </Dropdown.Item>
                                 <Dropdown.Item key="groups" withDivider>
                                     Groups
@@ -135,7 +139,7 @@ function NavbarF() {
                                 isActive={index === 2}
                             >
                                 <Link
-                                    color="#fedebe"
+                                    color="secondary"
                                     css={{
                                         minWidth: '100%',
                                     }}
