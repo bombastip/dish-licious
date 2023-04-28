@@ -20,11 +20,17 @@ import {
 import Logo from "../assets/logo.svg";
 import { Helper } from "../interfaces/helper";
 import { lightRetroTheme } from "../assets/themes";
-import { createUserCollection } from "../database/firestore-db";
+import {
+  changePhotoURL,
+  createUserCollection,
+  createFollowCollection,
+  follow,
+} from "../database/firestore-db";
 
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -82,7 +88,12 @@ function Auth() {
         password
       );
 
-      createUserCollection(result.user);
+      createUserCollection(result.user, username);
+      createFollowCollection(result.user);
+      changePhotoURL(
+        "https://haikyuu.store/wp-content/uploads/2021/09/Kei-Tsukishima-Merch.png",
+        result.user
+      );
       sendEmailVerification(result.user, actionCodeSettings);
     } catch (error) {
       console.error(error);
@@ -181,6 +192,20 @@ function Auth() {
                 label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                aria-labelledby="emailLabel"
+              />
+              <Spacer y={1} />
+              <Input
+                label="Username"
+                clearable
+                bordered
+                fullWidth
+                color="default"
+                size="lg"
+                type="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                aria-labelledby="usernameLabel"
               />
               <Spacer y={1} />
               <Input.Password
@@ -193,6 +218,7 @@ function Auth() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                aria-labelledby="passwordLabel"
               />
               <Spacer y={1} />
               <Button onClick={handleRegister}>Register</Button>

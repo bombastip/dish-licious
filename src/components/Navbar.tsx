@@ -44,11 +44,11 @@ function NavbarF() {
   }, [auth.currentUser, username]);
   console.log("Rendering NavbarF", username);
   const collapseItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "My Settings",
-    "Log Out",
+    "Add Post",
+    "Feed",
+    "Favorites",
+    "Notifications",
+    "Search",
   ];
 
   return (
@@ -151,7 +151,7 @@ function NavbarF() {
                 isActive={index === 2}
               >
                 <Link
-                  color="#fedebe"
+                  color="secondary"
                   css={{
                     minWidth: "100%",
                   }}
