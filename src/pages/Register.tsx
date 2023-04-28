@@ -34,10 +34,11 @@ const Register = () => {
                 return;
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
+            await auth.signOut();
             createUserCollection(result.user, username);
-            // TODO check into our database if the username is already taken, if yes return and alert
-            // TODO add into our users database the username and the user id
             sendEmailVerification(result.user, actionCodeSettings);
+            // FIXME: Handle email already in use error
+            alert('Check your email for a verification link!');
             navigate('/login');
         } catch (error: unknown) {
             console.error(error);
