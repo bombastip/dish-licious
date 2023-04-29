@@ -1,1 +1,1 @@
-export { createUserCollection, createFollowCollection, checkUsername, changeUsername } from './firestore-db';
+export { createUserCollection, checkUsername, changeUsername, changePhotoURL, follow } from './firestore-db';
