@@ -38,7 +38,7 @@ const Login = () => {
         try {
             // FIXME: email and password regex alert
             if (email.length < 4 || password.length < 6) {
-                setErr('You completed the fields wrong!')
+                setErr('You completed the fields wrong!');
                 return;
             }
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -58,7 +58,7 @@ const Login = () => {
         } catch (error: unknown) {
             // TODO: alert the user if the email is wrong
             // TODO: alert the user if the password is wrong
-            setErr((error as FirebaseError).message)
+            setErr((error as FirebaseError).message);
         }
     };
 
@@ -68,7 +68,7 @@ const Login = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton clickFunc={handleLogin} buttonName='Login' defaultMessage='OK!' error={err} />
+            <AuthButton clickFunc={handleLogin} buttonName="Login" defaultMessage="OK!" error={err} setError={setErr} />
             <Text>
                 You don't have an account? <Link to="/register">Register</Link>
             </Text>
