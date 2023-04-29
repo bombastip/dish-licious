@@ -126,7 +126,6 @@ export async function follow(wantToFollow: string, user: string) {
             const followersRef = doc(db, 'users', wantToFollow);
             const followersList = await getFollowers(wantToFollow);
             if (followersList) {
-                console.log('Followers listtttt:', followersList);
                 followersList.push(user);
                 const data = {
                     followers: followersList,
