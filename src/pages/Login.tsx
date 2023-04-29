@@ -37,13 +37,21 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             // FIXME: email and password regex alert
-            if (email.length < 4 || password.length < 6) {
-                setErr('You completed the fields wrong!');
+            if (email.length == 0 || password.length == 0) {
+                setErr('At least one of the fields is empty. Please complete both of them.');
+                return;
+            }
+            if (email.length < 4) {
+                setErr('Email is invalid. Please enter a correct email.');
+                return;
+            }
+            if (password.length < 6) {
+                setErr('Password must be at least 6 characters');
                 return;
             }
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             if (!userCredential.user.emailVerified) {
-                setErr('Please verify your email address!');
+                setErr('Verification email sent. Please verify your email.');
                 auth.signOut();
                 return;
             }

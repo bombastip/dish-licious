@@ -1,4 +1,4 @@
-import { Spacer, Button, Text } from '@nextui-org/react';
+import { Spacer, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthButton, AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
@@ -31,7 +31,7 @@ const Register = () => {
             }
             const ret = await checkUsername(username);
             if (!ret) {
-                setErr('Username already taken!');
+                setErr('Username already taken. Please try another username.');
                 return;
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
