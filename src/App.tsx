@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ErrorPage, Dashboard, Login, Register } from './pages';
 import { Navbar } from './components';
+import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
     {
@@ -13,10 +14,6 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/',
-                element: <Dashboard />,
-            },
-            {
                 path: 'login',
                 element: <Login />,
             },
@@ -25,8 +22,17 @@ const router = createBrowserRouter([
                 element: <Register />,
             },
             {
-                path: 'profile',
-                //element: <Profile />,
+                element: <PrivateRoute />,
+                children: [
+                    {
+                        path: '/',
+                        element: <Dashboard />,
+                    },
+                    {
+                        path: 'profile',
+                        //element: <Profile />,
+                    },
+                ],
             },
         ],
     },
