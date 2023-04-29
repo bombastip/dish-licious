@@ -1,17 +1,18 @@
 import { Spacer, Button, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
-import { AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
+import { AuthButton, AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, actionCodeSettings } from '../config';
 import { createUserCollection, checkUsername } from '../database';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context';
-import { FirebaseError } from '../interfaces';
+import { ErrorMessasge, FirebaseError } from '../interfaces';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [err, setErr] = useState<ErrorMessasge>(null)
     const { user, userLoading } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -25,12 +26,12 @@ const Register = () => {
         try {
             // FIXME: email password and username regex alert
             if (username.length < 3 || password.length < 6 || email.length < 4) {
-                alert('You completed the fields wrong!');
+                setErr('You completed the fields wrong!');
                 return;
             }
             const ret = await checkUsername(username);
             if (!ret) {
-                alert('Username already taken!');
+                setErr('Username already taken!');
                 return;
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -42,8 +43,7 @@ const Register = () => {
             navigate('/login');
         } catch (error: unknown) {
             console.error(error);
-            // FIXME: Handle email already in use error
-            alert((error as FirebaseError).message);
+            setErr((error as FirebaseError).message);
         }
     };
 
@@ -55,7 +55,7 @@ const Register = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <Button onClick={handleRegister}>Register</Button>
+            <AuthButton clickFunc={handleRegister} buttonName="Register" error={err} setError={setErr} />
             <Text>
                 Already have an account? <Link to="/login">Log in</Link>
             </Text>

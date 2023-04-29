@@ -4,7 +4,6 @@ import { ErrorMessasge } from '../interfaces';
 
 interface PopoverProps {
     error: ErrorMessasge;
-    defaultMessage: string;
     buttonName: string;
     setError: (value: ErrorMessasge) => void;
     clickFunc: (value: string) => void;
@@ -12,7 +11,6 @@ interface PopoverProps {
 
 const AuthButton: FC<PopoverProps> = props => {
     const [isOpen, setIsOpen] = useState(false);
-    const bodyRef = useRef(document.body as HTMLBodyElement);
 
     useEffect(() => {
         if (props.error) {
@@ -20,12 +18,12 @@ const AuthButton: FC<PopoverProps> = props => {
             setTimeout(() => {
                 setIsOpen(false);
                 props.setError(null);
-            }, 1500);
+            }, 2000);
         }
     }, [isOpen, props.error]);
 
     return (
-        <Popover triggerRef={bodyRef} offset={0} isOpen={isOpen}>
+        <Popover offset={60} isOpen={isOpen}>
             <Popover.Trigger>
                 <Button onPress={props.clickFunc}>{props.buttonName}</Button>
             </Popover.Trigger>
