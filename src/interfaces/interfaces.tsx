@@ -4,7 +4,7 @@ export interface InputColorMessage {
     color: color;
 }
 export interface UserData {
-    email: string;
+    email: string;   
     username: string;
     photoURL: string;
 }
