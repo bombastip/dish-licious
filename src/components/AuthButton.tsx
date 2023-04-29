@@ -1,9 +1,9 @@
 import { Badge, Button, Popover } from '@nextui-org/react';
 import { FC, useEffect, useState } from 'react';
-import { errorMessasge } from '../interfaces/helper';
+import { ErrorMessasge } from '../interfaces';
 
 interface PopoverProps {
-    error: errorMessasge;
+    error: ErrorMessasge;
     defaultMessage: string;
     buttonName: string;
     clickFunc: (value: string) => void;

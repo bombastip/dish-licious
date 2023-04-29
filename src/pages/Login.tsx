@@ -6,12 +6,12 @@ import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword 
 import { auth } from '../config/firebase-config';
 import { EmailInput, PasswordInput, AuthCard, AuthButton } from '../components';
 import { FirebaseError } from 'firebase/app';
-import { errorMessasge } from '../interfaces/helper';
+import { ErrorMessasge } from '../interfaces';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [err, setErr] = useState<errorMessasge>(null);
+    const [err, setErr] = useState<ErrorMessasge>(null);
     const { user, userLoading } = useContext(AuthContext);
     const navigate = useNavigate();
 
