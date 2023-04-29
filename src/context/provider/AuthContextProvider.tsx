@@ -1,6 +1,6 @@
-import { auth } from '../../config/firebase-config';
+import { auth } from '../../config';
 import { useEffect, useState, FC, ReactNode, useMemo } from 'react';
-import { User } from 'firebase/auth';
+import { User } from '../../interfaces';
 import { AuthContext } from '..';
 
 interface AuthContextProviderProps {

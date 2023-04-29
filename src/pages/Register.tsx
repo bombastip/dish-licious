@@ -2,11 +2,11 @@ import { Spacer, Button, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { auth, actionCodeSettings } from '../config/firebase-config';
-import { createUserCollection, checkUsername } from '../database/firestore-db';
+import { auth, actionCodeSettings } from '../config';
+import { createUserCollection, checkUsername } from '../database';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context';
-import { FirebaseError } from 'firebase/app';
+import { FirebaseError } from '../interfaces';
 
 const Register = () => {
     const [email, setEmail] = useState('');

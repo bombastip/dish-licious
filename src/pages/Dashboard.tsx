@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import { auth } from '../config/firebase-config';
+import { auth } from '../config';
 import { Post } from '../components/Design-post';
 
 const Dashboard = () => {
