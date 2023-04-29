@@ -1,6 +1,6 @@
 import { Input } from '@nextui-org/react';
 import { FC, useMemo } from 'react';
-import { InputColorMessage } from '../interfaces/helper';
+import { InputColorMessage } from '../interfaces';
 
 interface EmailInputProps {
     email: string;

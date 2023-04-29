@@ -1,6 +1,6 @@
 import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
-import { db } from '../config/firebase-config';
+import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import Logo from '../assets/icon.png';

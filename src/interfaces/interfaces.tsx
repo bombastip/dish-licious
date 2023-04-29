@@ -3,8 +3,8 @@ export interface InputColorMessage {
     text: string;
     color: color;
 }
-export type userdata = {
+export interface UserData {
     email: string;
     username: string;
     photoURL: string;
-};
+}

@@ -1,7 +1,7 @@
 import 'firebase/compat/firestore';
 import { db } from '../config/firebase-config';
 import { doc, setDoc, getDoc, query, where, getDocs, collection } from 'firebase/firestore';
-import { User } from 'firebase/auth';
+import { User } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);

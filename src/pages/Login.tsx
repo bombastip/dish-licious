@@ -5,7 +5,7 @@ import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
 import { EmailInput, PasswordInput, AuthCard } from '../components';
-import { FirebaseError } from 'firebase/app';
+import { FirebaseError } from '../interfaces';
 
 const Login = () => {
     const [email, setEmail] = useState('');
