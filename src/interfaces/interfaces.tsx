@@ -5,6 +5,6 @@ export interface InputColorMessage {
 }
 export interface UserData {
     email: string;
-    username: string; 
+    username: string;
     photoURL: string;
 }
