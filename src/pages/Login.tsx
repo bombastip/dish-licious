@@ -1,15 +1,17 @@
-import { Spacer, Button, Text } from '@nextui-org/react';
+import { Spacer, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
-import { EmailInput, PasswordInput, AuthCard } from '../components';
+import { EmailInput, PasswordInput, AuthCard, AuthButton } from '../components';
 import { FirebaseError } from 'firebase/app';
+import { errorMessasge } from '../interfaces/helper';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [err, setErr] = useState<errorMessasge>(null);
     const { user, userLoading } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -36,12 +38,12 @@ const Login = () => {
         try {
             // FIXME: email and password regex alert
             if (email.length < 4 || password.length < 6) {
-                alert('You completed the fields wrong!');
+                setErr('You completed the fields wrong!')
                 return;
             }
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             if (!userCredential.user.emailVerified) {
-                alert('Please verify your email address!');
+                setErr('Please verify your email address!');
                 auth.signOut();
                 return;
             }
@@ -56,7 +58,7 @@ const Login = () => {
         } catch (error: unknown) {
             // TODO: alert the user if the email is wrong
             // TODO: alert the user if the password is wrong
-            alert((error as FirebaseError).message);
+            setErr((error as FirebaseError).message)
         }
     };
 
@@ -66,7 +68,7 @@ const Login = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <Button onClick={handleLogin}>Login</Button>
+            <AuthButton clickFunc={handleLogin} buttonName='Login' defaultMessage='OK!' error={err} />
             <Text>
                 You don't have an account? <Link to="/register">Register</Link>
             </Text>

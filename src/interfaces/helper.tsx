@@ -8,3 +8,5 @@ export type userdata = {
     username: string;
     photoURL: string;
 };
+
+export type errorMessasge = string | null
