@@ -1,6 +1,6 @@
-import { auth } from '../../config/firebase-config';
-import { useEffect, useState, FC, ReactNode } from 'react';
-import { User } from 'firebase/auth';
+import { auth } from '../../config';
+import { useEffect, useState, FC, ReactNode, useMemo } from 'react';
+import { User } from '../../interfaces';
 import { AuthContext } from '..';
 
 interface AuthContextProviderProps {
@@ -17,7 +17,10 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
         });
         return unsubscribe;
     }, []);
-    return <AuthContext.Provider value={{ user, userLoading }}>{children}</AuthContext.Provider>;
+
+    const value = useMemo(() => ({ user, userLoading }), [user, userLoading]);
+    // const value = { user, userLoading };
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContextProvider;
