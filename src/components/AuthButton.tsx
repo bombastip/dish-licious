@@ -21,14 +21,13 @@ const formatErrorMessage = (err: ErrorMessasge): ErrorMessasge => {
         return 'There is no user using this email.\n Please create or new account or try another email.';
     }
     if (err === 'Firebase: Error (auth/wrong-password).') {
-        return 'Wrong password.'
+        return 'Wrong password.';
     }
     if (err.includes('(auth/too-many-requests).')) {
-        return 'Access to this account has been temporarily disabled due to many failed login attempts.'; 
+        return 'Access to this account has been temporarily disabled due to many failed login attempts.';
     }
     return err;
 };
-
 
 const AuthButton: FC<PopoverProps> = props => {
     const [isOpen, setIsOpen] = useState(false);

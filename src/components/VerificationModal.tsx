@@ -1,5 +1,5 @@
 import { Modal, Text, Button, Card, Row, Spacer } from '@nextui-org/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 interface VerificationModalProps {
     visible: boolean;
@@ -7,7 +7,7 @@ interface VerificationModalProps {
     handler: () => void;
 }
 
- const VerificationModal: FC<VerificationModalProps> = props => {
+const VerificationModal: FC<VerificationModalProps> = props => {
     const closeHandler = () => {
         props.setVisible(false);
     };
@@ -35,6 +35,6 @@ interface VerificationModalProps {
             </Modal.Body>
         </Modal>
     );
-}
+};
 
 export default VerificationModal;

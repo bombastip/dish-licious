@@ -1,4 +1,4 @@
-import { useState, FC, ReactNode } from 'react'
+import { useState, FC, ReactNode } from 'react';
 import { fromRegisterContext } from '..';
 
 interface FromRegisterProviderProps {
@@ -8,8 +8,11 @@ interface FromRegisterProviderProps {
 const FromRegisterProvider: FC<FromRegisterProviderProps> = ({ children }) => {
     const [fromRegister, setFromRegister] = useState<boolean>(false);
 
-    
-    return <fromRegisterContext.Provider value={{fromRegister, setFromRegister}}>{children}</fromRegisterContext.Provider>;
+    return (
+        <fromRegisterContext.Provider value={{ fromRegister, setFromRegister }}>
+            {children}
+        </fromRegisterContext.Provider>
+    );
 };
 
 export default FromRegisterProvider;
