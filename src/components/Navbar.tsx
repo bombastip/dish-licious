@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import Logo from '../assets/icon.png';
 import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
+import { auth } from '../config';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -41,12 +42,21 @@ function NavbarF() {
     console.log('Rendering NavbarF', username);
     const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
 
-    // go to "/settings" page when action key is "settings"
+    const handleLogOut = async () => {
+        try {
+            await auth.signOut();
+            await auth.updateCurrentUser(null);
+            redirect('/login');
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     const handleAction = (actionKey: string) => {
         if (actionKey === 'logout') {
-            redirect('/logout');
+            handleLogOut();
         } else {
-            redirect('/profile');
+            navigate(`/${actionKey}`);
         }
     };
 
@@ -97,7 +107,7 @@ function NavbarF() {
                             </Navbar.Item>
                             <Dropdown.Menu
                                 aria-label="User menu actions"
-                                onAction={actionKey => navigate(`/${actionKey}`)}
+                                onAction={actionKey => handleAction(actionKey as string)}
                                 disabledKeys={['username']}
                             >
                                 <Dropdown.Item key="username" css={{ height: '$18' }}>

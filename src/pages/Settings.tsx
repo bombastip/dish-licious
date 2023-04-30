@@ -1,5 +1,5 @@
 import ProfilePic from '../components/ProfilePic';
-import { Spacer, Button, Switch, useTheme } from '@nextui-org/react';
+import { Spacer, Button, Switch } from '@nextui-org/react';
 import { UsernameInput, SettingsCard, SunIcon, MoonIcon } from '../components';
 import { useState } from 'react';
 import { changeUsername, checkUsername } from '../database/firestore-db';
@@ -7,10 +7,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
-import { useNavigate, Link, redirect } from 'react-router-dom';
-// import { ChangeTheme } from '../themes/mainTheme';
-
-//const { theme, themeLoading } = useContext(ThemeContext);
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
     const [username, setUsername] = useState('');
@@ -26,30 +23,13 @@ const Settings = () => {
             }
             changeUsername(username, user as User);
             alert('Username changed!');
+            // FIXME: fetch user data from firestore
             navigate('/');
-            user?.reload();
-            console.log(username);
-            // fetch user data from firestore
-            // after changes, redirect to /dashboard with useEffect
-            //return <Navigate to="/dashboard" />;
         } catch (error: unknown) {
             console.error(error);
         }
     };
-
-    // const handleThemeChange = () => {
-    //     if (theme === 'light') {
-    //         theme = 'dark';
-    //     } else {
-    //         theme = 'light';
-    //     }
-    // };
     const darkMode = useDarkMode(false);
-
-    const onChangeHandler = () => {
-        darkMode.toggle;
-        console.log(darkMode.value);
-    };
 
     return (
         <SettingsCard>
