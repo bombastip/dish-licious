@@ -1,7 +1,7 @@
 import { createTheme } from '@nextui-org/react';
 
 export const mainTheme = createTheme({
-    type : 'light',
+    type: 'light',
     theme: {
         colors: {
             // brand colors
@@ -35,7 +35,7 @@ export const mainTheme = createTheme({
 });
 
 export const darkTheme = createTheme({
-    type : 'dark',
+    type: 'dark',
     theme: {
         colors: {
             // brand colors
@@ -67,4 +67,3 @@ export const darkTheme = createTheme({
         fonts: {},
     },
 });
-
