@@ -5,15 +5,17 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { auth, actionCodeSettings } from '../config';
 import { createUserCollection, checkUsername } from '../database';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context';
+import { AuthContext, fromRegisterContext } from '../context';
 import { ErrorMessasge, FirebaseError } from '../interfaces';
+import { fromRegisterContextType } from '../interfaces/interfaces';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [err, setErr] = useState<ErrorMessasge>(null)
+    const [err, setErr] = useState<ErrorMessasge>(null);
     const { user, userLoading } = useContext(AuthContext);
+    const { fromRegister, setFromRegister } = useContext(fromRegisterContext) as fromRegisterContextType;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,6 +42,8 @@ const Register = () => {
             sendEmailVerification(result.user, actionCodeSettings);
             // FIXME: Handle email already in use error
             alert('Check your email for a verification link!');
+            setFromRegister(true);
+            console.log(fromRegister);
             navigate('/login');
         } catch (error: unknown) {
             console.error(error);

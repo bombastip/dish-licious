@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Popover, Row, Text } from '@nextui-org/react';
+import { Button, Card, Popover, Row, Text } from '@nextui-org/react';
 import { FC, useEffect, useState } from 'react';
 import { ErrorMessasge } from '../interfaces';
 
@@ -28,6 +28,7 @@ const formatErrorMessage = (err: ErrorMessasge): ErrorMessasge => {
     }
     return err;
 };
+
 
 const AuthButton: FC<PopoverProps> = props => {
     const [isOpen, setIsOpen] = useState(false);

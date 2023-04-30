@@ -1,25 +1,40 @@
 import { Spacer, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context';
+import { AuthContext, fromRegisterContext } from '../context';
 import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
-import { EmailInput, PasswordInput, AuthCard, AuthButton } from '../components';
+import { EmailInput, PasswordInput, AuthCard, AuthButton, VerificationModal } from '../components';
 import { FirebaseError } from 'firebase/app';
 import { ErrorMessasge } from '../interfaces';
+import { fromRegisterContextType } from '../interfaces/interfaces';
 
 const Login = () => {
+    const [modalVisible, setModalVisible] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [err, setErr] = useState<ErrorMessasge>(null);
     const { user, userLoading } = useContext(AuthContext);
+    const { fromRegister, setFromRegister } = useContext(fromRegisterContext) as fromRegisterContextType;
     const navigate = useNavigate();
+
+    const modalHandler = () => {
+        if (fromRegister) {
+            setModalVisible(true);
+            setFromRegister(false);
+            return;
+        }
+    };
 
     useEffect(() => {
         if (!userLoading && user && user.emailVerified) {
             navigate('/');
         }
     }, [userLoading, user]);
+
+    useEffect(() => {
+        modalHandler();
+    }, [fromRegister]);
 
     useEffect(() => {
         if (isSignInWithEmailLink(auth, window.location.href) && auth.currentUser?.emailVerified) {
@@ -32,6 +47,7 @@ const Login = () => {
                     console.error(error);
                 });
         }
+        modalHandler();
     }, []);
 
     const handleLogin = async () => {
@@ -72,6 +88,7 @@ const Login = () => {
 
     return (
         <AuthCard>
+            <VerificationModal visible={modalVisible} setVisible={setModalVisible} handler={modalHandler} />
             <EmailInput email={email} setEmail={setEmail} />
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />

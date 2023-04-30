@@ -10,3 +10,8 @@ export interface UserData {
 }
 
 export type ErrorMessasge = string | null
+
+export type fromRegisterContextType = {
+    fromRegister: boolean;
+    setFromRegister: (value: boolean) => void;
+}
