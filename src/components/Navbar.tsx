@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import Logo from '../assets/icon.png';
 import { AuthContext } from '../context';
+import { redirect, useNavigate } from 'react-router-dom';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -14,6 +15,7 @@ function NavbarF() {
     const { user, userLoading } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [photoURL, setPhotoURL] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (userLoading || !user) {
@@ -38,6 +40,15 @@ function NavbarF() {
     }, [user, username, userLoading]);
     console.log('Rendering NavbarF', username);
     const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
+
+    // go to "/settings" page when action key is "settings"
+    const handleAction = (actionKey: string) => {
+        if (actionKey === 'logout') {
+            redirect('/logout');
+        } else {
+            redirect('/profile');
+        }
+    };
 
     return (
         <div>
@@ -86,7 +97,7 @@ function NavbarF() {
                             </Navbar.Item>
                             <Dropdown.Menu
                                 aria-label="User menu actions"
-                                onAction={actionKey => console.log({ actionKey })}
+                                onAction={actionKey => navigate(`/${actionKey}`)}
                                 disabledKeys={['username']}
                             >
                                 <Dropdown.Item key="username" css={{ height: '$18' }}>

@@ -1,1 +1,1 @@
-export { default as mainTheme } from './mainTheme';
+export { mainTheme, darkTheme } from './mainTheme';

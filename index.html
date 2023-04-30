@@ -5,6 +5,11 @@
         <link rel="icon" type="image/x-icon" href="logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Dish-licious</title>
+        <script>
+            if (global === undefined) {
+                var global = globalThis;
+            }
+        </script>
     </head>
     <body>
         <div id="root"></div>
