@@ -83,13 +83,13 @@ function NavbarF() {
                         hideIn="xs"
                         variant="highlight-rounded"
                     >
-                        <Navbar.Link isActive href="#">
+                        <Navbar.Link isActive href="/">
                             Feed
                         </Navbar.Link>
-                        <Navbar.Link href="#">Add post</Navbar.Link>
-                        <Navbar.Link href="#">Favourites</Navbar.Link>
-                        <Navbar.Link href="#">Notifications</Navbar.Link>
-                        <Navbar.Link href="#">Search</Navbar.Link>
+                        <Navbar.Link href="/add-post">Add post</Navbar.Link>
+                        <Navbar.Link href="/favourites">Favourites</Navbar.Link>
+                        <Navbar.Link href="/notifications">Notifications</Navbar.Link>
+                        <Navbar.Link href="/search">Search</Navbar.Link>
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
