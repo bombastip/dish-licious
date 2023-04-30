@@ -2,7 +2,7 @@ import ProfilePic from '../components/ProfilePic';
 import { Spacer, Button, Switch } from '@nextui-org/react';
 import { UsernameInput, SettingsCard, SunIcon, MoonIcon } from '../components';
 import { useState } from 'react';
-import { changeUsername, checkUsername } from '../database/firestore-db';
+import { changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { User } from '../interfaces';
@@ -14,22 +14,29 @@ const Settings = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const handleSettings = async () => {
+    const handleChangeSettings = async () => {
         try {
-            const ret = await checkUsername(username);
-            if (!ret || username.length < 3) {
-                alert('Username already taken!');
-                return;
+            if (username.length >= 3) {
+                const ret = await checkUsername(username);
+                if (!ret) {
+                    alert('Username already taken!');
+                    return;
+                }
+                changeUsername(username, user as User);
+                console.log('Username changed!');
             }
-            changeUsername(username, user as User);
-            alert('Username changed!');
+            changePhotoURL(currentPhoto, user as User);
+            console.log('PhotoURL changed!');
+            alert('Settings changed!');
             // FIXME: fetch user data from firestore
+
             navigate('/');
         } catch (error: unknown) {
             console.error(error);
         }
     };
     const darkMode = useDarkMode(false);
+    const { component, currentPhoto } = ProfilePic();
 
     return (
         <SettingsCard>
@@ -41,12 +48,12 @@ const Settings = () => {
                 iconOn={<MoonIcon filled />}
                 iconOff={<SunIcon filled />}
             />
-            <ProfilePic />
+            {component}
             <div>
                 <UsernameInput username={username} setUsername={setUsername} />
             </div>
             <Spacer y={1} />
-            <Button onPress={handleSettings}>Save changes</Button>
+            <Button onPress={handleChangeSettings}>Save changes</Button>
         </SettingsCard>
     );
 };
