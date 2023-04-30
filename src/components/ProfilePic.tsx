@@ -54,6 +54,7 @@ function ProfilePic() {
                 });
         });
     };
+    const [showUploadButton, setShowUploadButton] = useState(false); // state to show or hide our upload button
 
     return {
         component: (
@@ -70,11 +71,16 @@ function ProfilePic() {
                             onChange={event => {
                                 if (event.target.files != null) {
                                     setImageUpload(event.target.files[0]);
-                                } else return;
+                                    setShowUploadButton(true); // set state to true to show upload button
+                                } else {
+                                    setShowUploadButton(false); // set state to false to hide upload button
+                                }
                             }}
                         />
                         <Spacer y={1} />
-                        <Button onClick={handleUploadPic}>Upload profile picture</Button>
+                        {showUploadButton && ( // render button only if showUploadButton state is true
+                            <Button onClick={handleUploadPic}>Upload profile picture</Button>
+                        )}
                     </Grid>
                 </Grid.Container>
             </>
