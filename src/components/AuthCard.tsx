@@ -1,4 +1,4 @@
-import { Container, Card, Image } from '@nextui-org/react';
+import { Container, Card, Image, Spacer } from '@nextui-org/react';
 import { FC, ReactNode } from 'react';
 import Logo from '../assets/logo.svg';
 
@@ -15,6 +15,7 @@ const AuthCard: FC<AuthCardProps> = ({ children }) => {
                     <Card.Body>{children}</Card.Body>
                 </Card>
             </Container>
+            <Spacer y={5} />
         </div>
     );
 };

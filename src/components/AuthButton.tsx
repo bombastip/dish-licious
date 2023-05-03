@@ -43,7 +43,7 @@ const AuthButton: FC<PopoverProps> = props => {
     }, [isOpen, props.error]);
 
     return (
-        <Popover offset={60} isOpen={isOpen}>
+        <Popover placement="bottom" shouldFlip={false} offset={60} isOpen={isOpen}>
             <Popover.Trigger>
                 <Button onPress={props.clickFunc}>{props.buttonName}</Button>
             </Popover.Trigger>
