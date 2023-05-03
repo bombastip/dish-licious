@@ -17,7 +17,4 @@ export const actionCodeSettings = {
     handleCodeInApp: true,
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-export { auth };
-export const db = getFirestore(app);
+con
