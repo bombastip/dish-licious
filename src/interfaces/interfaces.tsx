@@ -6,7 +6,7 @@ export interface InputColorMessage {
 export interface UserData {
     email: string;
     username: string;
-    photoURL: string;   
+    photoURL: string;
 }
 
 export type ErrorMessasge = string | null;
