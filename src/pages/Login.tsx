@@ -80,8 +80,6 @@ const Login = () => {
             //   })
             redirect('/');
         } catch (error: unknown) {
-            // TODO: alert the user if the email is wrong
-            // TODO: alert the user if the password is wrong
             setErr((error as FirebaseError).message);
         }
     };

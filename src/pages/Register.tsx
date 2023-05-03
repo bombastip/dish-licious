@@ -41,7 +41,6 @@ const Register = () => {
             createUserCollection(result.user, username);
             sendEmailVerification(result.user, actionCodeSettings);
             // FIXME: Handle email already in use error
-            alert('Check your email for a verification link!');
             setFromRegister(true);
             console.log(fromRegister);
             navigate('/login');

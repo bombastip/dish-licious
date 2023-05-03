@@ -14,7 +14,7 @@ const VerificationModal: FC<VerificationModalProps> = props => {
     return (
         <Modal blur aria-labelledby="modal-title" open={props.visible} onClose={closeHandler}>
             <Modal.Body>
-                <Card css={{ $$cardColor: 'orange' }}>
+                <Card css={{ $$cardColor: '$colors$primary' }}>
                     <Card.Body>
                         <Row>
                             <Text id="modal-title" size={18} color="white">
