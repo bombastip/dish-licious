@@ -4,13 +4,16 @@ import { NextUIProvider } from '@nextui-org/react';
 import { AuthContextProvider } from './context/provider';
 import { mainTheme } from './themes';
 import App from './App';
+import FromRegisterProvider from './context/provider/FromRegisterContextProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <AuthContextProvider>
-            <NextUIProvider theme={mainTheme}>
-                <App />
-            </NextUIProvider>
+            <FromRegisterProvider>
+                <NextUIProvider theme={mainTheme}>
+                    <App />
+                </NextUIProvider>
+            </FromRegisterProvider>
         </AuthContextProvider>
     </React.StrictMode>,
 );

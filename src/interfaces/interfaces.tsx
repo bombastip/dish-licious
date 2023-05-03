@@ -6,5 +6,12 @@ export interface InputColorMessage {
 export interface UserData {
     email: string;
     username: string;
-    photoURL: string;   
+    photoURL: string;
 }
+
+export type ErrorMessasge = string | null;
+
+export type fromRegisterContextType = {
+    fromRegister: boolean;
+    setFromRegister: (value: boolean) => void;
+};
