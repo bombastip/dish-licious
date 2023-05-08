@@ -8,3 +8,10 @@ export interface UserData {
     username: string;
     photoURL: string;
 }
+
+export type ErrorMessasge = string | null;
+
+export type fromRegisterContextType = {
+    fromRegister: boolean;
+    setFromRegister: (value: boolean) => void;
+};

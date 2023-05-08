@@ -43,7 +43,10 @@ function ProfilePic() {
 
     const handleUploadPic = () => {
         const imageRef = ref(storage, `profile-pics/${imageUpload?.name + v4()}`);
-        uploadBytes(imageRef, imageUpload!).then(() => {
+        if (!imageUpload) {
+            return;
+        }
+        uploadBytes(imageRef, imageUpload).then(() => {
             console.log('Image uploaded!');
             getDownloadURL(imageRef)
                 .then(url => {

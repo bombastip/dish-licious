@@ -27,6 +27,7 @@ const darkTheme = createTheme({
             secondarySolidContrast: '$white',
             secondaryShadow: '$yellow500',
             gradient: 'linear-gradient(112deg, $yellow100 -25%, $pink500 -10%, $purple500 80%)',
+            error: '#b8001f',
             link: '#5E1DAD',
         },
         space: {},

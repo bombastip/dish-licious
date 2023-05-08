@@ -17,18 +17,20 @@ const Settings = () => {
     const handleChangeSettings = async () => {
         const userData = await getUserData(user as User);
         try {
-            if (username.length < 3) {
-                alert('Username must be at least 3 characters long!');
-                return;
-            }
-            if (userData && username === userData.username) {
-                alert('You need to choose a different username!');
-                return;
-            }
-            const ret = await checkUsername(username);
-            if (!ret) {
-                alert('Username already taken!');
-                return;
+            if (username) {
+                if (username.length < 3) {
+                    alert('Username must be at least 3 characters long!');
+                    return;
+                }
+                if (userData && username === userData.username) {
+                    alert('You need to choose a different username!');
+                    return;
+                }
+                const ret = await checkUsername(username);
+                if (!ret) {
+                    alert('Username already taken!');
+                    return;
+                }
             }
             changeUsername(username, user as User);
             if (userData && currentPhoto !== userData.photoURL) {
