@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context';
 import { redirect } from 'react-router-dom';
-import { auth } from '../config/firebase-config';
+import { auth  } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { Loading } from '@nextui-org/react';
 import { Post } from '../components/Design-post';
