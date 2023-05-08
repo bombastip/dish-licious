@@ -1,47 +1,41 @@
 import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
-import { auth, db } from '../config/firebase-config';
+import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
+import { useContext, useEffect, useState } from 'react';
 import Logo from '../assets/icon.png';
+import { AuthContext } from '../context';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
 });
 
 function NavbarF() {
-    const [user, setUser] = useState(null as User | null);
+    const { user, userLoading } = useContext(AuthContext);
+    const [username, setUsername] = useState('');
+    const [photoURL, setPhotoURL] = useState('');
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            setUser(user as User);
-        });
-
-        return () => unsubscribe();
-    }, []);
-    const [username, setUsername] = useState(null);
-    const [photoURL, setPhotoURL] = useState(null);
-
-    useEffect(() => {
-        if (user) {
-            console.log(`User is signed in: ${user}`);
-            const docRef = doc(db, 'users', user.uid);
-            getDoc(docRef)
-                .then(doc => {
-                    if (doc.exists()) {
-                        setUsername(doc.data().username);
-                        setPhotoURL(doc.data().photoURL);
-                        console.log(username);
-                    } else {
-                        console.log(`User documentnot found`);
-                    }
-                })
-                .catch(error => {
-                    console.log(`Error retrieving user document: ${error}`);
-                });
+        if (userLoading || !user) {
+            setUsername('');
+            setPhotoURL('');
+            return;
         }
-    }, [auth.currentUser, username]);
+        const docRef = doc(db, 'users', user.uid);
+        getDoc(docRef)
+            .then(doc => {
+                if (doc.exists()) {
+                    setUsername(doc.data().username);
+                    setPhotoURL(doc.data().photoURL);
+                    console.log(username);
+                } else {
+                    console.log(`User documentnot found`);
+                }
+            })
+            .catch(error => {
+                console.log(`Error retrieving user document: ${error}`);
+            });
+    }, [user, username, userLoading]);
     console.log('Rendering NavbarF', username);
     const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
 
