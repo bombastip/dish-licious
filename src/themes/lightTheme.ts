@@ -1,6 +1,7 @@
 import { createTheme } from '@nextui-org/react';
-const mainTheme = createTheme({
-    type: 'light', // it could be "light" or "dark"
+
+const lightTheme = createTheme({
+    type: 'light',
     theme: {
         colors: {
             // brand colors
@@ -11,7 +12,7 @@ const mainTheme = createTheme({
             primary: '#ec9127',
             primaryBorder: '$green500',
             primaryBorderHover: '$green600',
-            primarySolidHover: '$green700',
+            primarySolidHover: '$yellow500',
             primarySolidContrast: '$white',
             primaryShadow: '$green500',
             // create secondary colors
@@ -26,7 +27,6 @@ const mainTheme = createTheme({
             secondarySolidContrast: '$white',
             secondaryShadow: '$yellow500',
             gradient: 'linear-gradient(112deg, $yellow100 -25%, $pink500 -10%, $purple500 80%)',
-            error: '#b8001f',
             link: '#5E1DAD',
         },
         space: {},
@@ -34,4 +34,4 @@ const mainTheme = createTheme({
     },
 });
 
-export default mainTheme;
+export default lightTheme;

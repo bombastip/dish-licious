@@ -5,6 +5,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import Logo from '../assets/icon.png';
 import { AuthContext } from '../context';
+import { redirect, useNavigate } from 'react-router-dom';
+import { auth } from '../config';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -14,6 +16,7 @@ function NavbarF() {
     const { user, userLoading } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [photoURL, setPhotoURL] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (userLoading || !user) {
@@ -39,6 +42,24 @@ function NavbarF() {
     console.log('Rendering NavbarF', username);
     const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
 
+    const handleLogOut = async () => {
+        try {
+            await auth.signOut();
+            await auth.updateCurrentUser(null);
+            redirect('/login');
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const handleAction = (actionKey: string) => {
+        if (actionKey === 'logout') {
+            handleLogOut();
+        } else {
+            navigate(`/${actionKey}`);
+        }
+    };
+
     return (
         <div>
             {
@@ -62,13 +83,13 @@ function NavbarF() {
                         hideIn="xs"
                         variant="highlight-rounded"
                     >
-                        <Navbar.Link isActive href="#">
+                        <Navbar.Link isActive href="/">
                             Feed
                         </Navbar.Link>
-                        <Navbar.Link href="#">Add post</Navbar.Link>
-                        <Navbar.Link href="#">Favourites</Navbar.Link>
-                        <Navbar.Link href="#">Notifications</Navbar.Link>
-                        <Navbar.Link href="#">Search</Navbar.Link>
+                        <Navbar.Link href="/add-post">Add post</Navbar.Link>
+                        <Navbar.Link href="/favourites">Favourites</Navbar.Link>
+                        <Navbar.Link href="/notifications">Notifications</Navbar.Link>
+                        <Navbar.Link href="/search">Search</Navbar.Link>
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
@@ -86,7 +107,7 @@ function NavbarF() {
                             </Navbar.Item>
                             <Dropdown.Menu
                                 aria-label="User menu actions"
-                                onAction={actionKey => console.log({ actionKey })}
+                                onAction={actionKey => handleAction(actionKey as string)}
                                 disabledKeys={['username']}
                             >
                                 <Dropdown.Item key="username" css={{ height: '$18' }}>

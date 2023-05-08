@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
-
 export const Post = () => {
     const [postList, setPostList] = useState<any[]>([]);
-    const postCollectionRef = collection(db, "posts");
+    const postCollectionRef = collection(db, 'posts');
 
     useEffect(() => {
         const getPostList = async () => {
@@ -15,7 +14,7 @@ export const Post = () => {
             // SET THE POST LIST
             try {
                 const data = await getDocs(postCollectionRef);
-                const filteredData = data.docs.map((doc) => ({
+                const filteredData = data.docs.map(doc => ({
                     ...doc.data(),
                     id: doc.id,
                 }));
@@ -37,7 +36,7 @@ export const Post = () => {
     return (
         <Grid.Container gap={2} justify="center">
             <div>
-                {postList.map((post) => (
+                {postList.map(post => (
                     <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
                         <Card.Header>
                             <Text b css={{ whiteSpace: 'nowrap' }}>
@@ -57,27 +56,39 @@ export const Post = () => {
                                 alt="Default Image"
                                 objectFit="cover"
                             />
-                              <Spacer y={0.2} />
+                            <Spacer y={0.2} />
                             <Row>
-                            <Text color="#ec9127" css={{ marginLeft: '$1' }}> Liked by {post.likes.length} </Text>
-                        </Row>
+                                <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                    {' '}
+                                    Liked by {post.likes.length}{' '}
+                                </Text>
+                            </Row>
                             <Spacer y={0.3} />
                             <Text>Mod de preparare: {post.description}</Text>
                             <Text>
                                 Ingrediente:
                                 <Text>
                                     {post.ingredients.map((ingredient: Ingredient, index: number) => (
-                                        <li key={index}>{`${ingredient.quantity} ${ingredient.unit} of ${ingredient.name} `}</li>
+                                        <li
+                                            key={index}
+                                        >{`${ingredient.quantity} ${ingredient.unit} of ${ingredient.name} `}</li>
                                     ))}
                                 </Text>
-
                             </Text>
-                            <Text> Time Cost: {post.timeCost} {post.timeUnit}</Text>
+                            <Text>
+                                {' '}
+                                Time Cost: {post.timeCost} {post.timeUnit}
+                            </Text>
                         </Card.Body>
                         <Card.Divider />
                         <Card.Footer>
                             <Row justify="flex-start">
-                                <Button auto color="error" css={{ mr: '$2' }} icon={<HeartIcon fill="currentColor" filled />} />
+                                <Button
+                                    auto
+                                    color="error"
+                                    css={{ mr: '$2' }}
+                                    icon={<HeartIcon fill="currentColor" filled />}
+                                />
                                 <Button flat color="error" auto>
                                     Save
                                 </Button>
@@ -89,11 +100,9 @@ export const Post = () => {
                                 </Button.Group>
                             </Row>
                         </Card.Footer>
-                        
                     </Card>
                 ))}
             </div>
         </Grid.Container>
-
     );
 };

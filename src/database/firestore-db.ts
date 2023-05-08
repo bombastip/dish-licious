@@ -23,6 +23,19 @@ export async function createUserCollection(user: User, username: string) {
         });
 }
 
+export async function getUserData(user: User) {
+    const docRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data());
+        return docSnap.data();
+    } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+        return false;
+    }
+}
+
 export async function checkUsername(username: string) {
     const q = query(collection(db, 'users'), where('username', '==', username));
 
