@@ -1,17 +1,6 @@
 import { Container, Input, Row, Spacer, Text } from '@nextui-org/react';
-import { useContext, useEffect, useState } from 'react';
-import ListOfUsers, { ListUser, getListOfUsers } from '../components/ListOfUsers';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../config';
-import { AuthContext } from '../context';
+import { useState } from 'react';
 import { UserSearchResults } from '../components';
-
-const getUsers = async () =>   {
-    const q = query(collection(db, 'users'));
-
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.id);
-}
 
 const SearchPeople = () => {
     // const { user, userLoading } = useContext(AuthContext);

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../config';
 import { UserCompleteData } from '../interfaces';
 import { UserCard } from '.';
+import { Loading } from '@nextui-org/react';
 interface UserSearchProps {
     username: string;
 }
@@ -16,12 +17,13 @@ const getUsers = async () => {
 const UserSearchResults = (props: UserSearchProps) => {
     const [users, setUsers] = useState<UserCompleteData[]>([]);
     const [filteredList, setFilteredList] = useState<UserCompleteData[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchUsers = async () => {
             const data = await getUsers();
             setUsers(data);
-            console.log(users);
+            setIsLoading(false);
         };
         fetchUsers();
     }, []);
@@ -32,14 +34,18 @@ const UserSearchResults = (props: UserSearchProps) => {
         console.log(filteredList);
     }, [props.username]);
 
-    return (
-        props.username && (
+    return props.username ? (
+        isLoading ? (
+            <Loading />
+        ) : (
             <>
                 {filteredList.map(user => (
                     <UserCard user={user} />
                 ))}
             </>
         )
+    ) : (
+        <></>
     );
 };
 
