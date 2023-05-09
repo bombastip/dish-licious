@@ -8,3 +8,6 @@ export { default as SunIcon } from './SunIcon';
 export { default as MoonIcon } from './MoonIcon';
 export { default as AuthButton } from './AuthButton';
 export { default as VerificationModal } from './VerificationModal';
+export { default as ProfilePic} from './ProfilePic';
+export { default as UserProfile } from './UserProfile';
+export { default as ListOfUsers } from './ListOfUsers';
