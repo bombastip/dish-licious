@@ -15,3 +15,9 @@ export type fromRegisterContextType = {
     fromRegister: boolean;
     setFromRegister: (value: boolean) => void;
 };
+
+export type UserCompleteData = {
+    id: string;
+    username: string;
+    photoURL: string;
+};

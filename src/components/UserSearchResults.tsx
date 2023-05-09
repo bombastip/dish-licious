@@ -1,7 +1,8 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../config';
-import { UserData } from '../interfaces';
+import { UserCompleteData } from '../interfaces';
+import { UserCard } from '.';
 interface UserSearchProps {
     username: string;
 }
@@ -9,13 +10,12 @@ interface UserSearchProps {
 const getUsers = async () => {
     const q = query(collection(db, 'users'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as UserData);
+    return querySnapshot.docs.map(doc => doc.data() as UserCompleteData);
 };
 
 const UserSearchResults = (props: UserSearchProps) => {
-    const [users, setUsers] = useState<UserData[]>([]);
-    const [filteredList, setFilteredList] = useState<UserData[]>([]);
-
+    const [users, setUsers] = useState<UserCompleteData[]>([]);
+    const [filteredList, setFilteredList] = useState<UserCompleteData[]>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -28,15 +28,18 @@ const UserSearchResults = (props: UserSearchProps) => {
 
     useEffect(() => {
         const filteredList = users.filter(user => user.username.includes(props.username));
-        setFilteredList(filteredList);;
+        setFilteredList(filteredList);
+        console.log(filteredList);
     }, [props.username]);
 
     return (
-        <>
-            {filteredList.map(user => {
-                <div>{user.username}</div>;
-            })}
-        </>
+        props.username && (
+            <>
+                {filteredList.map(user => (
+                    <UserCard user={user} />
+                ))}
+            </>
+        )
     );
 };
 
