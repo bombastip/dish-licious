@@ -7,12 +7,14 @@ import Logo from '../assets/icon.png';
 import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
+import { useLocation } from 'react-router-dom';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
 });
 
 function NavbarF() {
+    const location = useLocation();
     const { user, userLoading } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [photoURL, setPhotoURL] = useState('');
@@ -83,13 +85,21 @@ function NavbarF() {
                         hideIn="xs"
                         variant="highlight-rounded"
                     >
-                        <Navbar.Link isActive href="/">
+                        <Navbar.Link isActive={location.pathname === '/'} href="/">
                             Feed
                         </Navbar.Link>
-                        <Navbar.Link href="/add-post">Add post</Navbar.Link>
-                        <Navbar.Link href="/favourites">Favourites</Navbar.Link>
-                        <Navbar.Link href="/notifications">Notifications</Navbar.Link>
-                        <Navbar.Link href="/search">Search</Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/add-post'} href="/add-post">
+                            Add post
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/favourites'} href="/favourites">
+                            Favourites
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
+                            Notifications
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/search'} href="/search">
+                            Search
+                        </Navbar.Link>
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
@@ -117,12 +127,6 @@ function NavbarF() {
                                 </Dropdown.Item>
                                 <Dropdown.Item key="profile" withDivider>
                                     My Profile
-                                </Dropdown.Item>
-                                <Dropdown.Item key="followers" withDivider>
-                                    Followers
-                                </Dropdown.Item>
-                                <Dropdown.Item key="following" withDivider>
-                                    Following
                                 </Dropdown.Item>
                                 <Dropdown.Item key="groups" withDivider>
                                     Groups
