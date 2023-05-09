@@ -1,16 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorPage, Dashboard, Login, Register, Settings, Profile, Followers, Following } from './pages';
-import { Navbar } from './components';
 import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
     {
-        element: (
-            <>
-                <Navbar />
-                <Outlet />
-            </>
-        ),
         errorElement: <ErrorPage />,
         children: [
             {
