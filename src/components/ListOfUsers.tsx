@@ -1,4 +1,4 @@
-import { Grid, Avatar, Text, Spacer, Button } from '@nextui-org/react';
+import { Grid, Avatar, Text, Spacer, Button, Loading } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { getUserData, follow, unfollow, checkFollow } from '../database';
 
@@ -28,7 +28,7 @@ async function getListOfUsers(users: string[], currentUserId: string) {
             id: user,
             username: userData.username,
             photoURL: userData.photoURL,
-            isFollowing: isFollowing || false,
+            isFollowing: isFollowing,
         });
     }
 
@@ -37,10 +37,13 @@ async function getListOfUsers(users: string[], currentUserId: string) {
 
 function ListOfUsers({ users, currentUserId }: Props) {
     const [list, setList] = useState<ListUser[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        setLoading(true);
         getListOfUsers(users, currentUserId).then(list => {
             setList(list);
+            setLoading(false);
         });
     }, [users]);
 
@@ -53,9 +56,6 @@ function ListOfUsers({ users, currentUserId }: Props) {
         });
         setList(updatedList);
         await follow(wantToFollow, currentUser);
-        const isFollowing2 = await checkFollow(currentUserId, wantToFollow);
-        console.log('dar acum?', isFollowing2);
-        console.log(list);
     };
 
     const handleUnfollow = async (wantToUnfollow: string, currentUser: string) => {
@@ -67,10 +67,11 @@ function ListOfUsers({ users, currentUserId }: Props) {
         });
         setList(updatedList);
         await unfollow(wantToUnfollow, currentUser);
-        const isFollowing2 = await checkFollow(currentUserId, wantToUnfollow);
-        console.log('dar acum??', isFollowing2);
-        console.log(list);
     };
+
+    if (loading) {
+        return  <Loading />
+    }
 
     return (
         <Grid.Container

@@ -89,9 +89,8 @@ export async function getFollowing(id: string) {
         console.log('Document data from getFollowing:', docSnap.data().following);
         return docSnap.data().following;
     } else {
-        // doc.data() will be undefined in this case
         console.log('No such document!');
-        return false;
+        return null;
     }
 }
 
@@ -100,7 +99,7 @@ export async function getFollowers(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data().followers);
+        console.log('Document data from getFollowers:', docSnap.data().followers);
         return docSnap.data().followers;
     } else {
         // doc.data() will be undefined in this case
@@ -194,19 +193,19 @@ export async function unfollow(wantToUnfollow: string, user: string) {
 }
 
 // function to check if user is following another user
-export async function checkFollow(wantToFollow: string, user: string) {
+export async function checkFollow(user: string, wantToFollow: string): Promise<boolean> {
     const followingList = await getFollowing(user);
-    if (followingList) {
-        console.log('Document data from checkFollow:', followingList);
-        if (
-            followingList.some((element: string) => {
-                if (element === wantToFollow) return true;
-                else return false;
-            })
-        ) {
-            console.log('Already following');
-            return true;
-        }
+    if (followingList === null) {
+        console.log('Document does not exist!');
         return false;
     }
+    console.log('Document data from checkFollow:', followingList);
+    if (
+        followingList.some((element: string) => {
+            return element === wantToFollow;
+        })
+    ) {
+        return true;
+    }
+    return false;
 }
