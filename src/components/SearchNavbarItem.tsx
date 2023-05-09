@@ -1,15 +1,19 @@
-import { Dropdown, Navbar } from '@nextui-org/react';
+import { Button, Dropdown, Navbar } from '@nextui-org/react';
 import ChevronDownIcon from '../assets/ChevronDownIcon';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SearchNavbarItem = () => {
-    const [selected, setSelected] = React.useState(new Set(["text"]));
 
-    const selectedValue = React.useMemo(
-        () => Array.from(selected).join(", ").replaceAll("_", " "),
-        [selected]
-      );
-    
+    const navigate = useNavigate();
+
+    const handleSearchRecipes = () => {
+        navigate('/search/recipes');
+    };
+
+    const handleSearchPeople = () => {
+        navigate('/search/people');
+    };
+
     return (
         <Dropdown>
             <Navbar.Item>
@@ -48,21 +52,15 @@ const SearchNavbarItem = () => {
                     },
                 }}
             >
-                <Dropdown.Item
-                    key="recipes"
-                    showFullDescription
-                    description="Search for  your favourite recipes, right now!"
-                    // icon={icons.scale}
-                >
-                    Search Recipe
+                <Dropdown.Item key="recipes">
+                    <Button light onPress={handleSearchRecipes}>
+                        Search Recipe
+                    </Button>
                 </Dropdown.Item>
-                <Dropdown.Item
-                    key="people"
-                    showFullDescription
-                    description="Find people who are using Dish-licious right now!"
-                    // icon={icons.activity}
-                >
-                    Find People
+                <Dropdown.Item key="people">
+                    <Button light onPress={handleSearchPeople}>
+                        Find People
+                    </Button>
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>

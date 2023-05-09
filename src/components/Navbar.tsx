@@ -10,7 +10,6 @@ import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
 import { Search } from '../pages';
 import { SearchNavbarItem } from '.';
-import ChevronDownIcon from '../assets/ChevronDownIcon';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -82,10 +81,7 @@ function NavbarF() {
                             Dish-licious
                         </Text>
                     </Navbar.Brand>
-                    <Navbar.Content
-                        activeColor="secondary"
-                        hideIn="xs"
-                    >
+                    <Navbar.Content activeColor="secondary" hideIn="xs">
                         <Navbar.Link isActive={location.pathname === '/'} href="/">
                             Feed
                         </Navbar.Link>

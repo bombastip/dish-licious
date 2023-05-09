@@ -1,6 +1,6 @@
 import { Container, Input, Row, Spacer, Text } from '@nextui-org/react';
 
-const Dashboard = () => {
+const SearchRecipe = () => {
     return (
         <Container>
             <Spacer y={2} />
@@ -24,4 +24,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default SearchRecipe;
