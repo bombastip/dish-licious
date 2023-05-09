@@ -2,19 +2,19 @@ import { Grid, Avatar, Text, Spacer, Button, Loading } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { getUserData, follow, unfollow, checkFollow } from '../database';
 
-type Props = {
+export type Props = {
     users: string[];
     currentUserId: string;
 };
 
-type ListUser = {
+export type ListUser = {
     id: string;
     username: string;
     photoURL: string;
     isFollowing: boolean;
 };
 
-async function getListOfUsers(users: string[], currentUserId: string) {
+export async function getListOfUsers(users: string[], currentUserId: string) {
     const list: ListUser[] = [];
 
     for (const user of users) {
@@ -23,7 +23,6 @@ async function getListOfUsers(users: string[], currentUserId: string) {
             continue;
         }
         const isFollowing = await checkFollow(currentUserId, user);
-        console.log('urmareste??', isFollowing);
         list.push({
             id: user,
             username: userData.username,

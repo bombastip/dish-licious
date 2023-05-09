@@ -27,7 +27,7 @@ export async function getUserData(uid: string) {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
+        // console.log('Document data:', docSnap.data());
         return docSnap.data();
     } else {
         // doc.data() will be undefined in this case
@@ -86,7 +86,7 @@ export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data from getFollowing:', docSnap.data().following);
+        // console.log('Document data from getFollowing:', docSnap.data().following);
         return docSnap.data().following;
     } else {
         console.log('No such document!');
@@ -99,7 +99,7 @@ export async function getFollowers(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data from getFollowers:', docSnap.data().followers);
+        // console.log('Document data from getFollowers:', docSnap.data().followers);
         return docSnap.data().followers;
     } else {
         // doc.data() will be undefined in this case
@@ -113,7 +113,7 @@ export async function follow(wantToFollow: string, user: string) {
     const followRef = doc(db, 'users', user);
     const followingList = await getFollowing(user);
     if (followingList) {
-        console.log('Document data:', followingList);
+        // console.log('Document data:', followingList);
         if (
             followingList.some((element: string) => {
                 if (element === wantToFollow) return true;
@@ -199,7 +199,7 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         console.log('Document does not exist!');
         return false;
     }
-    console.log('Document data from checkFollow:', followingList);
+    // console.log('Document data from checkFollow:', followingList);
     if (
         followingList.some((element: string) => {
             return element === wantToFollow;

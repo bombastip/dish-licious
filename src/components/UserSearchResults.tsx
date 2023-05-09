@@ -14,18 +14,30 @@ const getUsers = async () => {
 
 const UserSearchResults = (props: UserSearchProps) => {
     const [users, setUsers] = useState<UserData[]>([]);
+    const [filteredList, setFilteredList] = useState<UserData[]>([]);
+
 
     useEffect(() => {
         const fetchUsers = async () => {
             const data = await getUsers();
             setUsers(data);
+            console.log(users);
         };
         fetchUsers();
+    }, []);
+
+    useEffect(() => {
+        const filteredList = users.filter(user => user.username.includes(props.username));
+        setFilteredList(filteredList);;
     }, [props.username]);
 
-    return users.map(user => {
-        <div>{user.username}</div>;
-    });
+    return (
+        <>
+            {filteredList.map(user => {
+                <div>{user.username}</div>;
+            })}
+        </>
+    );
 };
 
 export default UserSearchResults;
