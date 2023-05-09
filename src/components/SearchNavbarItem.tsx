@@ -3,7 +3,6 @@ import ChevronDownIcon from '../assets/ChevronDownIcon';
 import { useNavigate } from 'react-router-dom';
 
 const SearchNavbarItem = () => {
-
     const navigate = useNavigate();
 
     const handleSearchRecipes = () => {

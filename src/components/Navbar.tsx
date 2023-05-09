@@ -1,4 +1,4 @@
-import { Navbar, Link, Text, Avatar, Dropdown, Image, Popover, Button } from '@nextui-org/react';
+import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
@@ -8,7 +8,6 @@ import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
-import { Search } from '../pages';
 import { SearchNavbarItem } from '.';
 
 export const Box = styled('div', {

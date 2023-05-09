@@ -1,5 +1,16 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { ErrorPage, Dashboard, Login, Register, Settings, Profile, Followers, Following, SearchRecipe, SearchPeople } from './pages';
+import {
+    ErrorPage,
+    Dashboard,
+    Login,
+    Register,
+    Settings,
+    Profile,
+    Followers,
+    Following,
+    SearchRecipe,
+    SearchPeople,
+} from './pages';
 import { Navbar } from './components';
 import { PrivateRoute } from './route';
 
