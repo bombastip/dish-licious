@@ -105,7 +105,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
                             </Link>
                         ) : (
                             <Link to="/profile">
-                            <Avatar src={item.photoURL} size="lg" css={{ cursor: 'pointer' }} />
+                                <Avatar src={item.photoURL} size="lg" css={{ cursor: 'pointer' }} />
                             </Link>
                         )}
                         <Spacer y={1} x={3} />

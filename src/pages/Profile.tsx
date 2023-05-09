@@ -10,7 +10,7 @@ const Profile = () => {
         return <Loading />;
     }
 
-    return <UserProfile currentUserId={user?.uid || ''}/>;
+    return <UserProfile currentUserId={user?.uid || ''} />;
 };
 
 export default Profile;
