@@ -118,12 +118,6 @@ function NavbarF() {
                                 <Dropdown.Item key="profile" withDivider>
                                     My Profile
                                 </Dropdown.Item>
-                                <Dropdown.Item key="followers" withDivider>
-                                    Followers
-                                </Dropdown.Item>
-                                <Dropdown.Item key="following" withDivider>
-                                    Following
-                                </Dropdown.Item>
                                 <Dropdown.Item key="groups" withDivider>
                                     Groups
                                 </Dropdown.Item>
