@@ -65,7 +65,7 @@ export const Post = () => {
                             </Row>
                             <Spacer y={0.3} />
                             <Text>Mod de preparare: {post.description}</Text>
-                            <Text>
+                            {/* <Text>
                                 Ingrediente:
                                 <Text>
                                     {post.ingredients.map((ingredient: Ingredient, index: number) => (
@@ -74,7 +74,7 @@ export const Post = () => {
                                         >{`${ingredient.quantity} ${ingredient.unit} of ${ingredient.name} `}</li>
                                     ))}
                                 </Text>
-                            </Text>
+                            </Text> */}
                             <Text>
                                 {' '}
                                 Time Cost: {post.timeCost} {post.timeUnit}

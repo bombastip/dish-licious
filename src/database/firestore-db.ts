@@ -23,8 +23,8 @@ export async function createUserCollection(user: User, username: string) {
         });
 }
 
-export async function getUserData(user: User) {
-    const docRef = doc(db, 'users', user.uid);
+export async function getUserData(uid: string) {
+    const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         console.log('Document data:', docSnap.data());
@@ -86,12 +86,11 @@ export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data().following);
+        console.log('Document data from getFollowing:', docSnap.data().following);
         return docSnap.data().following;
     } else {
-        // doc.data() will be undefined in this case
         console.log('No such document!');
-        return false;
+        return null;
     }
 }
 
@@ -100,7 +99,7 @@ export async function getFollowers(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data().followers);
+        console.log('Document data from getFollowers:', docSnap.data().followers);
         return docSnap.data().followers;
     } else {
         // doc.data() will be undefined in this case
@@ -154,4 +153,59 @@ export async function follow(wantToFollow: string, user: string) {
             }
         }
     }
+}
+
+// remove followUser from user's following array in firestore in users collection
+export async function unfollow(wantToUnfollow: string, user: string) {
+    const followRef = doc(db, 'users', user);
+    const followingList = await getFollowing(user);
+    if (followingList) {
+        const updatedList = followingList.filter((element: string) => element !== wantToUnfollow);
+        const data = {
+            following: updatedList,
+        };
+
+        setDoc(followRef, data, { merge: true })
+            .then(() => {
+                console.log('Following removed successfully from followingList: ', wantToUnfollow);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        // remove user from wantToUnfollow's followers array in firestore in users collection
+        const followersRef = doc(db, 'users', wantToUnfollow);
+        const followersList = await getFollowers(wantToUnfollow);
+        if (followersList) {
+            const updatedList = followersList.filter((element: string) => element !== user);
+            const data = {
+                followers: updatedList,
+            };
+            setDoc(followersRef, data, { merge: true })
+                .then(() => {
+                    console.log('Followers removed successfully from followersList: ', user);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+}
+
+// function to check if user is following another user
+export async function checkFollow(user: string, wantToFollow: string): Promise<boolean> {
+    const followingList = await getFollowing(user);
+    if (followingList === null) {
+        console.log('Document does not exist!');
+        return false;
+    }
+    console.log('Document data from checkFollow:', followingList);
+    if (
+        followingList.some((element: string) => {
+            return element === wantToFollow;
+        })
+    ) {
+        return true;
+    }
+    return false;
 }

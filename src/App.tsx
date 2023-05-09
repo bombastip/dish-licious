@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { ErrorPage, Dashboard, Login, Register, Settings, Search } from './pages';
+import { ErrorPage, Dashboard, Login, Register, Settings, Search, Profile, Followers, Following } from './pages';
 import { Navbar } from './components';
 import { PrivateRoute } from './route';
 
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'profile',
-                        //element: <Profile />,
+                        element: <Profile />,
                     },
                     {
                         path: 'settings',
@@ -39,6 +39,14 @@ const router = createBrowserRouter([
                     {
                         path: 'search',
                         element: <Search />,
+                    },
+                    {
+                        path: 'followers',
+                        element: <Followers />,
+                    },
+                    {
+                        path: 'following',
+                        element: <Following />,
                     },
                 ],
             },
