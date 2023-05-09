@@ -4,5 +4,8 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Settings } from './Settings';
 export { default as Profile } from './Profile';
+export { default as ProfileQueryParam } from './ProfileQueryParam';
 export { default as Followers } from './Followers';
+export { default as FollowersQueryParam } from './FollowersQueryParam';
 export { default as Following } from './Following';
+export { default as FollowingQueryParam } from './FollowingQueryParam';
