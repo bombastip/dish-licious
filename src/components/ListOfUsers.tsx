@@ -23,7 +23,7 @@ async function getListOfUsers(users: string[], currentUserId: string) {
             continue;
         }
         const isFollowing = await checkFollow(currentUserId, user);
-        console.log("urmareste??", isFollowing);
+        console.log('urmareste??', isFollowing);
         list.push({
             id: user,
             username: userData.username,
@@ -54,7 +54,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
         setList(updatedList);
         await follow(wantToFollow, currentUser);
         const isFollowing2 = await checkFollow(currentUserId, wantToFollow);
-        console.log("dar acum?", isFollowing2);
+        console.log('dar acum?', isFollowing2);
         console.log(list);
     };
 
@@ -68,7 +68,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
         setList(updatedList);
         await unfollow(wantToUnfollow, currentUser);
         const isFollowing2 = await checkFollow(currentUserId, wantToUnfollow);
-        console.log("dar acum??", isFollowing2);
+        console.log('dar acum??', isFollowing2);
         console.log(list);
     };
 

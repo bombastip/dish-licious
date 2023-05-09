@@ -27,7 +27,7 @@ const Followers = () => {
             });
     }, [user, userLoading]);
 
-    return <ListOfUsers users={followers} currentUserId={user?.uid || ''}/>;
+    return <ListOfUsers users={followers} currentUserId={user?.uid || ''} />;
 };
 
 export default Followers;

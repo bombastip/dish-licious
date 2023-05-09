@@ -1,9 +1,7 @@
 import { UserProfile } from '../components';
 
 const Profile = () => {
-    return (
-        <UserProfile />
-    )
+    return <UserProfile />;
 };
 
 export default Profile;

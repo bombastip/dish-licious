@@ -6,5 +6,5 @@ export {
     changePhotoURL,
     follow,
     unfollow,
-    checkFollow
+    checkFollow,
 } from './firestore-db';
