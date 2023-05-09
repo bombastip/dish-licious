@@ -70,7 +70,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
     };
 
     if (loading) {
-        return  <Loading />
+        return <Loading />;
     }
 
     return (

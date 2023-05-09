@@ -11,3 +11,4 @@ export { default as VerificationModal } from './VerificationModal';
 export { default as ProfilePic } from './ProfilePic';
 export { default as UserProfile } from './UserProfile';
 export { default as ListOfUsers } from './ListOfUsers';
+export { default as SearchNavbarItem } from './SearchNavbarItem';

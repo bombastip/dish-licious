@@ -1,4 +1,4 @@
-import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
+import { Navbar, Link, Text, Avatar, Dropdown, Image, Popover, Button } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
@@ -8,6 +8,9 @@ import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
+import { Search } from '../pages';
+import { SearchNavbarItem } from '.';
+import ChevronDownIcon from '../assets/ChevronDownIcon';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -80,10 +83,8 @@ function NavbarF() {
                         </Text>
                     </Navbar.Brand>
                     <Navbar.Content
-                        enableCursorHighlight
                         activeColor="secondary"
                         hideIn="xs"
-                        variant="highlight-rounded"
                     >
                         <Navbar.Link isActive={location.pathname === '/'} href="/">
                             Feed
@@ -97,9 +98,7 @@ function NavbarF() {
                         <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
                             Notifications
                         </Navbar.Link>
-                        <Navbar.Link isActive={location.pathname === '/search'} href="/search">
-                            Search
-                        </Navbar.Link>
+                        <SearchNavbarItem />
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
