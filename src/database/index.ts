@@ -5,4 +5,6 @@ export {
     changeUsername,
     changePhotoURL,
     follow,
+    unfollow,
+    checkFollow,
 } from './firestore-db';

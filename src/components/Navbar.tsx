@@ -7,12 +7,14 @@ import Logo from '../assets/icon.png';
 import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
+import { useLocation } from 'react-router-dom';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
 });
 
 function NavbarF() {
+    const location = useLocation();
     const { user, userLoading } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [photoURL, setPhotoURL] = useState('');
@@ -83,13 +85,21 @@ function NavbarF() {
                         hideIn="xs"
                         variant="highlight-rounded"
                     >
-                        <Navbar.Link isActive href="/">
+                        <Navbar.Link isActive={location.pathname === '/'} href="/">
                             Feed
                         </Navbar.Link>
-                        <Navbar.Link href="/add-post">Add post</Navbar.Link>
-                        <Navbar.Link href="/favourites">Favourites</Navbar.Link>
-                        <Navbar.Link href="/notifications">Notifications</Navbar.Link>
-                        <Navbar.Link href="/search">Search</Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/add-post'} href="/add-post">
+                            Add post
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/favourites'} href="/favourites">
+                            Favourites
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
+                            Notifications
+                        </Navbar.Link>
+                        <Navbar.Link isActive={location.pathname === '/search'} href="/search">
+                            Search
+                        </Navbar.Link>
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
@@ -110,27 +120,21 @@ function NavbarF() {
                                 onAction={actionKey => handleAction(actionKey as string)}
                                 disabledKeys={['username']}
                             >
-                                <Dropdown.Item key="username" css={{ height: '$18' }}>
+                                <Dropdown.Item key="username" css={{ height: '$18' }} textValue="username">
                                     <Text b color="#ec9127" css={{ d: 'flex' }}>
                                         Signed in as {username}
                                     </Text>
                                 </Dropdown.Item>
-                                <Dropdown.Item key="profile" withDivider>
+                                <Dropdown.Item key="profile" withDivider textValue=" My Profile">
                                     My Profile
                                 </Dropdown.Item>
-                                <Dropdown.Item key="followers" withDivider>
-                                    Followers
-                                </Dropdown.Item>
-                                <Dropdown.Item key="following" withDivider>
-                                    Following
-                                </Dropdown.Item>
-                                <Dropdown.Item key="groups" withDivider>
+                                <Dropdown.Item key="groups" withDivider textValue="Groups">
                                     Groups
                                 </Dropdown.Item>
-                                <Dropdown.Item key="settings" withDivider>
+                                <Dropdown.Item key="settings" withDivider textValue="Settings">
                                     Settings
                                 </Dropdown.Item>
-                                <Dropdown.Item key="logout" withDivider color="error">
+                                <Dropdown.Item key="logout" withDivider color="error" textValue="LogOut">
                                     Log Out
                                 </Dropdown.Item>
                             </Dropdown.Menu>

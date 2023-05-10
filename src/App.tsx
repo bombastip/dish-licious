@@ -1,16 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { ErrorPage, Dashboard, Login, Register, Settings, AddPostPage } from './pages';
-import { Navbar } from './components';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ErrorPage, Dashboard, Login, Register, Settings, AddPostPage, Profile, Followers, Following } from './pages';
 import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
     {
-        element: (
-            <>
-                <Navbar />
-                <Outlet />
-            </>
-        ),
         errorElement: <ErrorPage />,
         children: [
             {
@@ -30,7 +23,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'profile',
-                        //element: <Profile />,
+                        element: <Profile />,
                     },
                     {
                         path: 'settings',
@@ -39,6 +32,14 @@ const router = createBrowserRouter([
                     {
                         path: 'add-post',
                         element: <AddPostPage />,
+                    },
+                    {
+                        path: 'followers',
+                        element: <Followers />,
+                    },
+                    {
+                        path: 'following',
+                        element: <Following />,
                     },
                 ],
             },

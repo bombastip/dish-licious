@@ -1,6 +1,5 @@
-import ProfilePic from '../components/ProfilePic';
 import { Spacer, Button, Switch } from '@nextui-org/react';
-import { UsernameInput, SettingsCard, SunIcon, MoonIcon } from '../components';
+import { UsernameInput, SettingsCard, SunIcon, MoonIcon, ProfilePic } from '../components';
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
@@ -15,7 +14,10 @@ const Settings = () => {
     const navigate = useNavigate();
 
     const handleChangeSettings = async () => {
-        const userData = await getUserData(user as User);
+        if (!user) {
+            return;
+        }
+        const userData = await getUserData(user.uid as string);
         try {
             if (username) {
                 if (username.length < 3) {
@@ -31,8 +33,8 @@ const Settings = () => {
                     alert('Username already taken!');
                     return;
                 }
+                changeUsername(username, user as User);
             }
-            changeUsername(username, user as User);
             if (userData && currentPhoto !== userData.photoURL) {
                 changePhotoURL(currentPhoto, user as User);
                 alert('Settings changed!');
