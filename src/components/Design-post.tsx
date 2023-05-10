@@ -26,12 +26,12 @@ export const Post = () => {
         };
         getPostList();
     }, []);
-    interface Ingredient {
-        name: string;
-        quantity: number;
-        unit: string;
-        likes: Array<string>;
-    }
+    // interface Ingredient {
+    //     name: string;
+    //     quantity: number;
+    //     unit: string;
+    //     likes: Array<string>;
+    // }
 
     return (
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>

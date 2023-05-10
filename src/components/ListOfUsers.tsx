@@ -89,9 +89,9 @@ function ListOfUsers({ users, currentUserId }: Props) {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '35vh',
             }}
         >
+             <Spacer y={1} />
             {list.map(item => (
                 <Grid.Container
                     key={item.id}
