@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ErrorPage, Dashboard, Login, Register, Settings, Profile, Followers, Following } from './pages';
+import { ErrorPage, Dashboard, Login, Register, Settings, AddPostPage, Profile, Followers, Following } from './pages';
 import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
@@ -28,6 +28,10 @@ const router = createBrowserRouter([
                     {
                         path: 'settings',
                         element: <Settings />,
+                    },
+                    {
+                        path: 'add-post',
+                        element: <AddPostPage />,
                     },
                     {
                         path: 'followers',

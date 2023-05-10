@@ -34,7 +34,7 @@ export const Post = () => {
     }
 
     return (
-        <Grid.Container gap={2} justify="center">
+        <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
                     <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
@@ -52,7 +52,7 @@ export const Post = () => {
                                 width={400}
                                 height={170}
                                 containerCss={{ borderRadius: '3%' }}
-                                src="https://images.services.kitchenstories.io/8OjqS2ypvWStDdcOl882SLW1p9g=/3840x0/filters:quality(80)/images.kitchenstories.io/wagtailOriginalImages/R2726-photo-final-2.jpg"
+                                src={post.photoURL}
                                 alt="Default Image"
                                 objectFit="cover"
                             />
