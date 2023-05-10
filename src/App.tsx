@@ -1,5 +1,17 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ErrorPage, Dashboard, Login, Register, Settings, AddPostPage, Profile, Followers, Following } from './pages';
+import {
+    ErrorPage,
+    Dashboard,
+    Login,
+    Register,
+    Settings,
+    AddPostPage, Profile,
+    ProfileQueryParam,
+    Followers,
+    FollowersQueryParam,
+    Following,
+    FollowingQueryParam,
+} from './pages';
 import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
@@ -26,6 +38,10 @@ const router = createBrowserRouter([
                         element: <Profile />,
                     },
                     {
+                        path: 'user-profile',
+                        element: <ProfileQueryParam />,
+                    },
+                    {
                         path: 'settings',
                         element: <Settings />,
                     },
@@ -38,8 +54,16 @@ const router = createBrowserRouter([
                         element: <Followers />,
                     },
                     {
+                        path: 'user-followers',
+                        element: <FollowersQueryParam />,
+                    },
+                    {
                         path: 'following',
                         element: <Following />,
+                    },
+                    {
+                        path: 'user-following',
+                        element: <FollowingQueryParam />,
                     },
                 ],
             },

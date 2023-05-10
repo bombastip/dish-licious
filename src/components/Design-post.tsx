@@ -37,6 +37,7 @@ export const Post = () => {
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
+                    <>
                     <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
                         <Card.Header>
                             <Text b css={{ whiteSpace: 'nowrap' }}>
@@ -101,6 +102,8 @@ export const Post = () => {
                             </Row>
                         </Card.Footer>
                     </Card>
+                    <Spacer y={0.5} />
+                    </>
                 ))}
             </div>
         </Grid.Container>
