@@ -1,4 +1,4 @@
-import { Avatar, Grid, Text, Button } from '@nextui-org/react';
+import { Avatar, Grid, Text, Button, Spacer } from '@nextui-org/react';
 import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
@@ -118,6 +118,7 @@ function UserProfile({ currentUserId }: Props) {
                         <Grid>
                             <Text h2>{username}</Text>
                         </Grid>
+                        <Spacer x={0.5} />
                         <Grid>
                             {user &&
                                 user.uid !== currentUserId &&
