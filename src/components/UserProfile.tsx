@@ -203,10 +203,7 @@ function UserProfile({ currentUserId }: Props) {
                                             {post.data().title}
                                         </Text>
                                         <Row justify="flex-end">
-                                            <User
-                                                src={photoURL}
-                                                name={username}
-                                            />
+                                            <User src={photoURL} name={username} />
                                         </Row>
                                     </Card.Header>
                                     <Card.Divider />
