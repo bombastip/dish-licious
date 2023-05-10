@@ -1,27 +1,24 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
     ErrorPage,
     Dashboard,
     Login,
     Register,
     Settings,
+    AddPostPage,
     Profile,
+    ProfileQueryParam,
     Followers,
+    FollowersQueryParam,
     Following,
+    FollowingQueryParam,
     SearchRecipe,
     SearchPeople,
 } from './pages';
-import { Navbar } from './components';
 import { PrivateRoute } from './route';
 
 const router = createBrowserRouter([
     {
-        element: (
-            <>
-                <Navbar />
-                <Outlet />
-            </>
-        ),
         errorElement: <ErrorPage />,
         children: [
             {
@@ -44,8 +41,32 @@ const router = createBrowserRouter([
                         element: <Profile />,
                     },
                     {
+                        path: 'user-profile',
+                        element: <ProfileQueryParam />,
+                    },
+                    {
                         path: 'settings',
                         element: <Settings />,
+                    },
+                    {
+                        path: 'add-post',
+                        element: <AddPostPage />,
+                    },
+                    {
+                        path: 'followers',
+                        element: <Followers />,
+                    },
+                    {
+                        path: 'user-followers',
+                        element: <FollowersQueryParam />,
+                    },
+                    {
+                        path: 'following',
+                        element: <Following />,
+                    },
+                    {
+                        path: 'user-following',
+                        element: <FollowingQueryParam />,
                     },
                     {
                         path: 'search/recipes',
@@ -54,14 +75,6 @@ const router = createBrowserRouter([
                     {
                         path: 'search/people',
                         element: <SearchPeople />,
-                    },
-                    {
-                        path: 'followers',
-                        element: <Followers />,
-                    },
-                    {
-                        path: 'following',
-                        element: <Following />,
                     },
                 ],
             },

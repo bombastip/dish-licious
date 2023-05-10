@@ -6,6 +6,7 @@ import { User } from '../interfaces';
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);
     const data = {
+        id: user.uid,
         username: username,
         photoURL: 'https://icon-library.com/images/2693a2979d_91160.png',
         following: [],
@@ -86,7 +87,7 @@ export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        // console.log('Document data from getFollowing:', docSnap.data().following);
+        console.log('Document data from getFollowing:', docSnap.data().following);
         return docSnap.data().following;
     } else {
         console.log('No such document!');
@@ -99,7 +100,7 @@ export async function getFollowers(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        // console.log('Document data from getFollowers:', docSnap.data().followers);
+        console.log('Document data from getFollowers:', docSnap.data().followers);
         return docSnap.data().followers;
     } else {
         // doc.data() will be undefined in this case
@@ -199,7 +200,7 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         console.log('Document does not exist!');
         return false;
     }
-    // console.log('Document data from checkFollow:', followingList);
+    console.log('Document data from checkFollow:', followingList);
     if (
         followingList.some((element: string) => {
             return element === wantToFollow;

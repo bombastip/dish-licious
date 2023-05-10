@@ -1,20 +1,22 @@
 import { Grid, Avatar, Text, Spacer, Button, Loading } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
 import { getUserData, follow, unfollow, checkFollow } from '../database';
+import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context';
 
-export type Props = {
+type Props = {
     users: string[];
     currentUserId: string;
 };
 
-export type ListUser = {
+type ListUser = {
     id: string;
     username: string;
     photoURL: string;
     isFollowing: boolean;
 };
 
-export async function getListOfUsers(users: string[], currentUserId: string) {
+async function getListOfUsers(users: string[], currentUserId: string) {
     const list: ListUser[] = [];
 
     for (const user of users) {
@@ -23,6 +25,7 @@ export async function getListOfUsers(users: string[], currentUserId: string) {
             continue;
         }
         const isFollowing = await checkFollow(currentUserId, user);
+        console.log('urmareste??', isFollowing);
         list.push({
             id: user,
             username: userData.username,
@@ -35,6 +38,12 @@ export async function getListOfUsers(users: string[], currentUserId: string) {
 }
 
 function ListOfUsers({ users, currentUserId }: Props) {
+    const { user, userLoading } = useContext(AuthContext);
+
+    if (userLoading || !user) {
+        return <Loading />;
+    }
+
     const [list, setList] = useState<ListUser[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -90,19 +99,30 @@ function ListOfUsers({ users, currentUserId }: Props) {
                     css={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}
                 >
                     <Grid key={item.id} xs={3} css={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar src={item.photoURL} size="lg" />
-                        <Spacer y={1} x={3} />
-                        <Text>{item.username}</Text>
-                        <Spacer y={1} x={3} />
-                        {item.isFollowing ? (
-                            <Button auto color="secondary" onClick={() => handleUnfollow(item.id, currentUserId)}>
-                                Unfollow
-                            </Button>
+                        {user.uid !== item.id ? (
+                            <Link to={`/user-profile?userId=${item.id}`}>
+                                <Avatar src={item.photoURL} size="lg" css={{ cursor: 'pointer' }} />
+                            </Link>
                         ) : (
-                            <Button auto color="secondary" onClick={() => handleFollow(item.id, currentUserId)}>
-                                Follow
-                            </Button>
+                            <Link to="/profile">
+                                <Avatar src={item.photoURL} size="lg" css={{ cursor: 'pointer' }} />
+                            </Link>
                         )}
+                        <Spacer y={1} x={3} />
+                        <Link to={`/user-profile?userId=${item.id}`}>
+                            <Text css={{ cursor: 'pointer' }}>{item.username}</Text>
+                        </Link>
+                        <Spacer y={1} x={3} />
+                        {user.uid !== item.id &&
+                            (item.isFollowing ? (
+                                <Button auto color="gray300" onClick={() => handleUnfollow(item.id, currentUserId)}>
+                                    Unfollow
+                                </Button>
+                            ) : (
+                                <Button auto color="secondary" onClick={() => handleFollow(item.id, currentUserId)}>
+                                    Follow
+                                </Button>
+                            ))}
                     </Grid>
                 </Grid.Container>
             ))}
