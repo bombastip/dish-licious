@@ -91,7 +91,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
                 alignItems: 'center',
             }}
         >
-             <Spacer y={1} />
+            <Spacer y={1} />
             {list.map(item => (
                 <Grid.Container
                     key={item.id}

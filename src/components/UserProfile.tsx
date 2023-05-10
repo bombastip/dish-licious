@@ -1,10 +1,11 @@
-import { Avatar, Grid, Text, Button, Spacer } from '@nextui-org/react';
+import { Avatar, Grid, Text, Button, Spacer, Card, Row, User, Image } from '@nextui-org/react';
 import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
+import { HeartIcon } from './HeartIcon';
 
 type Props = {
     currentUserId: string;
@@ -16,8 +17,8 @@ function UserProfile({ currentUserId }: Props) {
     const [photoURL, setPhotoURL] = useState('');
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
-    const [posts, setPosts] = useState([]);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [posts, setPosts] = useState<any[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,7 +35,7 @@ function UserProfile({ currentUserId }: Props) {
                     setPhotoURL(doc.data().photoURL);
                     setFollowers(doc.data().followers);
                     setFollowing(doc.data().following);
-                    setPosts(doc.data().posts);
+                    // setPosts(doc.data().posts);
                     console.log(username);
                 } else {
                     console.log(`User documentnot found`);
@@ -72,6 +73,27 @@ function UserProfile({ currentUserId }: Props) {
         check();
     }, [user, username, userLoading]);
 
+    useEffect(() => {
+        const getMyPosts = async () => {
+            const docRef = doc(db, 'users', currentUserId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const myPosts = [];
+                for (const post of docSnap.data().posts) {
+                    const postRef = doc(db, 'posts', post);
+                    myPosts.push(await getDoc(postRef));
+                }
+                console.log('postari: ', myPosts);
+                setPosts(myPosts);
+            } else {
+                console.log('No such document!');
+                setPosts([]);
+            }
+        };
+
+        getMyPosts();
+    }, [currentUserId]);
+
     const handleFollowers = () => {
         if (user?.uid !== currentUserId) {
             navigate(`/user-followers?userId=${currentUserId}`);
@@ -101,66 +123,143 @@ function UserProfile({ currentUserId }: Props) {
     };
 
     return (
-        <Grid.Container
-            gap={2}
-            css={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '35vh' }}
-        >
-            <Grid>
-                <Grid.Container gap={1} alignItems="center" css={{ flexDirection: 'column' }}>
-                    <Grid>
-                        <Avatar src={photoURL} css={{ width: '160px', height: '160px' }} zoomed />
-                    </Grid>
-                    <Grid.Container
-                        gap={1}
-                        alignItems="center"
-                        css={{ fdisplay: 'flex', flexDirection: 'row', justifyContent: 'center' }}
-                    >
+        <>
+            <Grid.Container
+                gap={2}
+                css={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '35vh' }}
+            >
+                <Grid>
+                    <Grid.Container gap={1} alignItems="center" css={{ flexDirection: 'column' }}>
                         <Grid>
-                            <Text h2>{username}</Text>
+                            <Avatar src={photoURL} css={{ width: '160px', height: '160px' }} zoomed />
                         </Grid>
-                        <Spacer x={0.5} />
-                        <Grid>
-                            {user &&
-                                user.uid !== currentUserId &&
-                                (isFollowing ? (
-                                    <Button
-                                        auto
-                                        color="gray300"
-                                        onClick={() => handleUnfollow(currentUserId, user.uid)}
-                                    >
-                                        Unfollow
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        auto
-                                        color="secondary"
-                                        onClick={() => handleFollow(currentUserId, user.uid)}
-                                    >
-                                        Follow
-                                    </Button>
-                                ))}
-                        </Grid>
+                        <Grid.Container
+                            gap={1}
+                            alignItems="center"
+                            css={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}
+                        >
+                            <Grid>
+                                <Text h2>{username}</Text>
+                            </Grid>
+                            <Spacer x={0.5} />
+                            <Grid>
+                                {user &&
+                                    user.uid !== currentUserId &&
+                                    (isFollowing ? (
+                                        <Button
+                                            auto
+                                            color="gray300"
+                                            onClick={() => handleUnfollow(currentUserId, user.uid)}
+                                        >
+                                            Unfollow
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            auto
+                                            color="secondary"
+                                            onClick={() => handleFollow(currentUserId, user.uid)}
+                                        >
+                                            Follow
+                                        </Button>
+                                    ))}
+                            </Grid>
+                        </Grid.Container>
+                        <Grid.Container gap={2}>
+                            <Grid>
+                                <Button disabled color="primary" auto>
+                                    {posts.length} Posts
+                                </Button>
+                            </Grid>
+                            <Grid>
+                                <Button onPress={handleFollowers} color="primary" auto>
+                                    {followers ? `${followers.length} Followers` : '? Followers'}
+                                </Button>
+                            </Grid>
+                            <Grid>
+                                <Button onPress={handleFollowing} color="primary" auto>
+                                    {following ? `${following.length} Following` : '? Following'}
+                                </Button>
+                            </Grid>
+                        </Grid.Container>
                     </Grid.Container>
-                    <Grid.Container gap={2}>
-                        <Grid>
-                            <Button disabled color="primary" auto>
-                                {posts.length} Posts
-                            </Button>
-                        </Grid>
-                        <Grid>
-                            <Button onPress={handleFollowers} color="primary" auto>
-                                {followers ? `${followers.length} Followers` : '? Followers'}
-                            </Button>
-                        </Grid>
-                        <Grid>
-                            <Button onPress={handleFollowing} color="primary" auto>
-                                {following ? `${following.length} Following` : '? Following'}
-                            </Button>
-                        </Grid>
-                    </Grid.Container>
-                </Grid.Container>
-            </Grid>
-        </Grid.Container>
+                </Grid>
+            </Grid.Container>
+
+            {/* posts */}
+            <Spacer y={3} />
+
+            <Grid.Container
+                gap={2}
+                justify="center"
+                css={{ marginTop: '20px', display: 'grid', justifyContent: 'center' }}
+            >
+                <div>
+                    {posts &&
+                        posts.map(post => (
+                            <Grid>
+                                <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+                                    <Card.Header>
+                                        <Text b css={{ whiteSpace: 'nowrap' }}>
+                                            {post.data().title}
+                                        </Text>
+                                        <Row justify="flex-end">
+                                            <User
+                                                src={photoURL}
+                                                name={username}
+                                            />
+                                        </Row>
+                                    </Card.Header>
+                                    <Card.Divider />
+                                    <Card.Body css={{ py: '$10' }}>
+                                        <Image
+                                            width={400}
+                                            height={170}
+                                            containerCss={{ borderRadius: '3%' }}
+                                            src={post.data().photoURL}
+                                            alt="Default Image"
+                                            objectFit="cover"
+                                        />
+                                        <Spacer y={0.2} />
+                                        <Row>
+                                            <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                                {' '}
+                                                Liked by {post.data().likes.length}{' '}
+                                            </Text>
+                                        </Row>
+                                        <Spacer y={0.3} />
+                                        <Text>Mod de preparare: {post.data().description}</Text>
+                                        <Text>
+                                            {' '}
+                                            Time Cost: {post.data().timeCost} {post.data().timeUnit}
+                                        </Text>
+                                    </Card.Body>
+                                    <Card.Divider />
+                                    <Card.Footer>
+                                        <Row justify="flex-start">
+                                            <Button
+                                                auto
+                                                color="error"
+                                                css={{ mr: '$2' }}
+                                                icon={<HeartIcon fill="currentColor" filled />}
+                                            />
+                                            <Button flat color="error" auto>
+                                                Save
+                                            </Button>
+                                        </Row>
+                                        <Row justify="flex-end">
+                                            <Button.Group>
+                                                <Button css={{ mr: '$2' }}> + </Button>
+                                                <Button>View comment list</Button>
+                                            </Button.Group>
+                                        </Row>
+                                    </Card.Footer>
+                                </Card>
+                                <Spacer y={0.5} />
+                            </Grid>
+                        ))}
+                </div>
+            </Grid.Container>
+        </>
     );
 }
 
