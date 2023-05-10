@@ -1,3 +1,3 @@
-export { InputColorMessage, UserData, ErrorMessasge } from './interfaces';
+export { InputColorMessage, ErrorMessasge, UserData } from './interfaces';
 export { User } from 'firebase/auth';
 export { FirebaseError } from 'firebase/app';
