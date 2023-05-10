@@ -120,21 +120,21 @@ function NavbarF() {
                                 onAction={actionKey => handleAction(actionKey as string)}
                                 disabledKeys={['username']}
                             >
-                                <Dropdown.Item key="username" css={{ height: '$18' }}>
+                                <Dropdown.Item key="username" css={{ height: '$18' }} textValue="username">
                                     <Text b color="#ec9127" css={{ d: 'flex' }}>
                                         Signed in as {username}
                                     </Text>
                                 </Dropdown.Item>
-                                <Dropdown.Item key="profile" withDivider>
+                                <Dropdown.Item key="profile" withDivider textValue=" My Profile">
                                     My Profile
                                 </Dropdown.Item>
-                                <Dropdown.Item key="groups" withDivider>
+                                <Dropdown.Item key="groups" withDivider textValue="Groups">
                                     Groups
                                 </Dropdown.Item>
-                                <Dropdown.Item key="settings" withDivider>
+                                <Dropdown.Item key="settings" withDivider textValue="Settings">
                                     Settings
                                 </Dropdown.Item>
-                                <Dropdown.Item key="logout" withDivider color="error">
+                                <Dropdown.Item key="logout" withDivider color="error" textValue="LogOut">
                                     Log Out
                                 </Dropdown.Item>
                             </Dropdown.Menu>
