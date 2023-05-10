@@ -26,7 +26,7 @@ const SearchPeople = () => {
                 <Input
                     bordered
                     size="xl"
-                    placeholder="User name"
+                    placeholder="Username"
                     color="primary"
                     width="600px"
                     onChange={e => setSearch(e.target.value)}
