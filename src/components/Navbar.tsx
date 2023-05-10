@@ -8,6 +8,7 @@ import { AuthContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
+import { SearchNavbarItem } from '.';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -79,12 +80,7 @@ function NavbarF() {
                             Dish-licious
                         </Text>
                     </Navbar.Brand>
-                    <Navbar.Content
-                        enableCursorHighlight
-                        activeColor="secondary"
-                        hideIn="xs"
-                        variant="highlight-rounded"
-                    >
+                    <Navbar.Content activeColor="secondary" hideIn="xs">
                         <Navbar.Link isActive={location.pathname === '/'} href="/">
                             Feed
                         </Navbar.Link>
@@ -97,9 +93,7 @@ function NavbarF() {
                         <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
                             Notifications
                         </Navbar.Link>
-                        <Navbar.Link isActive={location.pathname === '/search'} href="/search">
-                            Search
-                        </Navbar.Link>
+                        <SearchNavbarItem />
                     </Navbar.Content>
                     <Navbar.Content
                         css={{
@@ -128,7 +122,7 @@ function NavbarF() {
                                 <Dropdown.Item key="profile" withDivider textValue=" My Profile">
                                     My Profile
                                 </Dropdown.Item>
-                                <Dropdown.Item key="groups" withDivider textValue="Groups">
+                                <Dropdown.Item key="groups" withDivider>
                                     Groups
                                 </Dropdown.Item>
                                 <Dropdown.Item key="settings" withDivider textValue="Settings">
