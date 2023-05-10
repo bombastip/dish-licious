@@ -34,7 +34,7 @@ export const Post = () => {
     }
 
     return (
-        <Grid.Container gap={2} justify="center" css={{marginTop: '20px'}}>
+        <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
                     <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
