@@ -36,7 +36,7 @@ const UserSearchResults = (props: UserSearchProps) => {
 
     return props.username ? (
         isLoading ? (
-            <Loading />
+            <Loading size='xl'/>
         ) : (
             <>
                 {filteredList.map(user => (

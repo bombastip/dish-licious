@@ -6,7 +6,6 @@ const SearchPeople = () => {
     // const { user, userLoading } = useContext(AuthContext);
     const [search, setSearch] = useState('');
 
-    
     return (
         <Container>
             <Spacer y={2} />
@@ -33,7 +32,7 @@ const SearchPeople = () => {
                     onChange={e => setSearch(e.target.value)}
                 />
             </Row>
-            {/* <ListOfUsers users={filteredList} currentUserId={user?.uid || ''} /> */}
+            <Spacer y={1} />
             <UserSearchResults username={search} />
         </Container>
     );
