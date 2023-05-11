@@ -39,8 +39,8 @@ export const Post = () => {
             <div>
                 {postList.map(post => (
                     <>
-                    <Link to={`/post?postId=${post.id}`}>
-                        <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+                        <Link to={`/post?postId=${post.id}`}>
+                            <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
                                 <Card.Header>
                                     <Text b css={{ whiteSpace: 'nowrap' }}>
                                         {post.title}
@@ -117,8 +117,7 @@ export const Post = () => {
                                         </Button.Group>
                                     </Row>
                                 </Card.Footer>
-                            
-                        </Card>
+                            </Card>
                         </Link>
                         <Spacer y={0.5} />
                     </>

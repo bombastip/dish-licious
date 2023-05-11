@@ -6,9 +6,7 @@ const Recipe = () => {
     const queryParams = new URLSearchParams(location.search);
     const postId = queryParams.get('postId');
 
-    return (
-            <RecipeCard currentPostId={postId || ''} />
-    );
+    return <RecipeCard currentPostId={postId || ''} />;
 };
 
 export default Recipe;

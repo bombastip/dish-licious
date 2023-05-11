@@ -190,76 +190,79 @@ function UserProfile({ currentUserId }: Props) {
 
             <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
                 {posts &&
-                    posts.slice().reverse().map(post => (
-                        <Grid wrap="wrap">
-                            <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
-                                <Card.Header>
-                                    <Text b css={{ whiteSpace: 'nowrap' }}>
-                                        {post.data().title}
-                                    </Text>
-                                    <Row justify="flex-end">
-                                        <User src={photoURL} name={username} />
-                                    </Row>
-                                </Card.Header>
-                                <Card.Divider />
-                                <Card.Body css={{ py: '$10' }}>
-                                    <Image
-                                        width={400}
-                                        height={170}
-                                        containerCss={{ borderRadius: '3%' }}
-                                        src={post.data().photoURL}
-                                        alt="Default Image"
-                                        objectFit="cover"
-                                    />
-                                    <Spacer y={0.2} />
-                                    <Row>
-                                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                            {' '}
-                                            Liked by {post.data().likes.length}{' '}
+                    posts
+                        .slice()
+                        .reverse()
+                        .map(post => (
+                            <Grid wrap="wrap">
+                                <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+                                    <Card.Header>
+                                        <Text b css={{ whiteSpace: 'nowrap' }}>
+                                            {post.data().title}
                                         </Text>
-                                    </Row>
-                                    <Spacer y={0.3} />
-                                    <Text
-                                        css={{
-                                            height: '5em',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            display: '-webkit-box',
-                                            WebkitBoxOrient: 'vertical',
-                                            WebkitLineClamp: 3,
-                                        }}
-                                    >
-                                        Mod de preparare: {post.data().description}
-                                    </Text>
-                                    <Text>
-                                        {' '}
-                                        Time Cost: {post.data().timeCost} {post.data().timeUnit}
-                                    </Text>
-                                </Card.Body>
-                                <Card.Divider />
-                                <Card.Footer>
-                                    <Row justify="flex-start">
-                                        <Button
-                                            auto
-                                            color="error"
-                                            css={{ mr: '$2' }}
-                                            icon={<HeartIcon fill="currentColor" filled />}
+                                        <Row justify="flex-end">
+                                            <User src={photoURL} name={username} />
+                                        </Row>
+                                    </Card.Header>
+                                    <Card.Divider />
+                                    <Card.Body css={{ py: '$10' }}>
+                                        <Image
+                                            width={400}
+                                            height={170}
+                                            containerCss={{ borderRadius: '3%' }}
+                                            src={post.data().photoURL}
+                                            alt="Default Image"
+                                            objectFit="cover"
                                         />
-                                        <Button flat color="error" auto>
-                                            Save
-                                        </Button>
-                                    </Row>
-                                    <Row justify="flex-end">
-                                        <Button.Group>
-                                            <Button css={{ mr: '$2' }}> + </Button>
-                                            <Button>View comment list</Button>
-                                        </Button.Group>
-                                    </Row>
-                                </Card.Footer>
-                            </Card>
-                            <Spacer y={0.5} />
-                        </Grid>
-                    ))}
+                                        <Spacer y={0.2} />
+                                        <Row>
+                                            <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                                {' '}
+                                                Liked by {post.data().likes.length}{' '}
+                                            </Text>
+                                        </Row>
+                                        <Spacer y={0.3} />
+                                        <Text
+                                            css={{
+                                                height: '5em',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitBoxOrient: 'vertical',
+                                                WebkitLineClamp: 3,
+                                            }}
+                                        >
+                                            Mod de preparare: {post.data().description}
+                                        </Text>
+                                        <Text>
+                                            {' '}
+                                            Time Cost: {post.data().timeCost} {post.data().timeUnit}
+                                        </Text>
+                                    </Card.Body>
+                                    <Card.Divider />
+                                    <Card.Footer>
+                                        <Row justify="flex-start">
+                                            <Button
+                                                auto
+                                                color="error"
+                                                css={{ mr: '$2' }}
+                                                icon={<HeartIcon fill="currentColor" filled />}
+                                            />
+                                            <Button flat color="error" auto>
+                                                Save
+                                            </Button>
+                                        </Row>
+                                        <Row justify="flex-end">
+                                            <Button.Group>
+                                                <Button css={{ mr: '$2' }}> + </Button>
+                                                <Button>View comment list</Button>
+                                            </Button.Group>
+                                        </Row>
+                                    </Card.Footer>
+                                </Card>
+                                <Spacer y={0.5} />
+                            </Grid>
+                        ))}
             </Grid.Container>
         </>
     );
