@@ -82,7 +82,7 @@ function ProfilePic() {
                         />
                         <Spacer y={1} />
                         {showUploadButton && ( // render button only if showUploadButton state is true
-                            <Popover placement='right'>
+                            <Popover placement="right">
                                 <Popover.Trigger>
                                     <Button onClick={handleUploadPic}>Upload profile picture</Button>
                                 </Popover.Trigger>

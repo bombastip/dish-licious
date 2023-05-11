@@ -1,4 +1,4 @@
-import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea } from '@nextui-org/react';
+import { Input, Card, Text, Grid, Spacer, Button, Textarea } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -167,11 +167,7 @@ function AddPost() {
                                     buttonFunction={closeHandler}
                                 />
 
-                                <Button
-                                    color="warning"
-                                    onPress={handler}
-                                    css={{ marginTop: '20px' }}
-                                >
+                                <Button color="warning" onPress={handler} css={{ marginTop: '20px' }}>
                                     Add post
                                 </Button>
                             </div>
