@@ -1,4 +1,4 @@
-import { Button, Spacer, Avatar, Grid } from '@nextui-org/react';
+import { Button, Spacer, Avatar, Grid, Popover, Card, Row, Text } from '@nextui-org/react';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { useState, useEffect } from 'react';
@@ -82,7 +82,22 @@ function ProfilePic() {
                         />
                         <Spacer y={1} />
                         {showUploadButton && ( // render button only if showUploadButton state is true
-                            <Button onClick={handleUploadPic}>Upload profile picture</Button>
+                            <Popover placement='right'>
+                                <Popover.Trigger>
+                                    <Button onClick={handleUploadPic}>Upload profile picture</Button>
+                                </Popover.Trigger>
+                                <Popover.Content>
+                                    <Card css={{ $$cardColor: '$colors$success', mw: '300px' }}>
+                                        <Card.Body>
+                                            <Row justify="center" align="center">
+                                                <Text h6 size={13} color="white" css={{ m: 0 }}>
+                                                    Image uploaded successfully!
+                                                </Text>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                </Popover.Content>
+                            </Popover>
                         )}
                     </Grid>
                 </Grid.Container>
