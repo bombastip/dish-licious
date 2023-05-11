@@ -3,7 +3,7 @@ import { Post } from '../components/Design-post';
 const Dashboard = () => {
     return (
         <div>
-            <Post></Post>
+            {/* <Post></Post> */}
         </div>
     );
 };

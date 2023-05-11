@@ -1,17 +1,23 @@
 import { Spacer, Button, Switch } from '@nextui-org/react';
-import { UsernameInput, SettingsCard, SunIcon, MoonIcon, ProfilePic } from '../components';
+import { UsernameInput, SettingsCard, SunIcon, MoonIcon, ProfilePic, VerificationModal, AuthButton } from '../components';
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { User } from '../interfaces';
+import { ErrorMessasge, User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
+    const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername] = useState('');
     const { user } = useContext(AuthContext);
+    const [err, setErr] = useState<ErrorMessasge>(null);
     const navigate = useNavigate();
+
+    const modalHandler = () => {
+        navigate('/');
+    };
 
     const handleChangeSettings = async () => {
         if (!user) {
@@ -19,28 +25,34 @@ const Settings = () => {
         }
         const userData = await getUserData(user.uid as string);
         try {
+            let check = false;
             if (username) {
                 if (username.length < 3) {
-                    alert('Username must be at least 3 characters long!');
+                    setErr('Username must be at least 3 characters long!');
                     return;
                 }
                 if (userData && username === userData.username) {
-                    alert('You need to choose a different username!');
+                    setErr('You need to choose a different username!');
                     return;
                 }
                 const ret = await checkUsername(username);
                 if (!ret) {
-                    alert('Username already taken!');
+                    setErr('Username already taken!');
                     return;
                 }
                 changeUsername(username, user as User);
+                check = true;
             }
-            if (userData && currentPhoto !== userData.photoURL) {
+            console.log(check);
+            console.log(username.length);
+            if (username.length == 0 && (userData && currentPhoto === userData.photoURL)) {
+                setErr('No changes were made!');
+                return;
+            }
+            if ((userData && currentPhoto !== userData.photoURL) || check) {
                 changePhotoURL(currentPhoto, user as User);
-                alert('Settings changed!');
+                setModalVisible(true);
             }
-            // FIXME: fetch user data from firestore
-            navigate('/');
         } catch (error: unknown) {
             console.error(error);
         }
@@ -63,7 +75,16 @@ const Settings = () => {
                 <UsernameInput username={username} setUsername={setUsername} />
             </div>
             <Spacer y={1} />
-            <Button onPress={handleChangeSettings}>Save changes</Button>
+            <VerificationModal
+                modalTitle={'User settings changed!'}
+                modalBody={''}
+                visible={modalVisible}
+                buttonMessage={'OK'}
+                setVisible={setModalVisible}
+                buttonFunction={modalHandler}
+            />
+            {/* <Button onPress={handleChangeSettings}>Save changes</Button> */}
+            <AuthButton clickFunc={handleChangeSettings} buttonName="Save changes" error={err} setError={setErr} />
         </SettingsCard>
     );
 };
