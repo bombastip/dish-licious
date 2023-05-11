@@ -197,3 +197,22 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
     }
     return false;
 }
+
+export async function getMyPosts(uid: string) {
+    const docRef = doc(db, 'users', uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        const myPosts = [];
+        for (const post of docSnap.data().posts) {
+            console.log(post);
+            const postRef = doc(db, 'posts', post);
+            myPosts.push(await getDoc(postRef));
+        }
+        console.log('Document data from getMyPosts:', myPosts);
+        return myPosts;
+    } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+        return false;
+    }
+}
