@@ -3,6 +3,7 @@ import { HeartIcon } from './HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
+import { Link } from 'react-router-dom';
 
 export const Post = () => {
     const [postList, setPostList] = useState<any[]>([]);
@@ -38,35 +39,50 @@ export const Post = () => {
             <div>
                 {postList.map(post => (
                     <>
+                    <Link to={`/post?postId=${post.id}`}>
                         <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
-                            <Card.Header>
-                                <Text b css={{ whiteSpace: 'nowrap' }}>
-                                    {post.title}
-                                </Text>
-                                <Row justify="flex-end">
-                                    <User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="Ariana Wattson" />
-                                </Row>
-                            </Card.Header>
-                            <Card.Divider />
-                            <Card.Body css={{ py: '$10' }}>
-                                <Image
-                                    width={400}
-                                    height={170}
-                                    containerCss={{ borderRadius: '3%' }}
-                                    src={post.photoURL}
-                                    alt="Default Image"
-                                    objectFit="cover"
-                                />
-                                <Spacer y={0.2} />
-                                <Row>
-                                    <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                        {' '}
-                                        Liked by {post.likes.length}{' '}
+                                <Card.Header>
+                                    <Text b css={{ whiteSpace: 'nowrap' }}>
+                                        {post.title}
                                     </Text>
-                                </Row>
-                                <Spacer y={0.3} />
-                                <Text>Mod de preparare: {post.description}</Text>
-                                {/* <Text>
+                                    <Row justify="flex-end">
+                                        <User
+                                            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                            name="Ariana Wattson"
+                                        />
+                                    </Row>
+                                </Card.Header>
+                                <Card.Divider />
+                                <Card.Body css={{ py: '$10' }}>
+                                    <Image
+                                        width={400}
+                                        height={170}
+                                        containerCss={{ borderRadius: '3%' }}
+                                        src={post.photoURL}
+                                        alt="Default Image"
+                                        objectFit="cover"
+                                    />
+                                    <Spacer y={0.2} />
+                                    <Row>
+                                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                            {' '}
+                                            Liked by {post.likes.length}{' '}
+                                        </Text>
+                                    </Row>
+                                    <Spacer y={0.3} />
+                                    <Text
+                                        css={{
+                                            height: '5em',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            display: '-webkit-box',
+                                            WebkitBoxOrient: 'vertical',
+                                            WebkitLineClamp: 3,
+                                        }}
+                                    >
+                                        Mod de preparare: {post.description}
+                                    </Text>
+                                    {/* <Text>
                                 Ingrediente:
                                 <Text>
                                     {post.ingredients.map((ingredient: Ingredient, index: number) => (
@@ -76,32 +92,34 @@ export const Post = () => {
                                     ))}
                                 </Text>
                             </Text> */}
-                                <Text>
-                                    {' '}
-                                    Time Cost: {post.timeCost} {post.timeUnit}
-                                </Text>
-                            </Card.Body>
-                            <Card.Divider />
-                            <Card.Footer>
-                                <Row justify="flex-start">
-                                    <Button
-                                        auto
-                                        color="error"
-                                        css={{ mr: '$2' }}
-                                        icon={<HeartIcon fill="currentColor" filled />}
-                                    />
-                                    <Button flat color="error" auto>
-                                        Save
-                                    </Button>
-                                </Row>
-                                <Row justify="flex-end">
-                                    <Button.Group>
-                                        <Button css={{ mr: '$2' }}> + </Button>
-                                        <Button>View comment list</Button>
-                                    </Button.Group>
-                                </Row>
-                            </Card.Footer>
+                                    <Text>
+                                        {' '}
+                                        Time Cost: {post.timeCost} {post.timeUnit}
+                                    </Text>
+                                </Card.Body>
+                                <Card.Divider />
+                                <Card.Footer>
+                                    <Row justify="flex-start">
+                                        <Button
+                                            auto
+                                            color="error"
+                                            css={{ mr: '$2' }}
+                                            icon={<HeartIcon fill="currentColor" filled />}
+                                        />
+                                        <Button flat color="error" auto>
+                                            Save
+                                        </Button>
+                                    </Row>
+                                    <Row justify="flex-end">
+                                        <Button.Group>
+                                            <Button css={{ mr: '$2' }}> + </Button>
+                                            <Button>View comment list</Button>
+                                        </Button.Group>
+                                    </Row>
+                                </Card.Footer>
+                            
                         </Card>
+                        </Link>
                         <Spacer y={0.5} />
                     </>
                 ))}

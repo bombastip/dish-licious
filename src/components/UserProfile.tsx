@@ -131,6 +131,7 @@ function UserProfile({ currentUserId }: Props) {
                 <Grid>
                     <Grid.Container gap={1} alignItems="center" css={{ flexDirection: 'column' }}>
                         <Grid>
+                            <Spacer y={0.5} />
                             <Avatar src={photoURL} css={{ width: '160px', height: '160px' }} zoomed />
                         </Grid>
                         <Grid.Container
@@ -141,7 +142,6 @@ function UserProfile({ currentUserId }: Props) {
                             <Grid>
                                 <Text h2>{username}</Text>
                             </Grid>
-                            <Spacer x={0.5} />
                             <Grid>
                                 {user &&
                                     user.uid !== currentUserId &&
@@ -188,73 +188,78 @@ function UserProfile({ currentUserId }: Props) {
             {/* posts */}
             <Spacer y={3} />
 
-            <Grid.Container
-                gap={2}
-                justify="center"
-                css={{ marginTop: '20px', display: 'grid', justifyContent: 'center' }}
-            >
-                <div>
-                    {posts &&
-                        posts.map(post => (
-                            <Grid>
-                                <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
-                                    <Card.Header>
-                                        <Text b css={{ whiteSpace: 'nowrap' }}>
-                                            {post.data().title}
-                                        </Text>
-                                        <Row justify="flex-end">
-                                            <User src={photoURL} name={username} />
-                                        </Row>
-                                    </Card.Header>
-                                    <Card.Divider />
-                                    <Card.Body css={{ py: '$10' }}>
-                                        <Image
-                                            width={400}
-                                            height={170}
-                                            containerCss={{ borderRadius: '3%' }}
-                                            src={post.data().photoURL}
-                                            alt="Default Image"
-                                            objectFit="cover"
-                                        />
-                                        <Spacer y={0.2} />
-                                        <Row>
-                                            <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                                {' '}
-                                                Liked by {post.data().likes.length}{' '}
-                                            </Text>
-                                        </Row>
-                                        <Spacer y={0.3} />
-                                        <Text>Mod de preparare: {post.data().description}</Text>
-                                        <Text>
+            <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
+                {posts &&
+                    posts.slice().reverse().map(post => (
+                        <Grid wrap="wrap">
+                            <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+                                <Card.Header>
+                                    <Text b css={{ whiteSpace: 'nowrap' }}>
+                                        {post.data().title}
+                                    </Text>
+                                    <Row justify="flex-end">
+                                        <User src={photoURL} name={username} />
+                                    </Row>
+                                </Card.Header>
+                                <Card.Divider />
+                                <Card.Body css={{ py: '$10' }}>
+                                    <Image
+                                        width={400}
+                                        height={170}
+                                        containerCss={{ borderRadius: '3%' }}
+                                        src={post.data().photoURL}
+                                        alt="Default Image"
+                                        objectFit="cover"
+                                    />
+                                    <Spacer y={0.2} />
+                                    <Row>
+                                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
                                             {' '}
-                                            Time Cost: {post.data().timeCost} {post.data().timeUnit}
+                                            Liked by {post.data().likes.length}{' '}
                                         </Text>
-                                    </Card.Body>
-                                    <Card.Divider />
-                                    <Card.Footer>
-                                        <Row justify="flex-start">
-                                            <Button
-                                                auto
-                                                color="error"
-                                                css={{ mr: '$2' }}
-                                                icon={<HeartIcon fill="currentColor" filled />}
-                                            />
-                                            <Button flat color="error" auto>
-                                                Save
-                                            </Button>
-                                        </Row>
-                                        <Row justify="flex-end">
-                                            <Button.Group>
-                                                <Button css={{ mr: '$2' }}> + </Button>
-                                                <Button>View comment list</Button>
-                                            </Button.Group>
-                                        </Row>
-                                    </Card.Footer>
-                                </Card>
-                                <Spacer y={0.5} />
-                            </Grid>
-                        ))}
-                </div>
+                                    </Row>
+                                    <Spacer y={0.3} />
+                                    <Text
+                                        css={{
+                                            height: '5em',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            display: '-webkit-box',
+                                            WebkitBoxOrient: 'vertical',
+                                            WebkitLineClamp: 3,
+                                        }}
+                                    >
+                                        Mod de preparare: {post.data().description}
+                                    </Text>
+                                    <Text>
+                                        {' '}
+                                        Time Cost: {post.data().timeCost} {post.data().timeUnit}
+                                    </Text>
+                                </Card.Body>
+                                <Card.Divider />
+                                <Card.Footer>
+                                    <Row justify="flex-start">
+                                        <Button
+                                            auto
+                                            color="error"
+                                            css={{ mr: '$2' }}
+                                            icon={<HeartIcon fill="currentColor" filled />}
+                                        />
+                                        <Button flat color="error" auto>
+                                            Save
+                                        </Button>
+                                    </Row>
+                                    <Row justify="flex-end">
+                                        <Button.Group>
+                                            <Button css={{ mr: '$2' }}> + </Button>
+                                            <Button>View comment list</Button>
+                                        </Button.Group>
+                                    </Row>
+                                </Card.Footer>
+                            </Card>
+                            <Spacer y={0.5} />
+                        </Grid>
+                    ))}
             </Grid.Container>
         </>
     );

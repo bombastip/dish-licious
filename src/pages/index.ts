@@ -12,3 +12,4 @@ export { default as Following } from './Following';
 export { default as FollowingQueryParam } from './FollowingQueryParam';
 export { default as SearchRecipe } from './SearchRecipe';
 export { default as SearchPeople } from './SearchPeople';
+export { default as Recipe } from './Recipe';
