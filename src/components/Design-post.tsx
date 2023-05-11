@@ -34,38 +34,39 @@ export const Post = () => {
     }
 
     return (
-        <Grid.Container gap={2} justify="center">
+        <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
-                    <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
-                        <Card.Header>
-                            <Text b css={{ whiteSpace: 'nowrap' }}>
-                                {post.title}
-                            </Text>
-                            <Row justify="flex-end">
-                                <User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="Ariana Wattson" />
-                            </Row>
-                        </Card.Header>
-                        <Card.Divider />
-                        <Card.Body css={{ py: '$10' }}>
-                            <Image
-                                width={400}
-                                height={170}
-                                containerCss={{ borderRadius: '3%' }}
-                                src="https://images.services.kitchenstories.io/8OjqS2ypvWStDdcOl882SLW1p9g=/3840x0/filters:quality(80)/images.kitchenstories.io/wagtailOriginalImages/R2726-photo-final-2.jpg"
-                                alt="Default Image"
-                                objectFit="cover"
-                            />
-                            <Spacer y={0.2} />
-                            <Row>
-                                <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                    {' '}
-                                    Liked by {post.likes.length}{' '}
+                    <>
+                        <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+                            <Card.Header>
+                                <Text b css={{ whiteSpace: 'nowrap' }}>
+                                    {post.title}
                                 </Text>
-                            </Row>
-                            <Spacer y={0.3} />
-                            <Text>Mod de preparare: {post.description}</Text>
-                            {/* <Text>
+                                <Row justify="flex-end">
+                                    <User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="Ariana Wattson" />
+                                </Row>
+                            </Card.Header>
+                            <Card.Divider />
+                            <Card.Body css={{ py: '$10' }}>
+                                <Image
+                                    width={400}
+                                    height={170}
+                                    containerCss={{ borderRadius: '3%' }}
+                                    src={post.photoURL}
+                                    alt="Default Image"
+                                    objectFit="cover"
+                                />
+                                <Spacer y={0.2} />
+                                <Row>
+                                    <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                        {' '}
+                                        Liked by {post.likes.length}{' '}
+                                    </Text>
+                                </Row>
+                                <Spacer y={0.3} />
+                                <Text>Mod de preparare: {post.description}</Text>
+                                {/* <Text>
                                 Ingrediente:
                                 <Text>
                                     {post.ingredients.map((ingredient: Ingredient, index: number) => (
@@ -75,32 +76,34 @@ export const Post = () => {
                                     ))}
                                 </Text>
                             </Text> */}
-                            <Text>
-                                {' '}
-                                Time Cost: {post.timeCost} {post.timeUnit}
-                            </Text>
-                        </Card.Body>
-                        <Card.Divider />
-                        <Card.Footer>
-                            <Row justify="flex-start">
-                                <Button
-                                    auto
-                                    color="error"
-                                    css={{ mr: '$2' }}
-                                    icon={<HeartIcon fill="currentColor" filled />}
-                                />
-                                <Button flat color="error" auto>
-                                    Save
-                                </Button>
-                            </Row>
-                            <Row justify="flex-end">
-                                <Button.Group>
-                                    <Button css={{ mr: '$2' }}> + </Button>
-                                    <Button>View comment list</Button>
-                                </Button.Group>
-                            </Row>
-                        </Card.Footer>
-                    </Card>
+                                <Text>
+                                    {' '}
+                                    Time Cost: {post.timeCost} {post.timeUnit}
+                                </Text>
+                            </Card.Body>
+                            <Card.Divider />
+                            <Card.Footer>
+                                <Row justify="flex-start">
+                                    <Button
+                                        auto
+                                        color="error"
+                                        css={{ mr: '$2' }}
+                                        icon={<HeartIcon fill="currentColor" filled />}
+                                    />
+                                    <Button flat color="error" auto>
+                                        Save
+                                    </Button>
+                                </Row>
+                                <Row justify="flex-end">
+                                    <Button.Group>
+                                        <Button css={{ mr: '$2' }}> + </Button>
+                                        <Button>View comment list</Button>
+                                    </Button.Group>
+                                </Row>
+                            </Card.Footer>
+                        </Card>
+                        <Spacer y={0.5} />
+                    </>
                 ))}
             </div>
         </Grid.Container>
