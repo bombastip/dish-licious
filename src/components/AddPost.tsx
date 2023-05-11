@@ -9,6 +9,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
+import { VerificationModal } from '.';
 
 function AddPost() {
     // modal
@@ -28,7 +29,10 @@ function AddPost() {
     const [newphotoURL, setPhotoURL] = useState('');
     const [imageUpload, setImageUpload] = useState<File | null>(null);
 
-    const handler = () => setVisible(true);
+    const handler = () => {
+        setVisible(true);
+        onSubmitPost();
+    };
 
     const closeHandler = () => {
         setVisible(false);
@@ -151,30 +155,20 @@ function AddPost() {
                                 />
                                 {showUploadButton && (
                                     <Button onClick={handleUploadPic} css={{ marginTop: '20px' }}>
-                                        Upload receipe picture
+                                        Upload recipe picture
                                     </Button>
                                 )}
-                                <Modal
-                                    closeButton
-                                    blur
-                                    aria-labelledby="modal-title"
-                                    open={visible}
-                                    onClose={closeHandler}
-                                >
-                                    {' '}
-                                    <Modal.Body>
-                                        <Text
-                                            id="modal-title"
-                                            size={18}
-                                            css={{ margin: '0 auto', display: 'inline-block' }}
-                                        >
-                                            Post added succesfully!
-                                        </Text>
-                                    </Modal.Body>
-                                </Modal>
+                                <VerificationModal
+                                    modalTitle="Post Added Successfully"
+                                    modalBody=""
+                                    visible={visible}
+                                    buttonMessage="OK"
+                                    setVisible={setVisible}
+                                    buttonFunction={closeHandler}
+                                />
+
                                 <Button
                                     color="warning"
-                                    onClick={onSubmitPost}
                                     onPress={handler}
                                     css={{ marginTop: '20px' }}
                                 >

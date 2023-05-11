@@ -86,7 +86,13 @@ const Login = () => {
 
     return (
         <AuthCard>
-            <VerificationModal visible={modalVisible} setVisible={setModalVisible} handler={modalHandler} />
+            <VerificationModal
+                modalTitle="Verification Email Sent!"
+                modalBody="A verification email was sent to the provided email address."
+                visible={modalVisible}
+                buttonMessage="Understood"
+                setVisible={setModalVisible}
+            />
             <EmailInput email={email} setEmail={setEmail} />
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
