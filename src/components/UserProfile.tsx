@@ -52,27 +52,35 @@ function UserProfile({ currentUserId }: Props) {
             return;
         }
         const check = async () => {
-            const isFollowing = await checkFollow(user.uid, currentUserId);
-            setIsFollowing(isFollowing);
+            try {
+                const isFollowing = await checkFollow(user.uid, currentUserId);
+                setIsFollowing(isFollowing);
+            } catch (error) {
+                console.log(error);
+            }
         };
         check();
     }, [user, username, userLoading]);
 
     useEffect(() => {
         const getMyPosts = async () => {
-            const docRef = doc(db, 'users', currentUserId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const myPosts = [];
-                for (const post of docSnap.data().posts) {
-                    const postRef = doc(db, 'posts', post);
-                    myPosts.push(await getDoc(postRef));
+            try {
+                const docRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const myPosts = [];
+                    for (const post of docSnap.data().posts) {
+                        const postRef = doc(db, 'posts', post);
+                        myPosts.push(await getDoc(postRef));
+                    }
+                    console.log('postari: ', myPosts);
+                    setPosts(myPosts);
+                } else {
+                    console.log('No such document!');
+                    setPosts([]);
                 }
-                console.log('postari: ', myPosts);
-                setPosts(myPosts);
-            } else {
-                console.log('No such document!');
-                setPosts([]);
+            } catch (error) {
+                console.log(error);
             }
         };
 
