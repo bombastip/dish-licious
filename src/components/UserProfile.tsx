@@ -6,7 +6,6 @@ import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
 import { HeartIcon } from './HeartIcon';
-import { set } from 'firebase/database';
 
 type Props = {
     currentUserId: string;
