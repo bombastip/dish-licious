@@ -1,5 +1,6 @@
 import { Container } from '@nextui-org/react';
 import { useRef } from 'react';
+import * as styles from './YoutubeFrame.css';
 
 // thumbnailQuality: 'default' | 'hqdefault' | 'mqdefault' | 'sddefault'
 
@@ -39,6 +40,7 @@ export default function YouTubeFrame({ video, width, height }: YouTubeFrameProps
                     loading="lazy"
                     src={`https://img.youtube.com/vi/${video}/${thumbnailQuality}.jpg`}
                     alt="YouTube Video Thumbnail"
+                    className={styles.thumbnail}
                 />
             </div>
         </Container>

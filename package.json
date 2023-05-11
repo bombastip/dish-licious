@@ -13,6 +13,8 @@
     },
     "dependencies": {
         "@nextui-org/react": "^1.0.0-beta.12",
+        "@vanilla-extract/css": "^1.11.0",
+        "@vanilla-extract/vite-plugin": "^3.8.0",
         "firebase": "^9.20.0",
         "husky": "^8.0.3",
         "react": "^18.2.0",
