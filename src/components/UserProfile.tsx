@@ -6,6 +6,7 @@ import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
 import { HeartIcon } from './HeartIcon';
+import { set } from 'firebase/database';
 
 type Props = {
     currentUserId: string;
@@ -19,6 +20,7 @@ function UserProfile({ currentUserId }: Props) {
     const [following, setFollowing] = useState([]);
     const [isFollowing, setIsFollowing] = useState(false);
     const [posts, setPosts] = useState<any[]>([]);
+    const [followersLength, setFollowersLength] = useState<number>(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,8 +36,8 @@ function UserProfile({ currentUserId }: Props) {
                     setUsername(doc.data().username);
                     setPhotoURL(doc.data().photoURL);
                     setFollowers(doc.data().followers);
+                    setFollowersLength(followers.length);
                     setFollowing(doc.data().following);
-                    // setPosts(doc.data().posts);
                     console.log(username);
                 } else {
                     console.log(`User documentnot found`);
@@ -45,22 +47,6 @@ function UserProfile({ currentUserId }: Props) {
                 console.log(`Error retrieving user document: ${error}`);
             });
     }, [user, username, userLoading]);
-
-    useEffect(() => {
-        const docRef = doc(db, 'users', currentUserId);
-        getDoc(docRef)
-            .then(doc => {
-                if (doc.exists()) {
-                    setFollowers(doc.data().followers);
-                    setFollowing(doc.data().following);
-                } else {
-                    console.log(`User documentnot found`);
-                }
-            })
-            .catch(error => {
-                console.log(`Error retrieving user document: ${error}`);
-            });
-    }, [followers, following]);
 
     useEffect(() => {
         if (userLoading || !user) {
@@ -114,11 +100,13 @@ function UserProfile({ currentUserId }: Props) {
 
     const handleFollow = async (wantToFollow: string, currentUser: string) => {
         setIsFollowing(true);
+        setFollowersLength(followersLength + 1);
         await follow(wantToFollow, currentUser);
     };
 
     const handleUnfollow = async (wantToUnfollow: string, currentUser: string) => {
         setIsFollowing(false);
+        setFollowersLength(followersLength - 1);
         await unfollow(wantToUnfollow, currentUser);
     };
 
@@ -172,12 +160,12 @@ function UserProfile({ currentUserId }: Props) {
                             </Grid>
                             <Grid>
                                 <Button onPress={handleFollowers} color="primary" auto>
-                                    {followers ? `${followers.length} Followers` : '? Followers'}
+                                    {followersLength} Followers
                                 </Button>
                             </Grid>
                             <Grid>
                                 <Button onPress={handleFollowing} color="primary" auto>
-                                    {following ? `${following.length} Following` : '? Following'}
+                                    {following.length} Following
                                 </Button>
                             </Grid>
                         </Grid.Container>
