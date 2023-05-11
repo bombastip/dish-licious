@@ -3,7 +3,7 @@ import { UserData } from '../../interfaces';
 import { AuthContext } from '..';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config';
-import UserDataContext from '../UserDataContext';
+import { UserDataContext } from '..';
 
 interface UserDataProviderProps {
     children: ReactNode;
@@ -13,6 +13,7 @@ const UserDataProvider: FC<UserDataProviderProps> = ({ children }) => {
     const { user, userLoading } = useContext(AuthContext);
     const [userData, setUserData] = useState(null as UserData | null);
     const [userDataLoading, setUserDataLoading] = useState(true);
+    const [reloadUserData, setReloadUserData] = useState(false);
 
     useEffect(() => {
         if (userLoading && !user) {
@@ -44,9 +45,10 @@ const UserDataProvider: FC<UserDataProviderProps> = ({ children }) => {
             }
         };
         getUserData();
-    }, [userLoading, user]);
+        setReloadUserData(false);
+    }, [userLoading, user, reloadUserData]);
 
-    const value = useMemo(() => ({ userData, userDataLoading }), [userData, userDataLoading]);
+    const value = useMemo(() => ({ userData, userDataLoading, setReloadUserData }), [userData, userDataLoading]);
 
     return <UserDataContext.Provider value={value}>{children}</UserDataContext.Provider>;
 };

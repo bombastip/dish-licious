@@ -16,6 +16,7 @@ import {
     SearchPeople,
 } from './pages';
 import { PrivateRoute } from './route';
+import Favorites from './pages/Favourites';
 
 const router = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
                     {
                         path: 'settings',
                         element: <Settings />,
+                    },
+                    {
+                        path: 'favourites',
+                        element: <Favorites />,
                     },
                     {
                         path: 'add-post',

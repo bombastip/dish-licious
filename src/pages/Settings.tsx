@@ -3,7 +3,7 @@ import { UsernameInput, SettingsCard, SunIcon, MoonIcon, ProfilePic } from '../c
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
-import { AuthContext } from '../context';
+import { AuthContext, UserDataContext } from '../context';
 import { User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const Settings = () => {
     const [username, setUsername] = useState('');
     const { user } = useContext(AuthContext);
+    const { setReloadUserData } = useContext(UserDataContext);
     const navigate = useNavigate();
 
     const handleChangeSettings = async () => {
@@ -33,16 +34,17 @@ const Settings = () => {
                     alert('Username already taken!');
                     return;
                 }
-                changeUsername(username, user as User);
+                await changeUsername(user.uid, username);
+                setReloadUserData(true);
             }
             if (userData && currentPhoto !== userData.photoURL) {
-                changePhotoURL(currentPhoto, user as User);
+                await changePhotoURL(currentPhoto, user as User);
+                setReloadUserData(true);
                 alert('Settings changed!');
             }
-            // FIXME: fetch user data from firestore
             navigate('/');
         } catch (error: unknown) {
-            console.error(error);
+            throw new Error(`Error changing settings: ${error}`);
         }
     };
     const darkMode = useDarkMode(false);

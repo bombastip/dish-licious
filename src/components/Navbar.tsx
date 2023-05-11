@@ -1,6 +1,6 @@
 import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import Logo from '../assets/icon.png';
 import { UserDataContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const Box = styled('div', {
 
 function NavbarF() {
     const location = useLocation();
-    const { userData, userDataLoading } = useContext(UserDataContext);
+    const { userData } = useContext(UserDataContext);
 
     const navigate = useNavigate();
     const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
