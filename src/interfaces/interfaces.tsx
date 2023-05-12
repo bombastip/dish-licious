@@ -15,3 +15,13 @@ export type fromRegisterContextType = {
     fromRegister: boolean;
     setFromRegister: (value: boolean) => void;
 };
+
+export interface PostType {
+    description: string;
+    likes: string[];
+    photoURL: string;
+    timeCost: number;
+    timeUnit: string;
+    title: string;
+    userID: string;
+}
