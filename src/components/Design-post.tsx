@@ -3,10 +3,13 @@ import { HeartIcon } from './HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
+import { PostType } from '../interfaces';
 import { Link } from 'react-router-dom';
 
 export const Post = () => {
-    const [postList, setPostList] = useState<any[]>([]);
+    const [postList, setPostList] = useState<PostType[]>([
+        { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '', id:'' },
+    ]);
     const postCollectionRef = collection(db, 'posts');
 
     useEffect(() => {
@@ -16,11 +19,10 @@ export const Post = () => {
             try {
                 const data = await getDocs(postCollectionRef);
                 const filteredData = data.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id,
+                    ...(doc.data() as PostType),
+                     id: doc.id,
                 }));
                 setPostList(filteredData);
-                console.log(filteredData);
             } catch (err) {
                 console.error(err);
             }
