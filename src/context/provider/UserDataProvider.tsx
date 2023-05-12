@@ -37,7 +37,6 @@ const UserDataProvider: FC<UserDataProviderProps> = ({ children }) => {
                 if (!data.exists()) {
                     throw new Error(`User document not found`);
                 }
-                console.log(data.data());
                 setUserData(data.data() as UserData);
                 setUserDataLoading(false);
             } catch (err) {

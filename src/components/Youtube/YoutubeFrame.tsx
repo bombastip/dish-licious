@@ -33,7 +33,7 @@ export default function YouTubeFrame({ video, width, height }: YouTubeFrameProps
     };
 
     return (
-        <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+        <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div ref={divRef} className="relative">
                 <img
                     onClick={onClick}

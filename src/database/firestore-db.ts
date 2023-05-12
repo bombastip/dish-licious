@@ -56,19 +56,14 @@ export const changeUsername = async (uid: string, newUsername: string) => {
     }
 };
 
-export async function changePhotoURL(photoURL: string, user: User) {
-    const docRef = doc(db, 'users', user.uid);
-    const data = {
-        photoURL: photoURL,
-    };
-    setDoc(docRef, data, { merge: true })
-        .then(() => {
-            console.log('PhotoURL changed successfully in: ', photoURL);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
+export const changePhotoURL = async (uid: string, newPhotoUrl: string) => {
+    const docRef = doc(db, 'users', uid);
+    try {
+        await setDoc(docRef, { photoURL: newPhotoUrl }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing photoURL: ${error}`);
+    }
+};
 // function to get following array from firestore users collection
 export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);

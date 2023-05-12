@@ -31,7 +31,6 @@ const UserSearchResults = (props: UserSearchProps) => {
     useEffect(() => {
         const filteredList = users.filter(user => user.username.includes(props.username));
         setFilteredList(filteredList);
-        console.log(filteredList);
     }, [props.username]);
 
     return props.username ? (

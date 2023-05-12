@@ -21,3 +21,5 @@ export type UserData = {
     username: string;
     photoURL: string;
 };
+
+export type PostList = [id: string];

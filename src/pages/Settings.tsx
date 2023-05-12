@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
 import { AuthContext, UserDataContext } from '../context';
-import { User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +37,7 @@ const Settings = () => {
                 setReloadUserData(true);
             }
             if (userData && currentPhoto !== userData.photoURL) {
-                await changePhotoURL(currentPhoto, user as User);
+                await changePhotoURL(user.uid, currentPhoto);
                 setReloadUserData(true);
                 alert('Settings changed!');
             }
