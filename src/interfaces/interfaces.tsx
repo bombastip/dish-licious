@@ -24,6 +24,7 @@ export interface PostType {
     timeUnit: string;
     title: string;
     userID: string;
+    id: string;
 }
 
 export type UserCompleteData = {

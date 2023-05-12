@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 export const Post = () => {
     const [postList, setPostList] = useState<PostType[]>([
-        { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '' },
+        { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '', id:'' },
     ]);
     const postCollectionRef = collection(db, 'posts');
 
@@ -20,7 +20,7 @@ export const Post = () => {
                 const data = await getDocs(postCollectionRef);
                 const filteredData = data.docs.map(doc => ({
                     ...(doc.data() as PostType),
-                    // id: doc.id,
+                     id: doc.id,
                 }));
                 setPostList(filteredData);
             } catch (err) {
@@ -35,7 +35,6 @@ export const Post = () => {
     //     unit: string;
     //     likes: Array<string>;
     // }
- 
 
     return (
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
