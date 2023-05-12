@@ -1,5 +1,5 @@
 export const HeartIcon = ({
-    fill = 'red', // set default color to red
+    fill = '#F31260', // set default color to red
     filled,
     size,
     height,

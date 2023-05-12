@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { PostType } from '../interfaces';
-import { Link } from 'react-router-dom';
 
 export const Post = () => {
     const [postList, setPostList] = useState<PostType[]>([
@@ -35,9 +34,7 @@ export const Post = () => {
             <div>
                 {postList.map(post => (
                     <>
-                        {/* <Link to={`/post?postId=${post.id}`}> */}
                         <SinglePost post={post} />
-                        {/* </Link> */}
                         <Spacer y={0.5} />
                     </>
                 ))}

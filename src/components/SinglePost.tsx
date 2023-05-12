@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
+import { Link } from 'react-router-dom';
 
 type Props = {
     post: PostType;
@@ -54,7 +55,7 @@ function SinglePost({ post }: Props) {
 
     const addToFav = async () => {
         if (user) {
-            const userDocRef = doc(db, 'users', user.uid);
+            const userDocRef = doc(userCollectionRef, user.uid);
             try {
                 await updateDoc(userDocRef, {
                     favourites: arrayUnion(post.id),
@@ -96,7 +97,7 @@ function SinglePost({ post }: Props) {
     };
 
     return (
-        <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
+        <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
             <Card.Header>
                 <Text b css={{ whiteSpace: 'nowrap' }}>
                     {post.title}
@@ -106,36 +107,37 @@ function SinglePost({ post }: Props) {
                 </Row>
             </Card.Header>
             <Card.Divider />
-            <Card.Body css={{ py: '$10' }}>
-                <Image
-                    width={400}
-                    height={170}
-                    containerCss={{ borderRadius: '3%' }}
-                    src={post.photoURL}
-                    alt="Default Image"
-                    objectFit="cover"
-                />
-                <Spacer y={0.2} />
-                <Row>
-                    <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                        {' '}
-                        Liked by {likesLength}{' '}
+            <Link to={`/post?postId=${post.id}`}>
+                <Card.Body isPressable css={{ py: '$10' }}>
+                    <Image
+                        width={400}
+                        height={170}
+                        containerCss={{ borderRadius: '3%' }}
+                        src={post.photoURL}
+                        alt="Default Image"
+                        objectFit="cover"
+                    />
+                    <Spacer y={0.2} />
+                    <Row>
+                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                            {' '}
+                            Liked by {likesLength}{' '}
+                        </Text>
+                    </Row>
+                    <Spacer y={0.3} />
+                    <Text
+                        css={{
+                            height: '5em',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,
+                        }}
+                    >
+                        Mod de preparare: {post.description}
                     </Text>
-                </Row>
-                <Spacer y={0.3} />
-                <Text
-                    css={{
-                        height: '5em',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3,
-                    }}
-                >
-                    Mod de preparare: {post.description}
-                </Text>
-                {/* <Text>
+                    {/* <Text>
         Ingrediente:
         <Text>
             {post.ingredients.map((ingredient: Ingredient, index: number) => (
@@ -145,29 +147,27 @@ function SinglePost({ post }: Props) {
             ))}
         </Text>
         </Text> */}
-                <Text>
-                    {' '}
-                    Time Cost: {post.timeCost} {post.timeUnit}
-                </Text>
-            </Card.Body>
+                    <Text>
+                        {' '}
+                        Time Cost: {post.timeCost} {post.timeUnit}
+                    </Text>
+                </Card.Body>
+            </Link>
             <Card.Divider />
             <Card.Footer>
                 <Row justify="flex-start">
                     {!liked ? (
                         <Button
                             auto
-                            ghost
+                            color="error"
                             css={{ mr: '$2' }}
-                            onClick={() => like()}
-                            icon={<HeartIcon fill="currentColor" filled />}
+                            icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
                         />
                     ) : (
                         <Button
                             auto
-                            color="error"
-                            css={{ mr: '$2' }}
-                            onClick={() => unlike()}
-                            icon={<HeartIcon fill="currentColor" filled />}
+                            css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
+                            icon={<HeartIcon filled fill="#F31260" onClick={() => unlike()} />}
                         />
                     )}
                     <Button flat color="error" auto onClick={() => addToFav()}>
