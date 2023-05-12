@@ -159,7 +159,7 @@ function SinglePost({ post }: Props) {
                             ghost
                             css={{ mr: '$2' }}
                             onClick={() => like()}
-                            icon={<HeartIcon fill="currentColor" filled  />}
+                            icon={<HeartIcon fill="currentColor" filled />}
                         />
                     ) : (
                         <Button
@@ -167,7 +167,7 @@ function SinglePost({ post }: Props) {
                             color="error"
                             css={{ mr: '$2' }}
                             onClick={() => unlike()}
-                            icon={<HeartIcon fill="currentColor" filled  />}
+                            icon={<HeartIcon fill="currentColor" filled />}
                         />
                     )}
                     <Button flat color="error" auto onClick={() => addToFav()}>
