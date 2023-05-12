@@ -22,18 +22,16 @@ function SinglePost({ post }: Props) {
     useEffect(() => {
         const getLikes = async () => {
             const docRef = doc(postCollectionRef, post.id);
-           // const docRef = doc(db, 'posts',post.id);
-            getDoc(docRef)
-            .then(doc => {
+            getDoc(docRef).then(doc => {
                 if (doc.exists()) {
                     setLikesLength(doc.data().likes.length);
                 } else {
                     console.log(`User documentnot found`);
                 }
-            })
-        }
+            });
+        };
         getLikes();
-    }, [postCollectionRef,post.id]);
+    }, [post.id]);
 
     useEffect(() => {
         if (!user) {
@@ -41,15 +39,17 @@ function SinglePost({ post }: Props) {
         }
         const check = async () => {
             try {
-                const liked = post.likes.includes(user.uid);
+                const docRef = doc(postCollectionRef, post.id);
+                const docSnap = await getDoc(docRef);
+                const liked = docSnap.data()?.likes.includes(user.uid);
                 setLiked(liked);
-                console.log("title: ",post.title,"liked: ",liked);
+                console.log('title: ', post.title, 'liked: ', liked);
             } catch (error) {
                 console.log(error);
             }
         };
         check();
-    }, [user, liked]);
+    }, [user]);
 
     const addToFav = async () => {
         if (user) {
@@ -67,7 +67,7 @@ function SinglePost({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                const postDocRef = doc(postCollectionRef, post.id)
+                const postDocRef = doc(userCollectionRef, post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayUnion(user.uid),
                 });
@@ -82,7 +82,7 @@ function SinglePost({ post }: Props) {
     const unlike = async () => {
         try {
             if (user !== null) {
-                const postDocRef = doc(postCollectionRef, post.id)
+                const postDocRef = doc(postCollectionRef, post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayRemove(user.uid),
                 });
@@ -158,13 +158,15 @@ function SinglePost({ post }: Props) {
                             ghost
                             css={{ mr: '$2' }}
                             icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
-                        />) :
-                        (<Button
+                        />
+                    ) : (
+                        <Button
                             auto
                             color="error"
                             css={{ mr: '$2' }}
                             icon={<HeartIcon fill="currentColor" filled onClick={() => unlike()} />}
-                        />)}
+                        />
+                    )}
                     <Button flat color="error" auto onClick={() => addToFav()}>
                         Save
                     </Button>

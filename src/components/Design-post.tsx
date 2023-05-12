@@ -6,7 +6,6 @@ import { db } from '../config/firebase-config';
 import { PostType } from '../interfaces';
 import { Link } from 'react-router-dom';
 
-
 export const Post = () => {
     const [postList, setPostList] = useState<PostType[]>([
         { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '', id: '' },
@@ -30,7 +29,6 @@ export const Post = () => {
         };
         getPostList();
     }, []);
- 
 
     return (
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
