@@ -1,6 +1,6 @@
-import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea } from '@nextui-org/react';
+import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea, FormElement } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ function AddPost() {
     const [newTimeUnit, setNewTimeUnit] = useState('');
     const [newTimeCost, setNewTimeCost] = useState(0);
     const [newLikes, setNewLikes] = useState([]);
+
     // photo
     const [newphotoURL, setPhotoURL] = useState('');
     const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -69,10 +70,11 @@ function AddPost() {
                     timeUnit: newTimeUnit,
                     likes: newLikes,
                     photoURL: newphotoURL,
+                    ingredients: formFields,
                     userID: user.uid,
                 });
 
-                // adauga postul in lista de postari ale utilizatorului curent
+                // adauga postarea in lista de postari ale utilizatorului curent
                 const userDocRef = doc(userCollectionRef, user.uid);
                 await updateDoc(userDocRef, {
                     posts: arrayUnion(newPostRef.id),
@@ -83,6 +85,35 @@ function AddPost() {
         }
     };
 
+
+    // dynamic form
+    const [formFields, setFormfields] = useState([
+        { name: '', quantity: 0, measureUnit: '' },
+    ]);
+
+    const handleFormChange = (event: ChangeEvent<FormElement>, index: number) => {
+        const data:any = [...formFields];
+        data[index][event.target.name]= event.target.value;
+        setFormfields(data);
+    }
+    
+    const submit = (e: any) => {
+        e.preventDefault();
+
+    }
+    const addFields = () => {
+        const object = {
+            name: '',
+            quantity: 0,
+            measureUnit: ''
+        }
+        setFormfields([...formFields, object])
+    }
+    const removeFields = (index: number) => {
+        const data = [...formFields];
+        data.splice(index, 1);
+        setFormfields(data);
+    }
     return (
         <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
             <Grid sm={12} md={5}>
@@ -128,7 +159,58 @@ function AddPost() {
                                 onChange={e => setNewDescription(e.target.value)}
                                 css={{ width: '100%' }}
                             />
-                            {/* <AddPostButton clickFunc={onSubmitPost} buttonName="AddPost" error={err} setError={setErr}  /> */}
+                            <div>
+                                <form onSubmit={submit}>
+                                    {formFields.map((form, index) => {
+                                        return (
+                                            <table key={index} style={{ marginTop: '20px' }}>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style={{ paddingRight: '10px' }}>
+                                                            <Input
+                                                                bordered
+                                                                name='name'
+                                                                placeholder='Name Ingredient'
+                                                                width="150px"
+                                                                onChange={(event: ChangeEvent<FormElement>) => handleFormChange(event, index)}
+                                                                value={form.name}
+                                                            />
+                                                        </td>
+                                                        <td style={{ paddingRight: '10px' }}>
+                                                            <Input
+                                                                bordered
+                                                                name='quantity'
+                                                                placeholder='Quantity'
+                                                                width="60px"
+                                                                onChange={(event: ChangeEvent<FormElement>) => handleFormChange(event, index)}
+                                                                value={form.quantity}
+                                                            />
+                                                        </td>
+                                                        <td style={{ paddingRight: '10px' }}>
+                                                            <Input
+                                                                bordered
+                                                                name='measureUnit'
+                                                                placeholder='Measure Unit'
+                                                                width="120px"
+                                                                onChange={(event: ChangeEvent<FormElement>) => handleFormChange(event, index)}
+                                                                value={form.measureUnit}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Button color="warning" onClick={removeFields} auto rounded flat>Remove</Button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        )
+                                    })}
+                                </form>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                    <Button color="warning" onClick={addFields}  css={{ mr: '$4' }} auto rounded flat>+</Button>
+                                    <Button color="warning" auto rounded flat>Save ingredients</Button>
+                                </div>
+
+                            </div>
                             <div
                                 style={{
                                     display: 'flex-start',
@@ -173,6 +255,7 @@ function AddPost() {
                                     </Modal.Body>
                                 </Modal>
                                 <Button
+                                    shadow
                                     color="warning"
                                     onClick={onSubmitPost}
                                     onPress={handler}
