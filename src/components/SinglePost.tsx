@@ -50,7 +50,7 @@ function SinglePost({ post }: Props) {
             }
         };
         check();
-    }, [user, post.id]);
+    }, [user, postCollectionRef]);
 
     const addToFav = async () => {
         if (user) {
@@ -68,7 +68,7 @@ function SinglePost({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                const postDocRef = doc(db, 'posts', post.id);
+                const postDocRef = doc(postCollectionRef, post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayUnion(user.uid),
                 });
@@ -158,14 +158,16 @@ function SinglePost({ post }: Props) {
                             auto
                             ghost
                             css={{ mr: '$2' }}
-                            icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
+                            onClick={() => like()}
+                            icon={<HeartIcon fill="currentColor" filled  />}
                         />
                     ) : (
                         <Button
                             auto
                             color="error"
                             css={{ mr: '$2' }}
-                            icon={<HeartIcon fill="currentColor" filled onClick={() => unlike()} />}
+                            onClick={() => unlike()}
+                            icon={<HeartIcon fill="currentColor" filled  />}
                         />
                     )}
                     <Button flat color="error" auto onClick={() => addToFav()}>
