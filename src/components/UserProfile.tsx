@@ -6,6 +6,7 @@ import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
 import { HeartIcon } from './HeartIcon';
+import { PostType } from '../interfaces';
 
 type Props = {
     currentUserId: string;
@@ -18,7 +19,7 @@ function UserProfile({ currentUserId }: Props) {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [isFollowing, setIsFollowing] = useState(false);
-    const [posts, setPosts] = useState<any[]>([]);
+    const [posts, setPosts] = useState<PostType[]>([]);
     const [followersLength, setFollowersLength] = useState<number>(0);
     const navigate = useNavigate();
 
@@ -37,9 +38,9 @@ function UserProfile({ currentUserId }: Props) {
                     setFollowers(doc.data().followers);
                     setFollowersLength(followers.length);
                     setFollowing(doc.data().following);
-                    console.log(username);
+                    // console.log(username);
                 } else {
-                    console.log(`User documentnot found`);
+                    // console.log(`User documentnot found`);
                 }
             })
             .catch(error => {
@@ -71,9 +72,10 @@ function UserProfile({ currentUserId }: Props) {
                     const myPosts = [];
                     for (const post of docSnap.data().posts) {
                         const postRef = doc(db, 'posts', post);
-                        myPosts.push(await getDoc(postRef));
+                        const data = (await getDoc(postRef)).data();
+                        myPosts.push(data as PostType);
                     }
-                    console.log('postari: ', myPosts);
+                    // console.log('postari: ', myPosts);
                     setPosts(myPosts);
                 } else {
                     console.log('No such document!');
@@ -193,7 +195,7 @@ function UserProfile({ currentUserId }: Props) {
                                 <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
                                     <Card.Header>
                                         <Text b css={{ whiteSpace: 'nowrap' }}>
-                                            {post.data().title}
+                                            {post?.title || ''}
                                         </Text>
                                         <Row justify="flex-end">
                                             <User src={photoURL} name={username} />
@@ -205,7 +207,7 @@ function UserProfile({ currentUserId }: Props) {
                                             width={400}
                                             height={170}
                                             containerCss={{ borderRadius: '3%' }}
-                                            src={post.data().photoURL}
+                                            src={post?.photoURL}
                                             alt="Default Image"
                                             objectFit="cover"
                                         />
@@ -213,7 +215,7 @@ function UserProfile({ currentUserId }: Props) {
                                         <Row>
                                             <Text color="#ec9127" css={{ marginLeft: '$1' }}>
                                                 {' '}
-                                                Liked by {post.data().likes.length}{' '}
+                                                Liked by {post?.likes.length}{' '}
                                             </Text>
                                         </Row>
                                         <Spacer y={0.3} />
@@ -227,11 +229,11 @@ function UserProfile({ currentUserId }: Props) {
                                                 WebkitLineClamp: 3,
                                             }}
                                         >
-                                            Mod de preparare: {post.data().description}
+                                            Mod de preparare: {post?.description}
                                         </Text>
                                         <Text>
                                             {' '}
-                                            Time Cost: {post.data().timeCost} {post.data().timeUnit}
+                                            Time Cost: {post?.timeCost} {post?.timeUnit}
                                         </Text>
                                     </Card.Body>
                                     <Card.Divider />
