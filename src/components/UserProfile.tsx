@@ -241,9 +241,8 @@ function UserProfile({ currentUserId }: Props) {
                                         <Row justify="flex-start">
                                             <Button
                                                 auto
-                                                color="error"
-                                                css={{ mr: '$2' }}
-                                                icon={<HeartIcon fill="currentColor" filled />}
+                                                css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
+                                                icon={<HeartIcon filled fill="red" />}
                                             />
                                             <Button flat color="error" auto>
                                                 Save
