@@ -21,7 +21,8 @@ function SinglePost({ post }: Props) {
 
     useEffect(() => {
         const getLikes = async () => {
-            const docRef = doc(postCollectionRef, post.id);
+            //const docRef = doc(postCollectionRef, post.id);
+            const docRef = doc(db, 'posts', post.id);
             getDoc(docRef).then(doc => {
                 if (doc.exists()) {
                     setLikesLength(doc.data().likes.length);
@@ -39,7 +40,7 @@ function SinglePost({ post }: Props) {
         }
         const check = async () => {
             try {
-                const docRef = doc(postCollectionRef, post.id);
+                const docRef = doc(db, 'posts', post.id);
                 const docSnap = await getDoc(docRef);
                 const liked = docSnap.data()?.likes.includes(user.uid);
                 setLiked(liked);
@@ -49,11 +50,11 @@ function SinglePost({ post }: Props) {
             }
         };
         check();
-    }, [user]);
+    }, [user, post.id]);
 
     const addToFav = async () => {
         if (user) {
-            const userDocRef = doc(userCollectionRef, user.uid);
+            const userDocRef = doc(db, 'users', user.uid);
             try {
                 await updateDoc(userDocRef, {
                     favourites: arrayUnion(post.id),
@@ -67,7 +68,7 @@ function SinglePost({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                const postDocRef = doc(userCollectionRef, post.id);
+                const postDocRef = doc(db, 'posts', post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayUnion(user.uid),
                 });
@@ -82,7 +83,7 @@ function SinglePost({ post }: Props) {
     const unlike = async () => {
         try {
             if (user !== null) {
-                const postDocRef = doc(postCollectionRef, post.id);
+                const postDocRef = doc(db, 'posts', post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayRemove(user.uid),
                 });
