@@ -1,7 +1,7 @@
-import { Post } from '../components/Design-post';
+// import { Post } from '../components/Design-post';
 
 const Dashboard = () => {
-    return <div>{/* <Post></Post> */}</div>;
+    return <>{/* <Post></Post> */}</>;
 };
 
 export default Dashboard;
