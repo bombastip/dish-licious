@@ -11,6 +11,17 @@ export type fromRegisterContextType = {
     setFromRegister: (value: boolean) => void;
 };
 
+export interface PostType {
+    description: string;
+    likes: string[];
+    photoURL: string;
+    timeCost: number;
+    timeUnit: string;
+    title: string;
+    userID: string;
+    id: string;
+}
+
 export type UserCompleteData = {
     id: string;
     username: string;

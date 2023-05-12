@@ -1,11 +1,7 @@
 import AddPost from '../components/AddPost';
 
 const AddPostPage = () => {
-    return (
-        <div>
-            <AddPost></AddPost>
-        </div>
-    );
+    return <AddPost />;
 };
 
 export default AddPostPage;
