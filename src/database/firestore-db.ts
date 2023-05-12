@@ -6,6 +6,7 @@ import { User } from '../interfaces';
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);
     const data = {
+        id: user.uid,
         username: username,
         photoURL: 'https://icon-library.com/images/2693a2979d_91160.png',
         following: [],
@@ -27,7 +28,7 @@ export async function getUserData(uid: string) {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
+        // console.log('Document data:', docSnap.data());
         return docSnap.data();
     } else {
         // doc.data() will be undefined in this case
@@ -113,7 +114,7 @@ export async function follow(wantToFollow: string, user: string) {
     const followRef = doc(db, 'users', user);
     const followingList = await getFollowing(user);
     if (followingList) {
-        console.log('Document data:', followingList);
+        // console.log('Document data:', followingList);
         if (
             followingList.some((element: string) => {
                 if (element === wantToFollow) return true;
@@ -208,4 +209,23 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         return true;
     }
     return false;
+}
+
+export async function getMyPosts(uid: string) {
+    const docRef = doc(db, 'users', uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        const myPosts = [];
+        for (const post of docSnap.data().posts) {
+            console.log(post);
+            const postRef = doc(db, 'posts', post);
+            myPosts.push(await getDoc(postRef));
+        }
+        console.log('Document data from getMyPosts:', myPosts);
+        return myPosts;
+    } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+        return false;
+    }
 }

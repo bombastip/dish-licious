@@ -25,3 +25,9 @@ export interface PostType {
     title: string;
     userID: string;
 }
+
+export type UserCompleteData = {
+    id: string;
+    username: string;
+    photoURL: string;
+};

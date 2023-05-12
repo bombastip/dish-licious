@@ -12,6 +12,9 @@ import {
     FollowersQueryParam,
     Following,
     FollowingQueryParam,
+    SearchRecipe,
+    SearchPeople,
+    Recipe,
 } from './pages';
 import { PrivateRoute } from './route';
 
@@ -65,6 +68,18 @@ const router = createBrowserRouter([
                     {
                         path: 'user-following',
                         element: <FollowingQueryParam />,
+                    },
+                    {
+                        path: 'search/recipes',
+                        element: <SearchRecipe />,
+                    },
+                    {
+                        path: 'search/people',
+                        element: <SearchPeople />,
+                    },
+                    {
+                        path: 'post',
+                        element: <Recipe />,
                     },
                 ],
             },
