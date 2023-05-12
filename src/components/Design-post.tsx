@@ -1,5 +1,5 @@
 import { Card, Grid, Text, Button, Row, User, Spacer, Image } from '@nextui-org/react';
-import { HeartIcon } from './HeartIcon';
+import { HeartIcon } from '../assets/HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';

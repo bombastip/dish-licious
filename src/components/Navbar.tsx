@@ -6,7 +6,7 @@ import { UserDataContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
-import { SearchNavbarItem } from '.';
+import { SearchNavbarItem, NotificationsIcon } from '.';
 
 export const Box = styled('div', {
     boxSizing: 'border-box',
@@ -62,10 +62,10 @@ function NavbarF() {
                 <Navbar.Link isActive={location.pathname === '/favourites'} href="/favourites">
                     Favourites
                 </Navbar.Link>
-                <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
-                    Notifications
-                </Navbar.Link>
                 <SearchNavbarItem />
+                <Navbar.Link isActive={location.pathname === '/notifications'} href="/notifications">
+                    <NotificationsIcon />
+                </Navbar.Link>
             </Navbar.Content>
             <Navbar.Content
                 css={{

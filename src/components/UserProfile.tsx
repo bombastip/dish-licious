@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
-import { HeartIcon } from './HeartIcon';
+import { HeartIcon } from '../assets/HeartIcon';
 import { PostType } from '../interfaces';
 
 type Props = {
