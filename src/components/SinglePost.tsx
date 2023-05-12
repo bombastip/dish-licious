@@ -1,7 +1,7 @@
 import { Card, Text, Button, Row, User, Spacer, Image } from '@nextui-org/react';
 import { HeartIcon } from './HeartIcon';
 import { useEffect, useState } from 'react';
-import {  getDoc, collection } from 'firebase/firestore';
+import { getDoc, collection, arrayRemove } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
@@ -13,13 +13,44 @@ type Props = {
 };
 
 function SinglePost({ post }: Props) {
-   
     const { user } = useContext(AuthContext);
     const userCollectionRef = collection(db, 'users');
-    const [likesLength, setLikesLength] = useState<number>(0);
-    //console.log(currentPostId);
+    const postCollectionRef = collection(db, 'posts');
+    const [likesLength, setLikesLength] = useState(0);
+    const [liked, setLiked] = useState(true);
 
-    
+    useEffect(() => {
+        const getLikes = async () => {
+            const docRef = doc(postCollectionRef, post.id);
+           // const docRef = doc(db, 'posts',post.id);
+            getDoc(docRef)
+            .then(doc => {
+                if (doc.exists()) {
+                    setLikesLength(doc.data().likes.length);
+                } else {
+                    console.log(`User documentnot found`);
+                }
+            })
+        }
+        getLikes();
+    }, [postCollectionRef,post.id]);
+
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        const check = async () => {
+            try {
+                const liked = post.likes.includes(user.uid);
+                setLiked(liked);
+                console.log("title: ",post.title,"liked: ",liked);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        check();
+    }, [user, liked]);
+
     const addToFav = async () => {
         if (user) {
             const userDocRef = doc(userCollectionRef, user.uid);
@@ -36,10 +67,29 @@ function SinglePost({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                setLikesLength(likesLength+1);
-                post.likes.push(user.uid);
-               
-        }} catch (err) {
+                const postDocRef = doc(postCollectionRef, post.id)
+                await updateDoc(postDocRef, {
+                    likes: arrayUnion(user.uid),
+                });
+                setLiked(true);
+                setLikesLength(likesLength + 1);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const unlike = async () => {
+        try {
+            if (user !== null) {
+                const postDocRef = doc(postCollectionRef, post.id)
+                await updateDoc(postDocRef, {
+                    likes: arrayRemove(user.uid),
+                });
+                setLiked(false);
+                setLikesLength(likesLength - 1);
+            }
+        } catch (err) {
             console.error(err);
         }
     };
@@ -51,10 +101,7 @@ function SinglePost({ post }: Props) {
                     {post.title}
                 </Text>
                 <Row justify="flex-end">
-                    <User
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                        name="Ariana Wattson"
-                    />
+                    <User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="Ariana Wattson" />
                 </Row>
             </Card.Header>
             <Card.Divider />
@@ -105,13 +152,20 @@ function SinglePost({ post }: Props) {
             <Card.Divider />
             <Card.Footer>
                 <Row justify="flex-start">
-                    <Button
-                        auto
-                        color="error"
-                        css={{ mr: '$2' }}
-                        icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
-                    />
-                    <Button flat color="error" auto onClick={() => addToFav()} >
+                    {!liked ? (
+                        <Button
+                            auto
+                            ghost
+                            css={{ mr: '$2' }}
+                            icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
+                        />) :
+                        (<Button
+                            auto
+                            color="error"
+                            css={{ mr: '$2' }}
+                            icon={<HeartIcon fill="currentColor" filled onClick={() => unlike()} />}
+                        />)}
+                    <Button flat color="error" auto onClick={() => addToFav()}>
                         Save
                     </Button>
                 </Row>
@@ -123,6 +177,6 @@ function SinglePost({ post }: Props) {
                 </Row>
             </Card.Footer>
         </Card>
-    )
+    );
 }
 export default SinglePost;
