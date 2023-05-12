@@ -1,5 +1,13 @@
 import { Spacer, Button, Switch } from '@nextui-org/react';
-import { UsernameInput, SettingsCard, SunIcon, MoonIcon, ProfilePic, VerificationModal, AuthButton } from '../components';
+import {
+    UsernameInput,
+    SettingsCard,
+    SunIcon,
+    MoonIcon,
+    ProfilePic,
+    VerificationModal,
+    AuthButton,
+} from '../components';
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
@@ -45,7 +53,7 @@ const Settings = () => {
             }
             console.log(check);
             console.log(username.length);
-            if (username.length == 0 && (userData && currentPhoto === userData.photoURL)) {
+            if (username.length == 0 && userData && currentPhoto === userData.photoURL) {
                 setErr('No changes were made!');
                 return;
             }
