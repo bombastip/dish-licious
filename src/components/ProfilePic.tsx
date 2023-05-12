@@ -1,6 +1,6 @@
 import { Button, Spacer, Avatar, Grid } from '@nextui-org/react';
 import { useContext } from 'react';
-import { AuthContext, UserDataContext } from '../context';
+import { UserDataContext } from '../context';
 import { useState, useEffect } from 'react';
 // import { db } from '../config';
 // import { doc, getDoc } from 'firebase/firestore';
