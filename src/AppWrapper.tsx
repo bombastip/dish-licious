@@ -4,15 +4,18 @@ import App from './App';
 import useDarkMode from 'use-dark-mode';
 import lightTheme from './themes/lightTheme';
 import darkTheme from './themes/darkTheme';
+import UserDataProvider from './context/provider/UserDataProvider';
 
 const AppWrapper = () => {
     const darkMode = useDarkMode(false);
     return (
         <RegisterContextProvider>
             <AuthContextProvider>
-                <NextUIProvider theme={darkMode.value ? darkTheme : lightTheme}>
-                    <App />
-                </NextUIProvider>
+                <UserDataProvider>
+                    <NextUIProvider theme={darkMode.value ? darkTheme : lightTheme}>
+                        <App />
+                    </NextUIProvider>
+                </UserDataProvider>
             </AuthContextProvider>
         </RegisterContextProvider>
     );

@@ -15,3 +15,4 @@ export { default as SearchNavbarItem } from './SearchNavbarItem';
 export { default as UserSearchResults } from './UserSearchResults';
 export { default as UserCard } from './UserCard';
 export { default as RecipeCard } from './RecipeCard';
+export { default as YoutubeFrame } from './Youtube/YoutubeFrame';

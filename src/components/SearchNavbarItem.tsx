@@ -36,6 +36,7 @@ const SearchNavbarItem = () => {
                 css={{
                     $$dropdownMenuWidth: '340px',
                     $$dropdownItemHeight: '70px',
+                    zIndex: '100',
                     '& .nextui-dropdown-item': {
                         py: '$4',
                         // dropdown item left icon

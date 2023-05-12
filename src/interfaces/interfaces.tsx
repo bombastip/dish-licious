@@ -3,11 +3,6 @@ export interface InputColorMessage {
     text: string;
     color: color;
 }
-export interface UserData {
-    email: string;
-    username: string;
-    photoURL: string;
-}
 
 export type ErrorMessasge = string | null;
 
@@ -32,3 +27,10 @@ export type UserCompleteData = {
     username: string;
     photoURL: string;
 };
+
+export type UserData = {
+    username: string;
+    photoURL: string;
+};
+
+export type PostList = [id: string];

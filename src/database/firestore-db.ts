@@ -41,47 +41,29 @@ export async function checkUsername(username: string) {
     const q = query(collection(db, 'users'), where('username', '==', username));
 
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, ' => ', doc.data());
-    });
     if (querySnapshot.empty) {
-        console.log('No matching documents.');
         return true;
     }
     return false;
 }
 
-export async function changeUsername(username: string, user: User) {
-    const result = await checkUsername(username);
-    if (result) {
-        const docRef = doc(db, 'users', user.uid);
-        const data = {
-            username: username,
-        };
-        setDoc(docRef, data, { merge: true })
-            .then(() => {
-                console.log('Username changed successfully in: ', username);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+export const changeUsername = async (uid: string, newUsername: string) => {
+    const docRef = doc(db, 'users', uid);
+    try {
+        await setDoc(docRef, { newUsername }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing username: ${error}`);
     }
-}
+};
 
-export async function changePhotoURL(photoURL: string, user: User) {
-    const docRef = doc(db, 'users', user.uid);
-    const data = {
-        photoURL: photoURL,
-    };
-    setDoc(docRef, data, { merge: true })
-        .then(() => {
-            console.log('PhotoURL changed successfully in: ', photoURL);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
+export const changePhotoURL = async (uid: string, newPhotoUrl: string) => {
+    const docRef = doc(db, 'users', uid);
+    try {
+        await setDoc(docRef, { photoURL: newPhotoUrl }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing photoURL: ${error}`);
+    }
+};
 // function to get following array from firestore users collection
 export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
