@@ -3,11 +3,22 @@ import SinglePost from './SinglePost';
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
-import { PostType } from '../interfaces';
+import { PostType, Ingredient } from '../interfaces';
 
 export const Post = () => {
+    const ingredients = [{ name: '', quantity: 0, measureUnit: '' }];
     const [postList, setPostList] = useState<PostType[]>([
-        { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '', id: '' },
+        {
+            userID: '',
+            title: '',
+            description: '',
+            photoURL: '',
+            likes: [],
+            ingredients,
+            timeCost: 0,
+            timeUnit: '',
+            id: '',
+        },
     ]);
     const postCollectionRef = collection(db, 'posts');
 
@@ -20,6 +31,7 @@ export const Post = () => {
                 const filteredData = data.docs.map(doc => ({
                     ...(doc.data() as PostType),
                     id: doc.id,
+                    ingredients: doc.data().ingredients as Ingredient[],
                 }));
                 setPostList(filteredData);
             } catch (err) {

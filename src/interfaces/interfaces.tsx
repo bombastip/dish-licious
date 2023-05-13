@@ -11,9 +11,16 @@ export type fromRegisterContextType = {
     setFromRegister: (value: boolean) => void;
 };
 
+export interface Ingredient {
+    name: string;
+    quantity: number;
+    measureUnit: string;
+}
+
 export interface PostType {
     description: string;
     likes: string[];
+    ingredients: Ingredient[];
     photoURL: string;
     timeCost: number;
     timeUnit: string;
