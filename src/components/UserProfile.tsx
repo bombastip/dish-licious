@@ -1,12 +1,12 @@
-import { Avatar, Grid, Text, Button, Spacer, Card, Row, User, Image } from '@nextui-org/react';
+import { Avatar, Grid, Text, Button, Spacer } from '@nextui-org/react';
 import { db } from '../config';
 import { doc, getDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 import { useNavigate } from 'react-router-dom';
 import { follow, unfollow, checkFollow } from '../database';
-import { HeartIcon } from './HeartIcon';
 import { PostType } from '../interfaces';
+import SinglePost from './SinglePost';
 
 type Props = {
     currentUserId: string;
@@ -72,10 +72,10 @@ function UserProfile({ currentUserId }: Props) {
                     const myPosts = [];
                     for (const post of docSnap.data().posts) {
                         const postRef = doc(db, 'posts', post);
-                        const data = (await getDoc(postRef)).data();
+                        const data = (await getDoc(postRef)).data() as PostType;
+                        data.id = post;
                         myPosts.push(data as PostType);
                     }
-                    // console.log('postari: ', myPosts);
                     setPosts(myPosts);
                 } else {
                     console.log('No such document!');
@@ -146,7 +146,7 @@ function UserProfile({ currentUserId }: Props) {
                                         <Button
                                             auto
                                             color="gray300"
-                                            onClick={() => handleUnfollow(currentUserId, user.uid)}
+                                            onPress={() => handleUnfollow(currentUserId, user.uid)}
                                         >
                                             Unfollow
                                         </Button>
@@ -154,7 +154,7 @@ function UserProfile({ currentUserId }: Props) {
                                         <Button
                                             auto
                                             color="secondary"
-                                            onClick={() => handleFollow(currentUserId, user.uid)}
+                                            onPress={() => handleFollow(currentUserId, user.uid)}
                                         >
                                             Follow
                                         </Button>
@@ -192,71 +192,7 @@ function UserProfile({ currentUserId }: Props) {
                         .reverse()
                         .map(post => (
                             <Grid wrap="wrap">
-                                <Card isPressable isHoverable variant="bordered" css={{ mw: '400px' }}>
-                                    <Card.Header>
-                                        <Text b css={{ whiteSpace: 'nowrap' }}>
-                                            {post?.title || ''}
-                                        </Text>
-                                        <Row justify="flex-end">
-                                            <User src={photoURL} name={username} />
-                                        </Row>
-                                    </Card.Header>
-                                    <Card.Divider />
-                                    <Card.Body css={{ py: '$10' }}>
-                                        <Image
-                                            width={400}
-                                            height={170}
-                                            containerCss={{ borderRadius: '3%' }}
-                                            src={post?.photoURL}
-                                            alt="Default Image"
-                                            objectFit="cover"
-                                        />
-                                        <Spacer y={0.2} />
-                                        <Row>
-                                            <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                                {' '}
-                                                Liked by {post?.likes.length}{' '}
-                                            </Text>
-                                        </Row>
-                                        <Spacer y={0.3} />
-                                        <Text
-                                            css={{
-                                                height: '5em',
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                display: '-webkit-box',
-                                                WebkitBoxOrient: 'vertical',
-                                                WebkitLineClamp: 3,
-                                            }}
-                                        >
-                                            Mod de preparare: {post?.description}
-                                        </Text>
-                                        <Text>
-                                            {' '}
-                                            Time Cost: {post?.timeCost} {post?.timeUnit}
-                                        </Text>
-                                    </Card.Body>
-                                    <Card.Divider />
-                                    <Card.Footer>
-                                        <Row justify="flex-start">
-                                            <Button
-                                                auto
-                                                color="error"
-                                                css={{ mr: '$2' }}
-                                                icon={<HeartIcon fill="currentColor" filled />}
-                                            />
-                                            <Button flat color="error" auto>
-                                                Save
-                                            </Button>
-                                        </Row>
-                                        <Row justify="flex-end">
-                                            <Button.Group>
-                                                <Button css={{ mr: '$2' }}> + </Button>
-                                                <Button>View comment list</Button>
-                                            </Button.Group>
-                                        </Row>
-                                    </Card.Footer>
-                                </Card>
+                                <SinglePost post={post} />
                                 <Spacer y={0.5} />
                             </Grid>
                         ))}

@@ -1,5 +1,5 @@
 import { Card, Text, Button, Row, User, Spacer, Image } from '@nextui-org/react';
-import { HeartIcon } from './HeartIcon';
+import { HeartIcon } from '../assets/HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDoc, collection, arrayRemove } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
@@ -200,21 +200,23 @@ function SinglePost({ post }: Props) {
                             auto
                             color="error"
                             css={{ mr: '$2' }}
-                            icon={<HeartIcon fill="currentColor" filled onClick={() => like()} />}
+                            onPress={() => like()}
+                            icon={<HeartIcon fill="currentColor" filled />}
                         />
                     ) : (
                         <Button
                             auto
                             css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
-                            icon={<HeartIcon filled fill="#F31260" onClick={() => unlike()} />}
+                            onPress={() => unlike()}
+                            icon={<HeartIcon filled fill="#F31260" />}
                         />
                     )}
                     {!saved ? (
-                        <Button color="error" auto onClick={() => addToFav()}>
+                        <Button color="error" css={{ width: '75px' }} auto onPress={() => addToFav()}>
                             Save
                         </Button>
                     ) : (
-                        <Button flat color="error" auto onClick={() => removeFromFav()}>
+                        <Button flat color="error" css={{ width: '75px' }} auto onPress={() => removeFromFav()}>
                             Saved
                         </Button>
                     )}

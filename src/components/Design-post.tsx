@@ -3,13 +3,24 @@ import SinglePost from './SinglePost';
 import { useEffect, useState } from 'react';
 import { getDocs, getDoc, collection, doc, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
-import { PostType } from '../interfaces';
+import { PostType, Ingredient } from '../interfaces';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 
 export const Post = () => {
+    const ingredients = [{ name: '', quantity: 0, measureUnit: '' }];
     const [postList, setPostList] = useState<PostType[]>([
-        { userID: '', title: '', description: '', photoURL: '', likes: [], timeCost: 0, timeUnit: '', id: '' },
+        {
+            userID: '',
+            title: '',
+            description: '',
+            photoURL: '',
+            likes: [],
+            ingredients,
+            timeCost: 0,
+            timeUnit: '',
+            id: '',
+        },
     ]);
     const postCollectionRef = collection(db, 'posts');
     const { user } = useContext(AuthContext);
@@ -30,6 +41,7 @@ export const Post = () => {
                 const filteredData = querySnapshot.docs.map(doc => ({
                     ...(doc.data() as PostType),
                     id: doc.id,
+                    ingredients: doc.data().ingredients as Ingredient[],
                 }));
                 setPostList(filteredData);
             };
