@@ -19,6 +19,7 @@ function SinglePost({ post }: Props) {
     const postCollectionRef = collection(db, 'posts');
     const [likesLength, setLikesLength] = useState(0);
     const [liked, setLiked] = useState(true);
+    const [saved, setSaved] = useState(true);
 
     useEffect(() => {
         const getLikes = async () => {
@@ -45,6 +46,10 @@ function SinglePost({ post }: Props) {
                 const docSnap = await getDoc(docRef);
                 const liked = docSnap.data()?.likes.includes(user.uid);
                 setLiked(liked);
+                const userdocRef = doc(db, 'users', user.uid);
+                const docUserSnap = await getDoc(userdocRef);
+                const saved = docUserSnap.data()?.favourites.includes(post.id);
+                setSaved(saved);
                 console.log('title: ', post.title, 'liked: ', liked);
             } catch (error) {
                 console.log(error);
@@ -60,6 +65,21 @@ function SinglePost({ post }: Props) {
                 await updateDoc(userDocRef, {
                     favourites: arrayUnion(post.id),
                 });
+                setSaved(true);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+
+    const removeFromFav = async () => {
+        if (user) {
+            const userDocRef = doc(userCollectionRef, user.uid);
+            try {
+                await updateDoc(userDocRef, {
+                    favourites: arrayRemove(post.id),
+                });
+                setSaved(false);
             } catch (err) {
                 console.error(err);
             }
@@ -170,9 +190,15 @@ function SinglePost({ post }: Props) {
                             icon={<HeartIcon filled fill="#F31260" onClick={() => unlike()} />}
                         />
                     )}
-                    <Button flat color="error" auto onClick={() => addToFav()}>
-                        Save
-                    </Button>
+                    {!saved ? (
+                        <Button color="error" auto onClick={() => addToFav()}>
+                            Save
+                        </Button>
+                    ) : (
+                        <Button flat color="error" auto onClick={() => removeFromFav()}>
+                            Saved
+                        </Button>
+                    )}
                 </Row>
                 <Row justify="flex-end">
                     <Button.Group>
