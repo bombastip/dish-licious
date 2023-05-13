@@ -20,6 +20,9 @@ function SinglePost({ post }: Props) {
     const [likesLength, setLikesLength] = useState(0);
     const [liked, setLiked] = useState(true);
     const [saved, setSaved] = useState(true);
+    const [userName, setUserName] = useState('');
+    const [photoUser, setPhotoUser] = useState('');
+    const [userID, setUserID] = useState('');
 
     useEffect(() => {
         const getLikes = async () => {
@@ -50,7 +53,15 @@ function SinglePost({ post }: Props) {
                 const docUserSnap = await getDoc(userdocRef);
                 const saved = docUserSnap.data()?.favourites.includes(post.id);
                 setSaved(saved);
-                console.log('title: ', post.title, 'liked: ', liked);
+                console.log(post.userID);
+                const userPostdocRef = doc(db, 'users', post.userID);
+                const docUserPostSnap = await getDoc(userPostdocRef);
+                const userName = docUserPostSnap.data()?.username;
+                const photoUser = docUserPostSnap.data()?.photoURL;
+                const userID = docUserPostSnap.data()?.id;
+                setPhotoUser(photoUser);
+                setUserName(userName);
+                setUserID(userID);
             } catch (error) {
                 console.log(error);
             }
@@ -123,7 +134,9 @@ function SinglePost({ post }: Props) {
                     {post.title}
                 </Text>
                 <Row justify="flex-end">
-                    <User src="https://i.pravatar.cc/150?u=a042581f4e29026704d" name="Ariana Wattson" />
+                    <Link to={`/user-profile?userId=${userID}`}>
+                        <User src={photoUser} name={userName} />
+                    </Link>
                 </Row>
             </Card.Header>
             <Card.Divider />
@@ -145,25 +158,41 @@ function SinglePost({ post }: Props) {
                         </Text>
                     </Row>
                     <Spacer y={0.3} />
-                    <Text
-                        css={{
-                            height: '5em',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 3,
-                        }}
-                    >
-                        Mod de preparare: {post.description}
-                    </Text>
-                    <Text>
-                        {' '}
-                        Time Cost: {post.timeCost} {post.timeUnit}
-                    </Text>
+                    <Row>
+                        <Text
+                            css={{
+                                height: '5em',
+                                marginLeft: '$1',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 3,
+                            }}
+                        >
+                            Mod de preparare: {post.description}
+                        </Text>
+                    </Row>
+                    {/* <Text>
+        Ingrediente:
+        <Text>
+            {post.ingredients.map((ingredient: Ingredient, index: number) => (
+                <li
+                    key={index}
+                >{`${ingredient.quantity} ${ingredient.unit} of ${ingredient.name} `}</li>
+            ))}
+        </Text>
+        </Text> */}
+                    <Row>
+                        <Text>
+                            {' '}
+                            Time Cost: {post.timeCost} {post.timeUnit}
+                        </Text>
+                    </Row>
                 </Card.Body>
             </Link>
             <Card.Divider />
+
             <Card.Footer>
                 <Row justify="flex-start">
                     {!liked ? (
