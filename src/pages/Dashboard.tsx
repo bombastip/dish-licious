@@ -1,7 +1,7 @@
 import { Post } from '../components/Design-post';
 
 const Dashboard = () => {
-    return <Post/>
+    return <Post />;
 };
 
 export default Dashboard;
