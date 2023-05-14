@@ -26,14 +26,18 @@ function SinglePost({ post }: Props) {
 
     useEffect(() => {
         const getLikes = async () => {
-            const docRef = doc(db, 'posts', post.id);
-            getDoc(docRef).then(doc => {
-                if (doc.exists()) {
-                    setLikesLength(doc.data().likes.length);
-                } else {
-                    console.log(`User documentnot found`);
-                }
-            });
+            try {
+                const docRef = doc(db, 'posts', post.id);
+                getDoc(docRef).then(doc => {
+                    if (doc.exists()) {
+                        setLikesLength(doc.data().likes.length);
+                    } else {
+                        console.log(`User document not found`);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         };
         getLikes();
     }, [post.id]);
@@ -140,7 +144,7 @@ function SinglePost({ post }: Props) {
             </Card.Header>
             <Card.Divider />
             <Link to={`/post?postId=${post.id}`}>
-                <Card.Body isPressable css={{ py: '$10' }}>
+                <Card.Body css={{ py: '$10' }}>
                     <Image
                         width={400}
                         height={170}
@@ -187,10 +191,9 @@ function SinglePost({ post }: Props) {
                     {!liked ? (
                         <Button
                             auto
-                            color="error"
-                            css={{ mr: '$2' }}
+                            css={{ mr: '$2', background: '$myColor' }}
                             onPress={() => like()}
-                            icon={<HeartIcon fill="currentColor" filled />}
+                            icon={<HeartIcon fill="white" filled />}
                         />
                     ) : (
                         <Button
@@ -201,11 +204,20 @@ function SinglePost({ post }: Props) {
                         />
                     )}
                     {!saved ? (
-                        <Button color="error" css={{ width: '75px' }} auto onPress={() => addToFav()}>
+                        <Button
+                            css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
+                            auto
+                            onPress={() => addToFav()}
+                        >
                             Save
                         </Button>
                     ) : (
-                        <Button flat color="error" css={{ width: '75px' }} auto onPress={() => removeFromFav()}>
+                        <Button
+                            flat
+                            css={{ width: '75px', background: '$myColor', color: 'white' }}
+                            auto
+                            onPress={() => removeFromFav()}
+                        >
                             Saved
                         </Button>
                     )}

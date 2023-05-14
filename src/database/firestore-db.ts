@@ -50,7 +50,7 @@ export async function checkUsername(username: string) {
 export const changeUsername = async (uid: string, newUsername: string) => {
     const docRef = doc(db, 'users', uid);
     try {
-        await setDoc(docRef, { newUsername }, { merge: true });
+        await setDoc(docRef, { username: newUsername }, { merge: true });
     } catch (error: unknown) {
         throw new Error(`Error changing username: ${error}`);
     }

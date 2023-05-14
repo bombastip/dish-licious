@@ -1,39 +1,16 @@
-import { Button, Spacer, Avatar, Grid } from '@nextui-org/react';
+import { Spacer, Avatar, Grid } from '@nextui-org/react';
 import { useContext } from 'react';
 import { UserDataContext } from '../context';
 import { useState, useEffect } from 'react';
-// import { db } from '../config';
-// import { doc, getDoc } from 'firebase/firestore';
 import { storage } from '../config/firebase-config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
+import { NoErrPopButton } from '.';
 
 function ProfilePic() {
     const [imageUpload, setImageUpload] = useState<File | null>(null);
     const { userData } = useContext(UserDataContext);
     const [currentPhoto, setCurrentPhoto] = useState(userData?.photoURL || '');
-
-    // useEffect(() => {
-    //     if (userLoading || !user) {
-    //         setUsername('');
-    //         setPhotoURL('');
-    //         return;
-    //     }
-    //     const docRef = doc(db, 'users', user.uid);
-    //     getDoc(docRef)
-    //         .then(doc => {
-    //             if (doc.exists()) {
-    //                 setUsername(doc.data().username);
-    //                 setPhotoURL(doc.data().photoURL);
-    //                 console.log(username);
-    //             } else {
-    //                 console.log(`User documentnot found`);
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }, [user, username, userLoading]);
 
     useEffect(() => {
         setCurrentPhoto(currentPhoto);
@@ -80,7 +57,12 @@ function ProfilePic() {
                         />
                         <Spacer y={1} />
                         {showUploadButton && ( // render button only if showUploadButton state is true
-                            <Button onClick={handleUploadPic}>Upload profile picture</Button>
+                            <NoErrPopButton
+                                buttonName={'Upload profile picture'}
+                                clickFunc={handleUploadPic}
+                                placement={'right'}
+                                popoverText={'Image uploaded successfully!'}
+                            />
                         )}
                     </Grid>
                 </Grid.Container>

@@ -4,7 +4,7 @@ import { AuthContext, fromRegisterContext } from '../context';
 import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
-import { EmailInput, PasswordInput, AuthCard, AuthButton, VerificationModal } from '../components';
+import { EmailInput, PasswordInput, AuthCard, VerificationModal, ErrPopButton } from '../components';
 import { FirebaseError } from 'firebase/app';
 import { ErrorMessasge } from '../interfaces';
 import { fromRegisterContextType } from '../interfaces/interfaces';
@@ -86,12 +86,25 @@ const Login = () => {
 
     return (
         <AuthCard>
-            <VerificationModal visible={modalVisible} setVisible={setModalVisible} handler={modalHandler} />
+            <VerificationModal
+                modalTitle="Verification Email Sent!"
+                modalBody="A verification email was sent to the provided email address."
+                visible={modalVisible}
+                buttonMessage="Understood"
+                setVisible={setModalVisible}
+            />
             <EmailInput email={email} setEmail={setEmail} />
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton clickFunc={handleLogin} buttonName="Login" error={err} setError={setErr} />
+            <ErrPopButton
+                clickFunc={handleLogin}
+                buttonName="Login"
+                error={err}
+                setError={setErr}
+                placement="bottom"
+                offset={60}
+            />
             <Text>
                 You don't have an account? <Link to="/register">Register</Link>
             </Text>

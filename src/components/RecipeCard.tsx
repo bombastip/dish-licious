@@ -261,30 +261,37 @@ function RecipeCard({ post }: Props) {
                         {!liked ? (
                             <Button
                                 auto
-                                color="error"
+                                css={{ mr: '$1', background: '$myColor' }}
                                 onPress={() => like()}
-                                icon={<HeartIcon fill="currentColor" filled />}
+                                icon={<HeartIcon fill="white" filled />}
                             />
                         ) : (
                             <Button
                                 auto
-                                css={{ backgroundColor: 'transparent', border: 'none' }}
+                                css={{ mr: '$1', backgroundColor: 'transparent', border: 'none' }}
                                 onPress={() => unlike()}
                                 icon={<HeartIcon filled fill="#F31260" />}
                             />
                         )}
                         <Spacer y={0.2} />
                         {!saved ? (
-                            <Button color="error" auto onPress={() => addToFav()} css={{ width: '75px' }}>
+                            <Button
+                                css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
+                                auto
+                                onPress={() => addToFav()}
+                            >
                                 Save
                             </Button>
                         ) : (
-                            <Button flat color="error" auto onPress={() => removeFromFav()} css={{ width: '75px' }}>
+                            <Button
+                                flat
+                                css={{ width: '75px', background: '$myColor', color: 'white' }}
+                                auto
+                                onPress={() => removeFromFav()}
+                            >
                                 Saved
                             </Button>
                         )}
-                        {/* <Spacer y={0.5} />
-                        <Button color="error" css={{ mr: '$2' }}> Add comment </Button> */}
                     </Row>
                     <Spacer y={0.5} />
                     <Text css={{ marginLeft: '10px' }}>Liked by {likesLength}</Text>
