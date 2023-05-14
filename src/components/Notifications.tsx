@@ -1,9 +1,10 @@
-import { Badge, Grid, Loading, styled, Dropdown } from '@nextui-org/react';
+import { Badge, Loading, styled, Dropdown, Navbar, Text } from '@nextui-org/react';
 import NotificationsIcon from '../assets/NotificationsIcon';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { getFollowNotif, getUserData } from '../database';
+import { useNavigate } from 'react-router-dom';
 
 const StyledButton = styled('button', {
     background: 'transparent',
@@ -17,9 +18,10 @@ const StyledButton = styled('button', {
 function Notifications() {
     const [isInvisible, setIsInvisible] = useState(false);
     const { user } = useContext(AuthContext);
-    const [followNotif, setFollowNotif] = useState([] as any);
+    const [followersIds, setFollowersIds] = useState([] as string[]);
     const [numNotif, setNumNotif] = useState(0);
-    const [buildNotif, setBuildNotif] = useState([] as string[]);
+    const [followersUsernames, setFollowersUsernames] = useState([] as string[]);
+    const navigate = useNavigate();
 
     if (!user) {
         return <Loading />;
@@ -32,25 +34,27 @@ function Notifications() {
 
         const myFollowNotif = async () => {
             const followNotifResult = await getFollowNotif(user.uid);
-            setFollowNotif(followNotifResult);
+            setFollowersIds(followNotifResult);
         };
 
         myFollowNotif();
     }, [user]);
 
     useEffect(() => {
-        setNumNotif(followNotif.length);
+        setNumNotif(followersIds.length);
         console.log('num:', numNotif);
-    }, [followNotif, numNotif]);
+    }, [followersIds, numNotif]);
 
     const handleNotif = async () => {
-        console.log('followNotif:', followNotif);
-        setIsInvisible(!isInvisible);
+        console.log('followersIds:', followersIds);
+        if (!isInvisible) {
+            setIsInvisible(!isInvisible);
+        }
         console.log('clicked');
 
         const newNotif = [];
-        for (let i = 0; i < followNotif.length; i++) {
-            const followerId = followNotif[i];
+        for (let i = 0; i < followersIds.length; i++) {
+            const followerId = followersIds[i];
             const followerData = await getUserData(followerId as string);
             if (!followerData) {
                 continue;
@@ -58,20 +62,66 @@ function Notifications() {
             const followerUsername = followerData.username;
             newNotif.push(followerUsername);
         }
-        setBuildNotif(newNotif);
-        console.log('build:', buildNotif);
+        setFollowersUsernames(newNotif);
+        console.log('build:', followersUsernames);
+    };
+
+    const handleAction = async (actionKey: string) => {
+        navigate(`/user-profile?userId=${actionKey}`);
     };
 
     return (
-        <Grid.Container alignItems="center" gap={2}>
-            <Grid>
-                <StyledButton aria-label="more than 99 notifications">
-                    <Badge color="error" content={numNotif} isInvisible={isInvisible} shape="circle">
-                        <NotificationsIcon onClick={handleNotif} fill="currentColor" size={30} />
-                    </Badge>
-                </StyledButton>
-            </Grid>
-        </Grid.Container>
+        <Dropdown>
+            <Navbar.Item>
+                <Dropdown.Button
+                    onClick={handleNotif}
+                    auto
+                    light
+                    css={{
+                        px: 0,
+                        dflex: 'center',
+                        svg: { pe: 'none' },
+                        mw: '100%',
+                    }}
+                    ripple={false}
+                >
+                    <StyledButton aria-label="more than 99 notifications">
+                        <Badge color="error" content={numNotif} isInvisible={isInvisible} shape="circle">
+                            <NotificationsIcon fill="currentColor" size={30} />
+                        </Badge>
+                    </StyledButton>
+                </Dropdown.Button>
+            </Navbar.Item>
+            <Dropdown.Menu
+                onAction={actionKey => handleAction(actionKey as string)}
+                aria-label="Notifications"
+                css={{
+                    $$dropdownMenuWidth: '340px',
+                    $$dropdownItemHeight: '70px',
+                    zIndex: '100',
+                    '& .nextui-dropdown-item': {
+                        py: '$4',
+                        svg: {
+                            color: '$secondary',
+                            mr: '$4',
+                        },
+                        '& .nextui-dropdown-item-content': {
+                            w: '100%',
+                            fontWeight: '$semibold',
+                        },
+                    },
+                }}
+            >
+                {followersUsernames.map((notif, index) => (
+                    <Dropdown.Item key={followersIds[index]}>
+                        <Text b color="#ec9127">
+                            {notif}
+                        </Text>{' '}
+                        started following you
+                    </Dropdown.Item>
+                ))}
+            </Dropdown.Menu>
+        </Dropdown>
     );
 }
 

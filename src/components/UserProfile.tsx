@@ -45,7 +45,7 @@ function UserProfile({ currentUserId }: Props) {
             .catch(error => {
                 console.log(`Error retrieving user document: ${error}`);
             });
-    }, [user, username, userLoading]);
+    }, [user, username, userLoading, currentUserId]);
 
     useEffect(() => {
         if (userLoading || !user) {

@@ -6,7 +6,7 @@ import { UserDataContext } from '../context';
 import { redirect, useNavigate } from 'react-router-dom';
 import { auth } from '../config';
 import { useLocation } from 'react-router-dom';
-import { SearchNavbarItem, NotificationsIcon } from '.';
+import { SearchNavbarItem } from '.';
 import { Notifications } from '.';
 
 export const Box = styled('div', {
