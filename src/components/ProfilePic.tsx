@@ -2,8 +2,6 @@ import { Spacer, Avatar, Grid } from '@nextui-org/react';
 import { useContext } from 'react';
 import { UserDataContext } from '../context';
 import { useState, useEffect } from 'react';
-// import { db } from '../config';
-// import { doc, getDoc } from 'firebase/firestore';
 import { storage } from '../config/firebase-config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
