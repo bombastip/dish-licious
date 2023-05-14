@@ -9,8 +9,9 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { AuthButton, NoErrPopButton, VerificationModal } from '.';
+import { NoErrPopButton, VerificationModal } from '.';
 import { ErrorMessasge } from '../interfaces';
+import ErrPopButton from './ErrPopButton';
 
 function AddPost() {
     // modal
@@ -331,7 +332,7 @@ function AddPost() {
                                     buttonFunction={closeHandler}
                                 />
 
-                                <AuthButton
+                                <ErrPopButton
                                     error={err}
                                     buttonName={'Post'}
                                     setError={setErr}

@@ -14,28 +14,6 @@ function ProfilePic() {
     const { userData } = useContext(UserDataContext);
     const [currentPhoto, setCurrentPhoto] = useState(userData?.photoURL || '');
 
-    // useEffect(() => {
-    //     if (userLoading || !user) {
-    //         setUsername('');
-    //         setPhotoURL('');
-    //         return;
-    //     }
-    //     const docRef = doc(db, 'users', user.uid);
-    //     getDoc(docRef)
-    //         .then(doc => {
-    //             if (doc.exists()) {
-    //                 setUsername(doc.data().username);
-    //                 setPhotoURL(doc.data().photoURL);
-    //                 console.log(username);
-    //             } else {
-    //                 console.log(`User documentnot found`);
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }, [user, username, userLoading]);
-
     useEffect(() => {
         setCurrentPhoto(currentPhoto);
     }, [currentPhoto]);

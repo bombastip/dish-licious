@@ -1,4 +1,4 @@
-import { Spacer } from '@nextui-org/react';
+import { Spacer, Switch } from '@nextui-org/react';
 import {
     UsernameInput,
     SettingsCard,
@@ -6,7 +6,7 @@ import {
     MoonIcon,
     ProfilePic,
     VerificationModal,
-    AuthButton,
+    ErrPopButton,
 } from '../components';
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
@@ -68,6 +68,8 @@ const Settings = () => {
         }
     };
     const darkMode = useDarkMode(false);
+
+
     const { component, currentPhoto } = ProfilePic();
 
     return (
@@ -93,7 +95,7 @@ const Settings = () => {
                 setVisible={setModalVisible}
                 buttonFunction={modalHandler}
             />
-            <AuthButton
+            <ErrPopButton
                 clickFunc={handleChangeSettings}
                 buttonName="Save changes"
                 error={err}

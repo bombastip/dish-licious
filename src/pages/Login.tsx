@@ -4,7 +4,7 @@ import { AuthContext, fromRegisterContext } from '../context';
 import { useNavigate, Link, redirect } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase-config';
-import { EmailInput, PasswordInput, AuthCard, AuthButton, VerificationModal } from '../components';
+import { EmailInput, PasswordInput, AuthCard, VerificationModal, ErrPopButton } from '../components';
 import { FirebaseError } from 'firebase/app';
 import { ErrorMessasge } from '../interfaces';
 import { fromRegisterContextType } from '../interfaces/interfaces';
@@ -97,7 +97,7 @@ const Login = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton
+            <ErrPopButton
                 clickFunc={handleLogin}
                 buttonName="Login"
                 error={err}

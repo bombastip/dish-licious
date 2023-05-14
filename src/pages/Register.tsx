@@ -1,6 +1,6 @@
 import { Spacer, Text } from '@nextui-org/react';
 import { useContext, useEffect, useState } from 'react';
-import { AuthButton, AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
+import { ErrPopButton, AuthCard, EmailInput, PasswordInput, UsernameInput } from '../components';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, actionCodeSettings } from '../config';
 import { createUserCollection, checkUsername } from '../database';
@@ -58,7 +58,7 @@ const Register = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton
+            <ErrPopButton
                 clickFunc={handleRegister}
                 buttonName="Register"
                 error={err}
