@@ -6,7 +6,7 @@ export { default as UsernameInput } from './UsernameInput';
 export { default as SettingsCard } from './SettingsCard';
 export { default as SunIcon } from '../assets/SunIcon';
 export { default as MoonIcon } from '../assets/MoonIcon';
-export { default as AuthButton } from './AuthButton';
+export { default as AuthButton } from './ErrPopButton';
 export { default as VerificationModal } from './VerificationModal';
 export { default as ProfilePic } from './ProfilePic';
 export { default as UserProfile } from './UserProfile';

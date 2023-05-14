@@ -31,7 +31,7 @@ const formatErrorMessage = (err: ErrorMessasge): ErrorMessasge => {
     return err;
 };
 
-const AuthButton: FC<PopoverProps> = props => {
+const ErrPopButton: FC<PopoverProps> = props => {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -66,4 +66,4 @@ const AuthButton: FC<PopoverProps> = props => {
     );
 };
 
-export default AuthButton;
+export default ErrPopButton;
