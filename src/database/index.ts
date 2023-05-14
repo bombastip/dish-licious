@@ -7,7 +7,7 @@ export {
     follow,
     unfollow,
     checkFollow,
-    getMyPosts,
     getFollowers,
     getFollowing,
+    getFollowNotif
 } from './firestore-db';

@@ -11,6 +11,7 @@ export async function createUserCollection(user: User, username: string) {
         photoURL: 'https://icon-library.com/images/2693a2979d_91160.png',
         following: [],
         followers: [],
+        followNotif: [],
         posts: [],
         favourites: [],
         feed: [],
@@ -193,18 +194,13 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
     return false;
 }
 
-export async function getMyPosts(uid: string) {
-    const docRef = doc(db, 'users', uid);
-    const docSnap = await getDoc(docRef);
+// function to get followNotif array from firestore users collection
+export async function getFollowNotif(id: string) {
+    const followNotifRef = doc(db, 'users', id);
+    const docSnap = await getDoc(followNotifRef);
     if (docSnap.exists()) {
-        const myPosts = [];
-        for (const post of docSnap.data().posts) {
-            console.log(post);
-            const postRef = doc(db, 'posts', post);
-            myPosts.push(await getDoc(postRef));
-        }
-        console.log('Document data from getMyPosts:', myPosts);
-        return myPosts;
+        console.log('Document data from getFollowNotif:', docSnap.data().followNotif);
+        return docSnap.data().followNotif;
     } else {
         // doc.data() will be undefined in this case
         console.log('No such document!');
