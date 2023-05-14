@@ -9,9 +9,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 
 function ProfilePic() {
-    // const { user, userLoading } = useContext(AuthContext);
-    // const [username, setUsername] = useState('');
-    // const [photoURL, setPhotoURL] = useState('');
     const [imageUpload, setImageUpload] = useState<File | null>(null);
     const { userData } = useContext(UserDataContext);
     const [currentPhoto, setCurrentPhoto] = useState(userData?.photoURL || '');
