@@ -33,13 +33,11 @@ export type UserCompleteData = {
     id: string;
     username: string;
     photoURL: string;
-    followNotif: string[];
 };
 
 export type UserData = {
     username: string;
     photoURL: string;
-    followNotif: string[];
 };
 
 export type PostList = [id: string];
