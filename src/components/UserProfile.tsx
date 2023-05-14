@@ -38,9 +38,8 @@ function UserProfile({ currentUserId }: Props) {
                     setFollowers(doc.data().followers);
                     setFollowersLength(followers.length);
                     setFollowing(doc.data().following);
-                    // console.log(username);
                 } else {
-                    // console.log(`User documentnot found`);
+                    console.log(`User documentnot found`);
                 }
             })
             .catch(error => {
@@ -182,8 +181,8 @@ function UserProfile({ currentUserId }: Props) {
                 </Grid>
             </Grid.Container>
 
-            {/* posts */}
             <Spacer y={3} />
+            {/* posts */}
 
             <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
                 {posts &&

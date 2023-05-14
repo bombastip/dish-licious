@@ -19,7 +19,6 @@ const UserCard = (props: UserCardProps) => {
                         <Avatar src={props.user.photoURL} size="lg" />
                         <Spacer y={1} x={5} />
                         <Text>{props.user.username}</Text>
-                        {/* <Spacer y={1} x={5} /> */}
                     </Row>
                 </Link>
             </Card>

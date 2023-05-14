@@ -33,7 +33,6 @@ export const Post = () => {
                 const userdocRef = doc(db, 'users', user.uid);
                 const docUserSnap = await getDoc(userdocRef);
                 const following = docUserSnap.data()?.following;
-                // setFollowing(following);
 
                 // Filter posts by following users
                 const q = query(postCollectionRef, where('userID', 'in', following));

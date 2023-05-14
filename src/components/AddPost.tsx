@@ -23,7 +23,6 @@ function AddPost() {
     const [newDescription, setNewDescription] = useState('');
     const [newTimeUnit, setNewTimeUnit] = useState('');
     const [newTimeCost, setNewTimeCost] = useState(0);
-    // const [newLikes, setNewLikes] = useState([]);
 
     // photo
     const [newphotoURL, setPhotoURL] = useState('');

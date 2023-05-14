@@ -10,6 +10,7 @@ import { checkFollow, follow, unfollow } from '../database';
 import { arrayRemove, arrayUnion, updateDoc, collection } from 'firebase/firestore';
 import { HeartIcon } from '../assets/HeartIcon';
 import { Ingredient } from '../interfaces';
+import { Link } from 'react-router-dom';
 
 type Props = {
     post: PostType;
@@ -186,11 +187,15 @@ function RecipeCard({ post }: Props) {
                             <Row>
                                 <Col>
                                     <Row>
-                                        <Avatar src={photoURL} size="md" />
+                                        <Link to={`/user-profile?userId=${userId}`}>
+                                            <Avatar css={{ cursor: 'pointer' }} src={photoURL} size="md" />
+                                        </Link>
                                         <Spacer x={0.6} />
-                                        <Text color="#d1d1d1" size={18}>
-                                            {username}
-                                        </Text>
+                                        <Link to={`/user-profile?userId=${userId}`}>
+                                            <Text isPressable color="#d1d1d1" size={18}>
+                                                {username}
+                                            </Text>
+                                        </Link>
                                     </Row>
                                 </Col>
                                 <Col>

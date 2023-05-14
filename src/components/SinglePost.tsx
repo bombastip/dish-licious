@@ -26,7 +26,6 @@ function SinglePost({ post }: Props) {
 
     useEffect(() => {
         const getLikes = async () => {
-            //const docRef = doc(postCollectionRef, post.id);
             const docRef = doc(db, 'posts', post.id);
             getDoc(docRef).then(doc => {
                 if (doc.exists()) {
@@ -135,7 +134,7 @@ function SinglePost({ post }: Props) {
                 </Text>
                 <Row justify="flex-end">
                     <Link to={`/user-profile?userId=${userID}`}>
-                        <User src={photoUser} name={userName} />
+                        <User css={{ cursor: 'pointer' }} src={photoUser} name={userName} />
                     </Link>
                 </Row>
             </Card.Header>
@@ -173,16 +172,6 @@ function SinglePost({ post }: Props) {
                             Mod de preparare: {post.description}
                         </Text>
                     </Row>
-                    {/* <Text>
-        Ingrediente:
-        <Text>
-            {post.ingredients.map((ingredient: Ingredient, index: number) => (
-                <li
-                    key={index}
-                >{`${ingredient.quantity} ${ingredient.unit} of ${ingredient.name} `}</li>
-            ))}
-        </Text>
-        </Text> */}
                     <Row>
                         <Text>
                             {' '}

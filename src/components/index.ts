@@ -17,3 +17,4 @@ export { default as UserCard } from './UserCard';
 export { default as RecipeCard } from './RecipeCard';
 export { default as YoutubeFrame } from './Youtube/YoutubeFrame';
 export { default as NotificationsIcon } from '../assets/NotificationsIcon';
+export { default as Favorites } from './Favorites';
