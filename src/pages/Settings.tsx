@@ -1,4 +1,4 @@
-import { Spacer, Button, Switch, Text } from '@nextui-org/react';
+import { Spacer } from '@nextui-org/react';
 import {
     UsernameInput,
     SettingsCard,
@@ -12,10 +12,9 @@ import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
 import { AuthContext, UserDataContext } from '../context';
-import { ErrorMessasge, User } from '../interfaces';
+import { ErrorMessasge } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
-import { set } from 'firebase/database';
 
 const Settings = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -57,7 +56,7 @@ const Settings = () => {
             if (userData && !username && currentPhoto === userData.photoURL) {
                 console.log('No changes were made');
                 setErr('No changes were made');
-                return
+                return;
             }
             if (userData && currentPhoto !== userData.photoURL) {
                 await changePhotoURL(user.uid, currentPhoto);

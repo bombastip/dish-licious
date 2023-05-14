@@ -1,4 +1,4 @@
-import { Button, Spacer, Avatar, Grid, Popover, Card, Row, Text } from '@nextui-org/react';
+import { Spacer, Avatar, Grid } from '@nextui-org/react';
 import { useContext } from 'react';
 import { UserDataContext } from '../context';
 import { useState, useEffect } from 'react';

@@ -1,4 +1,4 @@
-import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea, FormElement, Popover, Row } from '@nextui-org/react';
+import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -65,7 +65,6 @@ function AddPost() {
         });
     };
     const [showUploadButton, setShowUploadButton] = useState(false); // state to show or hide our upload button
-
 
     const onSubmitPost = async () => {
         try {

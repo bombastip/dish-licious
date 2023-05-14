@@ -31,7 +31,6 @@ const lightTheme = createTheme({
             error: '#d30000',
             link: '#5E1DAD',
             myColor: '#f31260',
-            
         },
         space: {},
         fonts: {},
