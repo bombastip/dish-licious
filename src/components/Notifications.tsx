@@ -3,7 +3,7 @@ import NotificationsIcon from '../assets/NotificationsIcon';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { getFollowNotif, getUserData, removeFollowNotif } from '../database';
+import { getFollowNotif, getUserData, removeNotification } from '../database';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const StyledButton = styled('button', {
@@ -61,7 +61,7 @@ function Notifications() {
         if (actionKey === 'noNotif') {
             return;
         }
-        await removeFollowNotif(user.uid, actionKey);
+        await removeNotification(user.uid, actionKey);
         console.log('len:', followersIds.length);
         navigate(`/user-profile?userId=${actionKey}`);
     };

@@ -10,5 +10,6 @@ export {
     getFollowers,
     getFollowing,
     getFollowNotif,
-    removeFollowNotif,
+    removeNotification,
+    addNotification,
 } from './firestore-db';

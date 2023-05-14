@@ -86,7 +86,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
         <div>
             <Spacer y={2} />
             <Container display="flex" alignItems="center" justify="center">
-                <Card css={{ height: `${list.length * 120}px`, maxWidth: '450px' }}>
+                <Card css={{ height: `${list.length * 100 + 120}px`, maxWidth: '450px' }}>
                     <Card.Body>
                         <Grid.Container
                             gap={2}
