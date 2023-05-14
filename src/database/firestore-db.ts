@@ -11,6 +11,7 @@ export async function createUserCollection(user: User, username: string) {
         photoURL: 'https://icon-library.com/images/2693a2979d_91160.png',
         following: [],
         followers: [],
+        followNotif: [],
         posts: [],
         favourites: [],
         feed: [],
@@ -91,6 +92,65 @@ export async function getFollowers(id: string) {
     }
 }
 
+// function to get followNotif array from firestore users collection
+export async function getFollowNotif(id: string) {
+    const followNotifRef = doc(db, 'users', id);
+    const docSnap = await getDoc(followNotifRef);
+    if (docSnap.exists()) {
+        console.log('Document data from getFollowNotif:', docSnap.data().followNotif);
+        return docSnap.data().followNotif;
+    } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+        return false;
+    }
+}
+
+// add followNotif to user's followNotif array in firestore in users collection
+export async function addNotification(wantToFollow: string, user: string) {
+    const followNotifRef = doc(db, 'users', wantToFollow);
+    const followNotifList = await getFollowNotif(wantToFollow);
+    if (followNotifList) {
+        console.log('foloooow:', followNotifList);
+        if (!followNotifList.includes(user)) {
+            followNotifList.push(user);
+            const data = {
+                followNotif: followNotifList,
+            };
+            setDoc(followNotifRef, data, { merge: true })
+                .then(() => {
+                    console.log('FollowNotif added successfully in followNotifList: ', followNotifList);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            return true;
+        }
+    }
+}
+
+// remove followNotif from user's followNotif array in firestore in users collection
+export async function removeNotification(user: string, wantToRemove: string) {
+    const followNotifRef = doc(db, 'users', user);
+    const followNotifList = await getFollowNotif(user);
+    if (followNotifList) {
+        if (followNotifList.includes(wantToRemove)) {
+            const updatedList = followNotifList.filter((element: string) => element !== wantToRemove);
+            const data = {
+                followNotif: updatedList,
+            };
+
+            setDoc(followNotifRef, data, { merge: true })
+                .then(() => {
+                    console.log('FollowNotif removed successfully from followNotifList: ', wantToRemove);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+}
+
 // add followUser to user's following array in firestore in users collection
 export async function follow(wantToFollow: string, user: string) {
     const followRef = doc(db, 'users', user);
@@ -132,9 +192,9 @@ export async function follow(wantToFollow: string, user: string) {
                     .catch(error => {
                         console.log(error);
                     });
-                return true;
             }
         }
+        addNotification(wantToFollow, user);
     }
 }
 
@@ -172,6 +232,7 @@ export async function unfollow(wantToUnfollow: string, user: string) {
                     console.log(error);
                 });
         }
+        removeNotification(wantToUnfollow, user);
     }
 }
 
@@ -191,23 +252,4 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         return true;
     }
     return false;
-}
-
-export async function getMyPosts(uid: string) {
-    const docRef = doc(db, 'users', uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        const myPosts = [];
-        for (const post of docSnap.data().posts) {
-            console.log(post);
-            const postRef = doc(db, 'posts', post);
-            myPosts.push(await getDoc(postRef));
-        }
-        console.log('Document data from getMyPosts:', myPosts);
-        return myPosts;
-    } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
-        return false;
-    }
 }

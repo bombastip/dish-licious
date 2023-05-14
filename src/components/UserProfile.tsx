@@ -45,7 +45,7 @@ function UserProfile({ currentUserId }: Props) {
             .catch(error => {
                 console.log(`Error retrieving user document: ${error}`);
             });
-    }, [user, username, userLoading]);
+    }, [user, username, userLoading, currentUserId]);
 
     useEffect(() => {
         if (userLoading || !user) {
@@ -60,7 +60,7 @@ function UserProfile({ currentUserId }: Props) {
             }
         };
         check();
-    }, [user, username, userLoading]);
+    }, [user, username, userLoading, currentUserId]);
 
     useEffect(() => {
         const getMyPosts = async () => {
@@ -86,7 +86,7 @@ function UserProfile({ currentUserId }: Props) {
         };
 
         getMyPosts();
-    }, [currentUserId]);
+    }, [currentUserId, user]);
 
     const handleFollowers = () => {
         if (user?.uid !== currentUserId) {

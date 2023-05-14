@@ -19,3 +19,4 @@ export { default as YoutubeFrame } from './Youtube/YoutubeFrame';
 export { default as NotificationsIcon } from '../assets/NotificationsIcon';
 export { default as Favorites } from './Favorites';
 export { default as NoErrPopButton } from './NoErrPopButton';
+export { default as Notifications } from './Notifications';

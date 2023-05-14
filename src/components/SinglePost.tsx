@@ -70,7 +70,7 @@ function SinglePost({ post }: Props) {
             }
         };
         check();
-    }, [user, postCollectionRef]);
+    }, [user, post.id]);
 
     const addToFav = async () => {
         if (user) {
