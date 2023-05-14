@@ -69,7 +69,6 @@ const Settings = () => {
     };
     const darkMode = useDarkMode(false);
 
-
     const { component, currentPhoto } = ProfilePic();
 
     return (

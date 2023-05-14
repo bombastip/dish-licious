@@ -163,9 +163,10 @@ function AddPost() {
     return (
         <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
             <Grid sm={12} md={5}>
-                <Card css={{ width: '650px' }}>
+                <Card aria-label="Add Post" css={{ width: '650px' }}>
                     <Card.Header>
                         <Text
+                            aria-label="Header-Add-Post"
                             h1
                             size={40}
                             css={{
@@ -181,11 +182,13 @@ function AddPost() {
                     <Card.Divider />
                     <Card.Body css={{ py: '$10' }}>
                         <Container
+                            aria-label="Add-Post-Container"
                             justify="center"
                             alignItems="center"
                             css={{ textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center' }}
                         >
                             <Input
+                                aria-label="Title-Add-Post"
                                 bordered
                                 labelPlaceholder="Title"
                                 onChange={e => setNewPostTitle(e.target.value)}
@@ -193,6 +196,7 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Input
+                                aria-label="TimeCost-Add-Post"
                                 bordered
                                 labelPlaceholder="TimeCost"
                                 type="number"
@@ -202,6 +206,7 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Input
+                                aria-label="TimeUnit-Add-Post"
                                 clearable
                                 bordered
                                 labelPlaceholder="TimeUnit"
@@ -210,6 +215,7 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Textarea
+                                aria-label="Description-Add-Post"
                                 bordered
                                 labelPlaceholder="Description"
                                 onChange={e => setNewDescription(e.target.value)}
@@ -226,6 +232,7 @@ function AddPost() {
                                                     <tr>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Name-Add-Post"
                                                                 bordered
                                                                 name="name"
                                                                 placeholder="Name Ingredient"
@@ -238,6 +245,7 @@ function AddPost() {
                                                         </td>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Quantity-Add-Post"
                                                                 bordered
                                                                 type="number"
                                                                 min="0"
@@ -252,6 +260,7 @@ function AddPost() {
                                                         </td>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Measure-Unit-Add-Post"
                                                                 bordered
                                                                 name="measureUnit"
                                                                 placeholder="Measure Unit"
@@ -265,7 +274,7 @@ function AddPost() {
                                                         <td>
                                                             <Button
                                                                 color="warning"
-                                                                onClick={() => removeFields(index)}
+                                                                onPress={() => removeFields(index)}
                                                                 auto
                                                                 rounded
                                                                 flat
@@ -280,7 +289,7 @@ function AddPost() {
                                     })}
                                 </form>
                                 <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                                    <Button color="warning" onClick={addFields} auto rounded flat>
+                                    <Button color="warning" onPress={addFields} auto rounded flat>
                                         Add ingredient
                                     </Button>
                                     <Spacer y={3} />
@@ -295,7 +304,7 @@ function AddPost() {
                                 }}
                             >
                                 <Row justify="center">
-                                    <Text b color="#ec9127">
+                                    <Text aria-label="Upload-picture-add-post" b color="#ec9127">
                                         Upload a picture of your recipe:
                                     </Text>
                                     <Spacer x={0.5} />

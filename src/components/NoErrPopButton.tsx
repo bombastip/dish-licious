@@ -12,7 +12,7 @@ const NoErrPopButton: FC<NoErrPopButtonProps> = props => {
     return (
         <Popover placement={props.placement}>
             <Popover.Trigger>
-                <Button onClick={props.clickFunc}>{props.buttonName}</Button>
+                <Button onPress={props.clickFunc}>{props.buttonName}</Button>
             </Popover.Trigger>
             <Popover.Content>
                 <Card css={{ $$cardColor: '$colors$success', mw: '300px' }}>
