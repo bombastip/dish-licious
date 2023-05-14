@@ -9,5 +9,5 @@ export {
     checkFollow,
     getFollowers,
     getFollowing,
-    getFollowNotif
+    getFollowNotif,
 } from './firestore-db';

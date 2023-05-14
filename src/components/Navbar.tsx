@@ -67,7 +67,7 @@ function NavbarF() {
                 {/* <Navbar.Link 
                 isActive={location.pathname === '/notifications'} href="/notifications"
                 > */}
-                    <Notifications />
+                <Notifications />
                 {/* </Navbar.Link> */}
             </Navbar.Content>
             <Navbar.Content
