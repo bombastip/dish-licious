@@ -1,4 +1,4 @@
-import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea, FormElement } from '@nextui-org/react';
+import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -9,6 +9,9 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
+import { NoErrPopButton, VerificationModal } from '.';
+import { ErrorMessasge } from '../interfaces';
+import ErrPopButton from './ErrPopButton';
 
 function AddPost() {
     // modal
@@ -28,7 +31,12 @@ function AddPost() {
     const [newphotoURL, setPhotoURL] = useState('');
     const [imageUpload, setImageUpload] = useState<File | null>(null);
 
-    const handler = () => setVisible(true);
+    // error states
+    const [err, setErr] = useState<ErrorMessasge>(null);
+
+    const handler = () => {
+        onSubmitPost();
+    };
 
     const closeHandler = () => {
         setVisible(false);
@@ -72,12 +80,39 @@ function AddPost() {
                     ingredients: formFields,
                     userID: user.uid,
                 });
-
-                // adauga postarea in lista de postari ale utilizatorului curent
+                if (newPostTitle === '') {
+                    setErr('Title is required');
+                    return;
+                }
+                if (newDescription === '') {
+                    setErr('Description is required');
+                    return;
+                }
+                if (newTimeCost === 0) {
+                    setErr('Time cost is required');
+                    return;
+                }
+                if (newTimeUnit === '') {
+                    setErr('Time unit is required');
+                    return;
+                }
+                if (newphotoURL === '') {
+                    setErr('Photo is required');
+                    return;
+                }
+                if (formFields.length === 0) {
+                    setErr('At least one ingredient is required');
+                    return;
+                }
+                if (formFields[0].name === '' || formFields[0].quantity === 0 || formFields[0].measureUnit === '') {
+                    setErr('All ingredient fields are required');
+                    return;
+                }
                 const userDocRef = doc(userCollectionRef, user.uid);
                 await updateDoc(userDocRef, {
                     posts: arrayUnion(newPostRef.id),
                 });
+                setVisible(true);
             }
         } catch (err) {
             console.error(err);
@@ -120,6 +155,7 @@ function AddPost() {
         setFormfields([...formFields, object]);
     };
     const removeFields = (index: number) => {
+        console.log(index);
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);
@@ -127,20 +163,32 @@ function AddPost() {
     return (
         <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
             <Grid sm={12} md={5}>
-                <Card css={{ width: '650px' }}>
+                <Card aria-label="Add Post" css={{ width: '650px' }}>
                     <Card.Header>
-                        <Text b color="#ec9127" css={{ margin: '0 auto', display: 'inline-block' }}>
-                            Add Post
+                        <Text
+                            aria-label="Header-Add-Post"
+                            h1
+                            size={40}
+                            css={{
+                                textGradient: '90deg, #fedb58, #fc924c',
+                                margin: '0 auto',
+                                display: 'inline-block',
+                            }}
+                            weight="bold"
+                        >
+                            Share your recipe with the world!
                         </Text>
                     </Card.Header>
                     <Card.Divider />
                     <Card.Body css={{ py: '$10' }}>
                         <Container
+                            aria-label="Add-Post-Container"
                             justify="center"
                             alignItems="center"
                             css={{ textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center' }}
                         >
                             <Input
+                                aria-label="Title-Add-Post"
                                 bordered
                                 labelPlaceholder="Title"
                                 onChange={e => setNewPostTitle(e.target.value)}
@@ -148,6 +196,7 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Input
+                                aria-label="TimeCost-Add-Post"
                                 bordered
                                 labelPlaceholder="TimeCost"
                                 type="number"
@@ -157,6 +206,7 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Input
+                                aria-label="TimeUnit-Add-Post"
                                 clearable
                                 bordered
                                 labelPlaceholder="TimeUnit"
@@ -165,11 +215,14 @@ function AddPost() {
                             />
                             <Spacer y={2.5} />
                             <Textarea
+                                aria-label="Description-Add-Post"
                                 bordered
                                 labelPlaceholder="Description"
                                 onChange={e => setNewDescription(e.target.value)}
                                 css={{ width: '100%' }}
                             />
+                            <Spacer y={1} />
+
                             <div>
                                 <form onSubmit={submit}>
                                     {formFields.map((form, index) => {
@@ -179,6 +232,7 @@ function AddPost() {
                                                     <tr>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Name-Add-Post"
                                                                 bordered
                                                                 name="name"
                                                                 placeholder="Name Ingredient"
@@ -191,6 +245,7 @@ function AddPost() {
                                                         </td>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Quantity-Add-Post"
                                                                 bordered
                                                                 type="number"
                                                                 min="0"
@@ -205,6 +260,7 @@ function AddPost() {
                                                         </td>
                                                         <td style={{ paddingRight: '10px' }}>
                                                             <Input
+                                                                aria-label="Ingredient-Measure-Unit-Add-Post"
                                                                 bordered
                                                                 name="measureUnit"
                                                                 placeholder="Measure Unit"
@@ -218,7 +274,7 @@ function AddPost() {
                                                         <td>
                                                             <Button
                                                                 color="warning"
-                                                                onClick={removeFields}
+                                                                onPress={() => removeFields(index)}
                                                                 auto
                                                                 rounded
                                                                 flat
@@ -232,67 +288,67 @@ function AddPost() {
                                         );
                                     })}
                                 </form>
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                                    <Button color="warning" onClick={addFields} css={{ mr: '$4' }} auto rounded flat>
-                                        +
+                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                    <Button color="warning" onPress={addFields} auto rounded flat>
+                                        Add ingredient
                                     </Button>
-                                    <Button color="warning" auto rounded flat>
-                                        Save ingredients
-                                    </Button>
-                                </div>
+                                    <Spacer y={3} />
+                                </Row>
                             </div>
                             <div
                                 style={{
-                                    display: 'flex-start',
+                                    display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    marginTop: '20px',
-                                    marginLeft: '70px',
+                                    justifyContent: 'center',
                                 }}
                             >
-                                <input
-                                    type="file"
-                                    onChange={event => {
-                                        if (event.target.files != null) {
-                                            setImageUpload(event.target.files[0]);
-                                            setShowUploadButton(true);
-                                        } else {
-                                            setShowUploadButton(false);
-                                        }
-                                    }}
-                                />
+                                <Row justify="center">
+                                    <Text aria-label="Upload-picture-add-post" b color="#ec9127">
+                                        Upload a picture of your recipe:
+                                    </Text>
+                                    <Spacer x={0.5} />
+                                    <input
+                                        type="file"
+                                        onChange={event => {
+                                            if (event.target.files != null) {
+                                                setImageUpload(event.target.files[0]);
+                                                setShowUploadButton(true);
+                                            } else {
+                                                setShowUploadButton(false);
+                                            }
+                                        }}
+                                    />
+                                </Row>
                                 {showUploadButton && (
-                                    <Button onClick={handleUploadPic} css={{ marginTop: '20px' }}>
-                                        Upload receipe picture
-                                    </Button>
+                                    <>
+                                        <Spacer y={1} />
+                                        <NoErrPopButton
+                                            buttonName={'Save recipe picture'}
+                                            clickFunc={handleUploadPic}
+                                            placement={'right'}
+                                            popoverText={'Image uploaded successfully!'}
+                                        />
+                                    </>
                                 )}
-                                <Modal
-                                    closeButton
-                                    blur
-                                    aria-labelledby="modal-title"
-                                    open={visible}
-                                    onClose={closeHandler}
-                                >
-                                    {' '}
-                                    <Modal.Body>
-                                        <Text
-                                            id="modal-title"
-                                            size={18}
-                                            css={{ margin: '0 auto', display: 'inline-block' }}
-                                        >
-                                            Post added succesfully!
-                                        </Text>
-                                    </Modal.Body>
-                                </Modal>
-                                <Button
-                                    shadow
-                                    color="warning"
-                                    onClick={onSubmitPost}
-                                    onPress={handler}
-                                    css={{ marginTop: '20px' }}
-                                >
-                                    Add post
-                                </Button>
+                                <Spacer y={1} />
+                                <VerificationModal
+                                    modalTitle="Post Added Successfully"
+                                    modalBody=""
+                                    visible={visible}
+                                    buttonMessage="OK"
+                                    setVisible={setVisible}
+                                    buttonFunction={closeHandler}
+                                />
+
+                                <ErrPopButton
+                                    error={err}
+                                    buttonName={'Post'}
+                                    setError={setErr}
+                                    clickFunc={handler}
+                                    placement="right"
+                                    offset={15}
+                                />
                             </div>
                         </Container>
                     </Card.Body>
