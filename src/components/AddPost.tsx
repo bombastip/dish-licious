@@ -1,4 +1,4 @@
-import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea, FormElement } from '@nextui-org/react';
+import { Input, Card, Modal, Text, Grid, Spacer, Button, Textarea, FormElement, Popover, Row } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -9,7 +9,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { VerificationModal } from '.';
+import { NoErrPopButton, VerificationModal } from '.';
 
 function AddPost() {
     // modal
@@ -237,38 +237,43 @@ function AddPost() {
                                     })}
                                 </form>
                                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                                    <Button color="warning" onClick={addFields} css={{ mr: '$4' }} auto rounded flat>
-                                        +
+                                    <Button color="warning" onClick={addFields} auto rounded flat>
+                                        Add Ingredient
                                     </Button>
-                                    <Button color="warning" auto rounded flat>
-                                        Save ingredients
-                                    </Button>
+                                    <input
+                                        style={{ marginLeft: '40px', marginTop: '7px' }}
+                                        type="file"
+                                        onChange={event => {
+                                            if (event.target.files != null) {
+                                                setImageUpload(event.target.files[0]);
+                                                setShowUploadButton(true);
+                                            } else {
+                                                setShowUploadButton(false);
+                                            }
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <div
                                 style={{
-                                    display: 'flex-start',
+                                    display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    marginTop: '20px',
-                                    marginLeft: '70px',
+                                    justifyContent: 'center',
                                 }}
                             >
-                                <input
-                                    type="file"
-                                    onChange={event => {
-                                        if (event.target.files != null) {
-                                            setImageUpload(event.target.files[0]);
-                                            setShowUploadButton(true);
-                                        } else {
-                                            setShowUploadButton(false);
-                                        }
-                                    }}
-                                />
+                                <Spacer y={1} />
+
                                 {showUploadButton && (
-                                    <Button onClick={handleUploadPic} css={{ marginTop: '20px' }}>
-                                        Upload recipe picture
-                                    </Button>
+                                    <>
+                                        <Spacer y={1} />
+                                        <NoErrPopButton
+                                            buttonName={'Upload recipe picture'}
+                                            clickFunc={handleUploadPic}
+                                            placement={'right'}
+                                            popoverText={'Image uploaded successfully!'}
+                                        />
+                                    </>
                                 )}
                                 <VerificationModal
                                     modalTitle="Post Added Successfully"
@@ -279,7 +284,7 @@ function AddPost() {
                                     buttonFunction={closeHandler}
                                 />
 
-                                <Button color="warning" onPress={handler} css={{ marginTop: '20px' }}>
+                                <Button color="warning" onPress={handler} css={{ marginTop: '10px' }}>
                                     Add post
                                 </Button>
                             </div>

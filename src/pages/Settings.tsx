@@ -34,10 +34,10 @@ const Settings = () => {
         }
         const userData = await getUserData(user.uid as string);
         try {
-            let check = false;
             if (username) {
                 if (username.length < 3) {
                     setErr('Username must be at least 3 characters long!');
+                    console.log(err);
                     return;
                 }
                 if (userData && username === userData.username) {
@@ -51,11 +51,12 @@ const Settings = () => {
                 }
                 await changeUsername(user.uid, username);
                 setReloadUserData(true);
+                setModalVisible(true);
             }
             if (userData && currentPhoto !== userData.photoURL) {
                 await changePhotoURL(user.uid, currentPhoto);
                 setReloadUserData(true);
-                alert('Settings changed!');
+                setModalVisible(true);
             }
         } catch (error: unknown) {
             throw new Error(`Error changing settings: ${error}`);

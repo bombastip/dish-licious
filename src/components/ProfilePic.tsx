@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { storage } from '../config/firebase-config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
+import { NoErrPopButton } from '.';
 
 function ProfilePic() {
     const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -80,22 +81,12 @@ function ProfilePic() {
                         />
                         <Spacer y={1} />
                         {showUploadButton && ( // render button only if showUploadButton state is true
-                            <Popover placement="right">
-                                <Popover.Trigger>
-                                    <Button onClick={handleUploadPic}>Upload profile picture</Button>
-                                </Popover.Trigger>
-                                <Popover.Content>
-                                    <Card css={{ $$cardColor: '$colors$success', mw: '300px' }}>
-                                        <Card.Body>
-                                            <Row justify="center" align="center">
-                                                <Text h6 size={13} color="white" css={{ m: 0 }}>
-                                                    Image uploaded successfully!
-                                                </Text>
-                                            </Row>
-                                        </Card.Body>
-                                    </Card>
-                                </Popover.Content>
-                            </Popover>
+                            <NoErrPopButton
+                                buttonName={'Upload profile picture'}
+                                clickFunc={handleUploadPic}
+                                placement={'right'}
+                                popoverText={'Image uploaded successfully'}
+                            />
                         )}
                     </Grid>
                 </Grid.Container>
