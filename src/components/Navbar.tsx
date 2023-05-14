@@ -64,11 +64,7 @@ function NavbarF() {
                     Favourites
                 </Navbar.Link>
                 <SearchNavbarItem />
-                {/* <Navbar.Link 
-                isActive={location.pathname === '/notifications'} href="/notifications"
-                > */}
                 <Notifications />
-                {/* </Navbar.Link> */}
             </Navbar.Content>
             <Navbar.Content
                 css={{

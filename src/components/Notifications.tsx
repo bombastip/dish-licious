@@ -1,10 +1,10 @@
-import { Badge, Loading, styled, Dropdown, Navbar, Text } from '@nextui-org/react';
+import { Badge, Loading, styled, Dropdown, Navbar, Text, Container, Spacer } from '@nextui-org/react';
 import NotificationsIcon from '../assets/NotificationsIcon';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { getFollowNotif, getUserData } from '../database';
-import { useNavigate } from 'react-router-dom';
+import { getFollowNotif, getUserData, removeFollowNotif } from '../database';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const StyledButton = styled('button', {
     background: 'transparent',
@@ -16,14 +16,13 @@ const StyledButton = styled('button', {
 });
 
 function Notifications() {
-    const [isInvisible, setIsInvisible] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user, userLoading } = useContext(AuthContext);
     const [followersIds, setFollowersIds] = useState([] as string[]);
-    const [numNotif, setNumNotif] = useState(0);
     const [followersUsernames, setFollowersUsernames] = useState([] as string[]);
     const navigate = useNavigate();
+    const location = useLocation();
 
-    if (!user) {
+    if (!user || userLoading) {
         return <Loading />;
     }
 
@@ -38,18 +37,10 @@ function Notifications() {
         };
 
         myFollowNotif();
-    }, [user]);
-
-    useEffect(() => {
-        setNumNotif(followersIds.length);
-        console.log('num:', numNotif);
-    }, [followersIds, numNotif]);
+    }, [user, location]);
 
     const handleNotif = async () => {
         console.log('followersIds:', followersIds);
-        if (!isInvisible) {
-            setIsInvisible(!isInvisible);
-        }
         console.log('clicked');
 
         const newNotif = [];
@@ -67,6 +58,11 @@ function Notifications() {
     };
 
     const handleAction = async (actionKey: string) => {
+        if (actionKey === 'noNotif') {
+            return;
+        }
+        await removeFollowNotif(user.uid, actionKey);
+        console.log('len:', followersIds.length);
         navigate(`/user-profile?userId=${actionKey}`);
     };
 
@@ -86,7 +82,12 @@ function Notifications() {
                     ripple={false}
                 >
                     <StyledButton aria-label="more than 99 notifications">
-                        <Badge color="error" content={numNotif} isInvisible={isInvisible} shape="circle">
+                        <Badge
+                            color="error"
+                            content={followersIds.length}
+                            isInvisible={!followersIds.length ? true : false}
+                            shape="circle"
+                        >
                             <NotificationsIcon fill="currentColor" size={30} />
                         </Badge>
                     </StyledButton>
@@ -112,14 +113,27 @@ function Notifications() {
                     },
                 }}
             >
-                {followersUsernames.map((notif, index) => (
-                    <Dropdown.Item key={followersIds[index]}>
-                        <Text b color="#ec9127">
-                            {notif}
-                        </Text>{' '}
-                        started following you
+                {followersIds.length ? (
+                    followersUsernames.map((notif, index) => (
+                        <Dropdown.Item key={followersIds[index]}>
+                            <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Text b color="#ec9127">
+                                    {notif}
+                                </Text>
+                                <Spacer x={0.2} />
+                                <Text>started following you</Text>
+                            </Container>
+                        </Dropdown.Item>
+                    ))
+                ) : (
+                    <Dropdown.Item key="noNotif">
+                        <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text b color="#ec9127">
+                                No new notifications
+                            </Text>
+                        </Container>
                     </Dropdown.Item>
-                ))}
+                )}
             </Dropdown.Menu>
         </Dropdown>
     );

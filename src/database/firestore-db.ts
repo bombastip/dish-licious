@@ -207,3 +207,23 @@ export async function getFollowNotif(id: string) {
         return false;
     }
 }
+
+// remove followNotif from user's followNotif array in firestore in users collection
+export async function removeFollowNotif(user: string, wantToRemove: string) {
+    const followNotifRef = doc(db, 'users', user);
+    const followNotifList = await getFollowNotif(user);
+    if (followNotifList) {
+        const updatedList = followNotifList.filter((element: string) => element !== wantToRemove);
+        const data = {
+            followNotif: updatedList,
+        };
+
+        setDoc(followNotifRef, data, { merge: true })
+            .then(() => {
+                console.log('FollowNotif removed successfully from followNotifList: ', wantToRemove);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}
