@@ -112,18 +112,20 @@ export async function addNotification(wantToFollow: string, user: string) {
     const followNotifList = await getFollowNotif(wantToFollow);
     if (followNotifList) {
         console.log('foloooow:', followNotifList);
-        followNotifList.push(user);
-        const data = {
-            followNotif: followNotifList,
-        };
-        setDoc(followNotifRef, data, { merge: true })
-            .then(() => {
-                console.log('FollowNotif added successfully in followNotifList: ', followNotifList);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        return true;
+        if (!followNotifList.includes(user)) {
+            followNotifList.push(user);
+            const data = {
+                followNotif: followNotifList,
+            };
+            setDoc(followNotifRef, data, { merge: true })
+                .then(() => {
+                    console.log('FollowNotif added successfully in followNotifList: ', followNotifList);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            return true;
+        }
     }
 }
 
