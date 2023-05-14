@@ -15,6 +15,7 @@ import {
     SearchRecipe,
     SearchPeople,
     Recipe,
+    FavoriteRecipes,
 } from './pages';
 import { PrivateRoute } from './route';
 
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
                     {
                         path: 'settings',
                         element: <Settings />,
+                    },
+                    {
+                        path: 'favourites',
+                        element: <FavoriteRecipes />,
                     },
                     {
                         path: 'add-post',

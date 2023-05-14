@@ -1,4 +1,4 @@
-import { Spacer, Button, Switch } from '@nextui-org/react';
+import { Spacer, Button, Switch, Text } from '@nextui-org/react';
 import {
     UsernameInput,
     SettingsCard,
@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { getUserData, changePhotoURL, changeUsername, checkUsername } from '../database/firestore-db';
 import { useContext } from 'react';
-import { AuthContext } from '../context';
+import { AuthContext, UserDataContext } from '../context';
 import { ErrorMessasge, User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ const Settings = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername] = useState('');
     const { user } = useContext(AuthContext);
+    const { setReloadUserData } = useContext(UserDataContext);
     const [err, setErr] = useState<ErrorMessasge>(null);
     const navigate = useNavigate();
 
@@ -48,21 +49,16 @@ const Settings = () => {
                     setErr('Username already taken!');
                     return;
                 }
-                changeUsername(username, user as User);
-                check = true;
+                await changeUsername(user.uid, username);
+                setReloadUserData(true);
             }
-            console.log(check);
-            console.log(username.length);
-            if (username.length == 0 && userData && currentPhoto === userData.photoURL) {
-                setErr('No changes were made!');
-                return;
-            }
-            if ((userData && currentPhoto !== userData.photoURL) || check) {
-                changePhotoURL(currentPhoto, user as User);
-                setModalVisible(true);
+            if (userData && currentPhoto !== userData.photoURL) {
+                await changePhotoURL(user.uid, currentPhoto);
+                setReloadUserData(true);
+                alert('Settings changed!');
             }
         } catch (error: unknown) {
-            console.error(error);
+            throw new Error(`Error changing settings: ${error}`);
         }
     };
     const darkMode = useDarkMode(false);
