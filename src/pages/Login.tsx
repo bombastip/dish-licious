@@ -97,7 +97,7 @@ const Login = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton clickFunc={handleLogin} buttonName="Login" error={err} setError={setErr} />
+            <AuthButton clickFunc={handleLogin} buttonName="Login" error={err} setError={setErr} placement='bottom' offset={60}/>
             <Text>
                 You don't have an account? <Link to="/register">Register</Link>
             </Text>

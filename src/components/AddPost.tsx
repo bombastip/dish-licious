@@ -9,7 +9,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import { NoErrPopButton, VerificationModal } from '.';
+import { AuthButton, NoErrPopButton, VerificationModal } from '.';
+import { ErrorMessasge } from '../interfaces';
 
 function AddPost() {
     // modal
@@ -29,8 +30,10 @@ function AddPost() {
     const [newphotoURL, setPhotoURL] = useState('');
     const [imageUpload, setImageUpload] = useState<File | null>(null);
 
+    // error states
+    const [err, setErr] = useState<ErrorMessasge>(null);
+
     const handler = () => {
-        setVisible(true);
         onSubmitPost();
     };
 
@@ -63,6 +66,7 @@ function AddPost() {
     };
     const [showUploadButton, setShowUploadButton] = useState(false); // state to show or hide our upload button
 
+
     const onSubmitPost = async () => {
         try {
             if (user !== null) {
@@ -76,12 +80,39 @@ function AddPost() {
                     ingredients: formFields,
                     userID: user.uid,
                 });
-
-                // adauga postarea in lista de postari ale utilizatorului curent
+                if (newPostTitle === '') {
+                    setErr('Title is required');
+                    return;
+                }
+                if (newDescription === '') {
+                    setErr('Description is required');
+                    return;
+                }
+                if (newTimeCost === 0) {
+                    setErr('Time cost is required');
+                    return;
+                }
+                if (newTimeUnit === '') {
+                    setErr('Time unit is required');
+                    return;
+                }
+                if (newphotoURL === '') {
+                    setErr('Photo is required');
+                    return;
+                }
+                if (formFields.length === 0) {
+                    setErr('At least one ingredient is required');
+                    return;
+                }
+                if (formFields[0].name === '' || formFields[0].quantity === 0 || formFields[0].measureUnit === '') {
+                    setErr('All ingredient fields are required');
+                    return;
+                }
                 const userDocRef = doc(userCollectionRef, user.uid);
                 await updateDoc(userDocRef, {
                     posts: arrayUnion(newPostRef.id),
                 });
+                setVisible(true);
             }
         } catch (err) {
             console.error(err);
@@ -124,6 +155,7 @@ function AddPost() {
         setFormfields([...formFields, object]);
     };
     const removeFields = (index: number) => {
+        console.log(index);
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);
@@ -133,8 +165,17 @@ function AddPost() {
             <Grid sm={12} md={5}>
                 <Card css={{ width: '650px' }}>
                     <Card.Header>
-                        <Text b color="#ec9127" css={{ margin: '0 auto', display: 'inline-block' }}>
-                            Add Post
+                        <Text
+                            h1
+                            size={40}
+                            css={{
+                                textGradient: '90deg, #fedb58, #fc924c',
+                                margin: '0 auto',
+                                display: 'inline-block',
+                            }}
+                            weight="bold"
+                        >
+                            Share your recipe with the world!
                         </Text>
                     </Card.Header>
                     <Card.Divider />
@@ -174,6 +215,8 @@ function AddPost() {
                                 onChange={e => setNewDescription(e.target.value)}
                                 css={{ width: '100%' }}
                             />
+                            <Spacer y={1} />
+
                             <div>
                                 <form onSubmit={submit}>
                                     {formFields.map((form, index) => {
@@ -222,7 +265,7 @@ function AddPost() {
                                                         <td>
                                                             <Button
                                                                 color="warning"
-                                                                onClick={removeFields}
+                                                                onClick={() => removeFields(index)}
                                                                 auto
                                                                 rounded
                                                                 flat
@@ -236,12 +279,27 @@ function AddPost() {
                                         );
                                     })}
                                 </form>
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                                     <Button color="warning" onClick={addFields} auto rounded flat>
-                                        Add Ingredient
+                                        Add ingredient
                                     </Button>
+                                    <Spacer y={3} />
+                                </Row>
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Row justify="center">
+                                    <Text b color="#ec9127">
+                                        Upload a picture of your recipe:
+                                    </Text>
+                                    <Spacer x={0.5} />
                                     <input
-                                        style={{ marginLeft: '40px', marginTop: '7px' }}
                                         type="file"
                                         onChange={event => {
                                             if (event.target.files != null) {
@@ -252,29 +310,19 @@ function AddPost() {
                                             }
                                         }}
                                     />
-                                </div>
-                            </div>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <Spacer y={1} />
-
+                                </Row>
                                 {showUploadButton && (
                                     <>
                                         <Spacer y={1} />
                                         <NoErrPopButton
-                                            buttonName={'Upload recipe picture'}
+                                            buttonName={'Save recipe picture'}
                                             clickFunc={handleUploadPic}
                                             placement={'right'}
                                             popoverText={'Image uploaded successfully!'}
                                         />
                                     </>
                                 )}
+                                <Spacer y={1} />
                                 <VerificationModal
                                     modalTitle="Post Added Successfully"
                                     modalBody=""
@@ -284,9 +332,14 @@ function AddPost() {
                                     buttonFunction={closeHandler}
                                 />
 
-                                <Button color="warning" onPress={handler} css={{ marginTop: '10px' }}>
-                                    Add post
-                                </Button>
+                                <AuthButton
+                                    error={err}
+                                    buttonName={'Post'}
+                                    setError={setErr}
+                                    clickFunc={handler}
+                                    placement="right"
+                                    offset={15}
+                                />
                             </div>
                         </Container>
                     </Card.Body>

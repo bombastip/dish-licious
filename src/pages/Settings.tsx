@@ -15,6 +15,7 @@ import { AuthContext, UserDataContext } from '../context';
 import { ErrorMessasge, User } from '../interfaces';
 import useDarkMode from 'use-dark-mode';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'firebase/database';
 
 const Settings = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -53,6 +54,11 @@ const Settings = () => {
                 setReloadUserData(true);
                 setModalVisible(true);
             }
+            if (userData && !username && currentPhoto === userData.photoURL) {
+                console.log('No changes were made');
+                setErr('No changes were made');
+                return
+            }
             if (userData && currentPhoto !== userData.photoURL) {
                 await changePhotoURL(user.uid, currentPhoto);
                 setReloadUserData(true);
@@ -88,8 +94,14 @@ const Settings = () => {
                 setVisible={setModalVisible}
                 buttonFunction={modalHandler}
             />
-            {/* <Button onPress={handleChangeSettings}>Save changes</Button> */}
-            <AuthButton clickFunc={handleChangeSettings} buttonName="Save changes" error={err} setError={setErr} />
+            <AuthButton
+                clickFunc={handleChangeSettings}
+                buttonName="Save changes"
+                error={err}
+                setError={setErr}
+                placement="bottom"
+                offset={40}
+            />
         </SettingsCard>
     );
 };

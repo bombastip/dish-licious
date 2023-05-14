@@ -191,10 +191,9 @@ function SinglePost({ post }: Props) {
                     {!liked ? (
                         <Button
                             auto
-                            color="error"
-                            css={{ mr: '$2' }}
+                            css={{ mr: '$2', background: '$myColor' }}
                             onPress={() => like()}
-                            icon={<HeartIcon fill="currentColor" filled />}
+                            icon={<HeartIcon fill="white" filled />}
                         />
                     ) : (
                         <Button
@@ -205,11 +204,20 @@ function SinglePost({ post }: Props) {
                         />
                     )}
                     {!saved ? (
-                        <Button color="error" css={{ width: '75px' }} auto onPress={() => addToFav()}>
+                        <Button
+                            css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
+                            auto
+                            onPress={() => addToFav()}
+                        >
                             Save
                         </Button>
                     ) : (
-                        <Button flat color="error" css={{ width: '75px' }} auto onPress={() => removeFromFav()}>
+                        <Button
+                            flat
+                            css={{ width: '75px', background: '$myColor', color: 'white' }}
+                            auto
+                            onPress={() => removeFromFav()}
+                        >
                             Saved
                         </Button>
                     )}

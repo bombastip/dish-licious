@@ -27,7 +27,11 @@ const lightTheme = createTheme({
             secondarySolidContrast: '$white',
             secondaryShadow: '$yellow500',
             gradient: 'linear-gradient(112deg, $yellow100 -25%, $pink500 -10%, $purple500 80%)',
+
+            error: '#d30000',
             link: '#5E1DAD',
+            myColor: '#f31260',
+            
         },
         space: {},
         fonts: {},

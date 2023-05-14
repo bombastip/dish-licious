@@ -7,6 +7,8 @@ interface PopoverProps {
     buttonName: string;
     setError: (value: ErrorMessasge) => void;
     clickFunc: (value: string) => void;
+    placement: 'top' | 'right' | 'bottom' | 'left';
+    offset: number;
 }
 
 const formatErrorMessage = (err: ErrorMessasge): ErrorMessasge => {
@@ -43,7 +45,7 @@ const AuthButton: FC<PopoverProps> = props => {
     }, [isOpen, props.error]);
 
     return (
-        <Popover placement="bottom" shouldFlip={false} offset={60} isOpen={isOpen}>
+        <Popover placement={props.placement} shouldFlip={false} offset={props.offset} isOpen={isOpen}>
             <Popover.Trigger>
                 <Button onPress={props.clickFunc}>{props.buttonName}</Button>
             </Popover.Trigger>

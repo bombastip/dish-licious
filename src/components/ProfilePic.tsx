@@ -85,7 +85,7 @@ function ProfilePic() {
                                 buttonName={'Upload profile picture'}
                                 clickFunc={handleUploadPic}
                                 placement={'right'}
-                                popoverText={'Image uploaded successfully'}
+                                popoverText={'Image uploaded successfully!'}
                             />
                         )}
                     </Grid>

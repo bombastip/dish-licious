@@ -58,7 +58,7 @@ const Register = () => {
             <Spacer y={1} />
             <PasswordInput password={password} setPassword={setPassword} />
             <Spacer y={1} />
-            <AuthButton clickFunc={handleRegister} buttonName="Register" error={err} setError={setErr} />
+            <AuthButton clickFunc={handleRegister} buttonName="Register" error={err} setError={setErr} placement='bottom' offset={60}/>
             <Text>
                 Already have an account? <Link to="/login">Log in</Link>
             </Text>
