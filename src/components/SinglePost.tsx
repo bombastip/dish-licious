@@ -1,4 +1,4 @@
-import { Card, Text, Button, Row, User, Spacer, Image, Container } from '@nextui-org/react';
+import { Card, Text, Button, Row, User, Spacer, Image } from '@nextui-org/react';
 import { HeartIcon } from '../assets/HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDoc, collection, arrayRemove } from 'firebase/firestore';
@@ -9,6 +9,7 @@ import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
 import { Link } from 'react-router-dom';
 import CommentCard from './CommentCard';
+import { postCardContainer } from './Design-post.css';
 
 type Props = {
     post: PostType;
@@ -134,10 +135,38 @@ function SinglePost({ post }: Props) {
 
     const toggleComments = () => {
         setShowComments(!showComments);
+        // const postCard = document.getElementById(post.id) as HTMLDivElement;
+        // if (!showComments) {
+        //     console.log('show', postCard.offsetTop);
+        //     window.scrollTo({
+        //         behavior: 'smooth',
+        //         top: postCard.offsetTop,
+        //     });
+        //     if (postCard.offsetTop < 100) {
+        //         console.log(postCard.offsetTop);
+        //         window.scrollTo({
+        //             behavior: 'smooth',
+        //             top: 0,
+        //         });
+        //     }
+        // } else {
+        //     console.log('unshow', postCard.offsetTop);
+        //     window.scrollTo({
+        //         behavior: 'smooth',
+        //         top: postCard.offsetTop,
+        //     });
+        //     if (postCard.offsetTop < 100) {
+        //         window.scrollTo({
+        //             behavior: 'smooth',
+        //             top: 0,
+        //         });
+        //     }
+        // }
     };
 
     return (
-        <Container css={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+        // <Container css={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+        <div className={showComments ? postCardContainer : ''} id={post.id}>
             <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
                 <Card.Header>
                     <Text b css={{ whiteSpace: 'nowrap' }}>
@@ -231,17 +260,22 @@ function SinglePost({ post }: Props) {
                     </Row>
                     <Row justify="flex-end">
                         <Button.Group>
-                            <Button css={{ mr: '$2' }} onClick={toggleComments}>
-                                {' '}
-                                +{' '}
+                            <Button css={{ mr: '$2' }} onPress={toggleComments}>
+                                {showComments ? 'Hide comment list' : 'View comment list'}
                             </Button>
-                            <Button>View comment list</Button>
                         </Button.Group>
                     </Row>
                 </Card.Footer>
             </Card>
-            {showComments && <CommentCard post={post} />}
-        </Container>
+            {showComments && (
+                <div>
+                    {' '}
+                    <Spacer x={1} />
+                    <CommentCard post={post} />
+                </div>
+            )}
+        </div>
+        // </Container>
     );
 }
 export default SinglePost;

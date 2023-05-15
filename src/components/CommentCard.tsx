@@ -7,7 +7,7 @@ interface CommentCardProps {
 }
 const CommentCard = ({ post }: CommentCardProps) => {
     return (
-        <Card isHoverable variant="bordered" css={{ mw: '400px', maxHeight: '516px' }}>
+        <Card isHoverable variant="bordered" css={{ width: '400px', maxHeight: '516px' }}>
             <CommentList comments={!post.comments ? [] : post.comments} />
             <CommentInput postID={post.id} />
         </Card>
