@@ -27,6 +27,7 @@ export interface PostType {
     title: string;
     userID: string;
     id: string;
+    comments: { uid: string; comment: string }[];
 }
 
 export type UserCompleteData = {

@@ -20,3 +20,6 @@ export { default as NotificationsIcon } from '../assets/NotificationsIcon';
 export { default as Favorites } from './Favorites';
 export { default as NoErrPopButton } from './NoErrPopButton';
 export { default as Notifications } from './Notifications';
+export { default as Comment } from './Comment';
+export { default as CommentList } from './CommentList';
+export { default as SendButton } from './SendButton';

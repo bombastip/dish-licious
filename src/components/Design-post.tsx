@@ -19,6 +19,7 @@ export const Post = () => {
             ingredients,
             timeCost: 0,
             timeUnit: '',
+            comments: [],
             id: '',
         },
     ]);

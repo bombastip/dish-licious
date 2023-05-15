@@ -1,6 +1,6 @@
 import 'firebase/compat/firestore';
 import { db } from '../config/firebase-config';
-import { doc, setDoc, getDoc, query, where, getDocs, collection } from 'firebase/firestore';
+import { doc, setDoc, getDoc, query, where, getDocs, collection, updateDoc, arrayUnion } from 'firebase/firestore';
 import { User } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
@@ -47,6 +47,28 @@ export async function checkUsername(username: string) {
     }
     return false;
 }
+
+export const getUsernamePhotos = async (uid: string) => {
+    const userdocRef = doc(db, 'users', uid);
+    const docUserSnap = await getDoc(userdocRef);
+    if (!docUserSnap.exists()) {
+        return { photoURL: '', username: '' };
+    }
+    const photoURL = docUserSnap.data().photoURL as string;
+    const username = docUserSnap.data().username as string;
+    return { photoURL, username };
+};
+
+export const addComment = async (postId: string, comment: string, uid: string) => {
+    const userDocRef = doc(db, 'posts', postId);
+    try {
+        await updateDoc(userDocRef, {
+            comments: arrayUnion({ comment: comment, uid: uid }),
+        });
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 export const changeUsername = async (uid: string, newUsername: string) => {
     const docRef = doc(db, 'users', uid);
