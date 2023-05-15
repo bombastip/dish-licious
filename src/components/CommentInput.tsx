@@ -7,8 +7,8 @@ import { addComment } from '../database/firestore-db';
 
 interface CommentInputProps {
     postID: string;
-    setReloadComments: Dispatch<SetStateAction<number>>;
-    reloadComments: number;
+    setReloadComments?: Dispatch<SetStateAction<number>>;
+    reloadComments?: number;
 }
 
 const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInputProps) => {
@@ -35,7 +35,9 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
         };
         addCommentToDatabase();
         setComment('');
-        setReloadComments(reloadComments + 1);
+        if (setReloadComments != undefined && reloadComments != undefined) {
+            setReloadComments(reloadComments + 1);
+        }
     };
 
     return (

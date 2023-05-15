@@ -4,7 +4,7 @@ const Favorites = () => {
     return (
         <Container css={{ display: 'flex', justifyContent: 'center' }}>
             <Text h1 size={40}>
-                My favourite recepie
+                My favourite recipe
             </Text>
             <YoutubeFrame video="ikpsEt0bJXw" />
         </Container>
