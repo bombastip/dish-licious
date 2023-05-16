@@ -1,6 +1,17 @@
 import 'firebase/compat/firestore';
 import { db } from '../config/firebase-config';
-import { doc, setDoc, getDoc, query, where, getDocs, collection, updateDoc, arrayUnion } from 'firebase/firestore';
+import {
+    doc,
+    setDoc,
+    getDoc,
+    query,
+    where,
+    getDocs,
+    collection,
+    updateDoc,
+    arrayUnion,
+    deleteDoc,
+} from 'firebase/firestore';
 import { User } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
@@ -173,12 +184,64 @@ export async function removeNotification(user: string, wantToRemove: string) {
     }
 }
 
+export async function deletePost(post: string) {
+    const postRef = doc(db, 'posts', post);
+    const postSnap = await getDoc(postRef);
+    if (postSnap.exists()) {
+        console.log('Document data from deletePost:', postSnap.data());
+        const userRef = doc(db, 'users', postSnap.data().userID);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            const updatedList = userSnap.data().posts.filter((element: string) => element !== post);
+            const favoritesList = userSnap.data().favourites.filter((element: string) => element !== post);
+            const data = {
+                posts: updatedList,
+                favourites: favoritesList,
+            };
+            setDoc(userRef, data, { merge: true })
+                .then(() => {
+                    console.log('Post removed successfully from postsList and favoritesList: ', post);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            const userCollectionRef = collection(db, 'users');
+            const q = query(userCollectionRef, where('favourites', 'array-contains', post));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async user => {
+                const docRef = doc(db, 'users', user.id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const updatedList = docSnap.data().favourites.filter((element: string) => element !== post);
+                    const data = {
+                        favourites: updatedList,
+                    };
+                    setDoc(docRef, data, { merge: true })
+                        .then(() => {
+                            console.log('Post removed successfully from favouritesList: ', post);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    console.log('No user document!');
+                }
+            });
+            await deleteDoc(postRef);
+            console.log('Post deleted successfully: ', post);
+        } else {
+            console.log('No user document!');
+        }
+    } else {
+        console.log('No post document!');
+    }
+}
+
 // add followUser to user's following array in firestore in users collection
 export async function follow(wantToFollow: string, user: string) {
     const followRef = doc(db, 'users', user);
     const followingList = await getFollowing(user);
     if (followingList) {
-        // console.log('Document data:', followingList);
         if (
             followingList.some((element: string) => {
                 if (element === wantToFollow) return true;

@@ -12,4 +12,5 @@ export {
     getFollowNotif,
     removeNotification,
     addNotification,
+    deletePost,
 } from './firestore-db';

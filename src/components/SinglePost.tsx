@@ -1,4 +1,4 @@
-import { Card, Text, Button, Row, User, Spacer, Image } from '@nextui-org/react';
+import { Card, Text, Button, Row, User, Spacer, Image, Col, Dropdown } from '@nextui-org/react';
 import { HeartIcon } from '../assets/HeartIcon';
 import { useEffect, useState } from 'react';
 import { getDoc, collection, arrayRemove } from 'firebase/firestore';
@@ -8,6 +8,8 @@ import { AuthContext } from '../context';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
 import { Link } from 'react-router-dom';
+import { deletePost } from '../database';
+import { DeleteDocumentIcon } from '../assets/DeleteDocumentIcon';
 
 type Props = {
     post: PostType;
@@ -130,6 +132,21 @@ function SinglePost({ post }: Props) {
         }
     };
 
+    const handleDeletePost = async () => {
+        console.log('delete');
+        try {
+            await deletePost(post.id);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleAction = async (action: string) => {
+        if (action === 'delete') {
+            await handleDeletePost();
+        }
+    };
+
     return (
         <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
             <Card.Header>
@@ -154,7 +171,7 @@ function SinglePost({ post }: Props) {
                         objectFit="cover"
                     />
                     <Spacer y={0.2} />
-                    <Row>
+                    <Row css={{ display: 'flex' }}>
                         <Text color="#ec9127" css={{ marginLeft: '$1' }}>
                             {' '}
                             Liked by {likesLength}{' '}
@@ -226,6 +243,73 @@ function SinglePost({ post }: Props) {
                     <Link to={`/post?postId=${post.id}`}>
                         <Button>View comment list</Button>
                     </Link>
+                    <Spacer x={0.5} />
+                    {user && user.uid === post.userID && (
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <Card
+                                    isPressable
+                                    css={{
+                                        width: '15px',
+                                        marginTop: '-20px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        size: '15px',
+                                    }}
+                                >
+                                    <Col
+                                        css={{
+                                            marginTop: '-5px',
+                                            marginBottom: '-23px',
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'flex-end',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        <Text>.</Text>
+                                    </Col>
+                                    <Col
+                                        css={{
+                                            marginBottom: '-23px',
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'flex-end',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        <Text>.</Text>
+                                    </Col>
+                                    <Col
+                                        css={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'flex-end',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        <Text>.</Text>
+                                    </Col>
+                                </Card>
+                            </Dropdown.Trigger>
+                            <Dropdown.Menu
+                                color="secondary"
+                                aria-label="Actions"
+                                onAction={actionKey => handleAction(actionKey as string)}
+                            >
+                                <Dropdown.Item
+                                    key="delete"
+                                    color="error"
+                                    icon={<DeleteDocumentIcon size={22} fill="currentColor" />}
+                                    css={{ fontWeight: '$semibold' }}
+                                >
+                                    Delete file
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    )}
                 </Row>
             </Card.Footer>
         </Card>
