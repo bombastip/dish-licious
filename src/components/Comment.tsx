@@ -1,6 +1,7 @@
-import { Card, Link, Text, User } from '@nextui-org/react';
+import { Card, Text, Avatar, Row, Col, Spacer } from '@nextui-org/react';
 import { getUsernamePhotos } from '../database/firestore-db';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface CommentProps {
     uid: string;
@@ -21,12 +22,36 @@ const Comment: React.FC<CommentProps> = ({ uid, comment }) => {
     }, [uid]);
 
     return (
-        <Card css={{ display: 'flex', flexDirection: 'row', maxWidth: '300px' }}>
-            <Link to={`/user-profile?userId=${uid}`}>
-                <User css={{ cursor: 'pointer' }} src={photoURL} name={username} />
-            </Link>
-            <Text>{comment}</Text>
-        </Card>
+        <>
+            <Card
+                css={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    maxWidth: '300px',
+                }}
+            >
+                <Row css={{ alignItems: 'center' }}>
+                    <Spacer x={0.5} />
+                    <Link to={`/user-profile?userId=${uid}`}>
+                        <Avatar
+                            src={photoURL}
+                            size="md"
+                            css={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                        />
+                    </Link>
+                    <Spacer x={0.5} />
+                    <Col>
+                        <Link to={`/user-profile?userId=${uid}`}>
+                            <Text css={{ cursor: 'pointer' }} color="primary">
+                                {username}
+                            </Text>
+                        </Link>
+                        <Text>{comment}</Text>
+                    </Col>
+                </Row>
+            </Card>
+            <Spacer y={0.5} />
+        </>
     );
 };
 

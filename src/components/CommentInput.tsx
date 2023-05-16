@@ -45,6 +45,7 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
             aria-label="Comment"
             clearable
             contentRightStyling={false}
+            width="300px"
             placeholder="Type your comment..."
             value={comment}
             onChange={e => setComment(e.target.value)}
