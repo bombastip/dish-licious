@@ -49,13 +49,15 @@ const Recipe = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ width: '80%' }}>
             <RecipeCard post={post} />
-            <Container>
-                <CommentList comments={!post.comments ? [] : post.comments} />
-                <CommentInput postID={post.id} setReloadComments={setReloadComments} reloadComments={reloadComents} />
-            </Container>
+          </div>
+          <div style={{ padding: '55px 0', paddingRight:'30px' }}>
+            <CommentList comments={!post.comments ? [] : post.comments} />
+            <CommentInput postID={post.id} setReloadComments={setReloadComments} reloadComments={reloadComents} />
+          </div>
         </div>
-    );
+      );
 };
 
 export default Recipe;
