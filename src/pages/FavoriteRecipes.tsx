@@ -8,6 +8,7 @@ const Profile = () => {
             <Text
                 h1
                 size={40}
+                align="center"
                 css={{
                     textGradient: '90deg, #fedb58, #fc924c',
                     marginLeft: '20px',
