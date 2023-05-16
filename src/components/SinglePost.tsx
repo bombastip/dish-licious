@@ -223,10 +223,9 @@ function SinglePost({ post }: Props) {
                     )}
                 </Row>
                 <Row justify="flex-end">
-                    <Button.Group>
-                        <Button css={{ mr: '$2' }}> + </Button>
+                    <Link to={`/post?postId=${post.id}`}>
                         <Button>View comment list</Button>
-                    </Button.Group>
+                    </Link>
                 </Row>
             </Card.Footer>
         </Card>

@@ -20,6 +20,7 @@ export const Post = () => {
             timeCost: 0,
             timeUnit: '',
             id: '',
+            comments: [],
         },
     ]);
     const postCollectionRef = collection(db, 'posts');
