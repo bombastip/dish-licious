@@ -5,7 +5,6 @@ import { db } from '../config/firebase-config';
 import { doc, getDoc } from 'firebase/firestore';
 import { PostType, Ingredient } from '../interfaces';
 import CommentInput from '../components/CommentInput';
-import { Container } from '@nextui-org/react';
 
 const Recipe = () => {
     const location = useLocation();
@@ -49,15 +48,15 @@ const Recipe = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div style={{ width: '80%' }}>
-            <RecipeCard post={post} />
-          </div>
-          <div style={{ padding: '55px 0', paddingRight:'30px' }}>
-            <CommentList comments={!post.comments ? [] : post.comments} />
-            <CommentInput postID={post.id} setReloadComments={setReloadComments} reloadComments={reloadComents} />
-          </div>
+            <div style={{ width: '80%' }}>
+                <RecipeCard post={post} />
+            </div>
+            <div style={{ padding: '55px 0', paddingRight: '30px' }}>
+                <CommentList comments={!post.comments ? [] : post.comments} />
+                <CommentInput postID={post.id} setReloadComments={setReloadComments} reloadComments={reloadComents} />
+            </div>
         </div>
-      );
+    );
 };
 
 export default Recipe;

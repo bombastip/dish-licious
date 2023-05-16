@@ -42,7 +42,7 @@ const Comment: React.FC<CommentProps> = ({ uid, comment }) => {
                     <Spacer x={0.5} />
                     <Col>
                         <Link to={`/user-profile?userId=${uid}`}>
-                            <Text css={{ cursor: 'pointer' }} color="primary">
+                            <Text css={{ cursor: 'pointer', marginBottom: '-8px' }} color="primary">
                                 {username}
                             </Text>
                         </Link>

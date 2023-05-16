@@ -8,8 +8,6 @@ import { AuthContext } from '../context';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
 import { Link } from 'react-router-dom';
-import CommentCard from './CommentCard';
-import { postCardContainer } from './Design-post.css';
 
 type Props = {
     post: PostType;
@@ -25,7 +23,6 @@ function SinglePost({ post }: Props) {
     const [userName, setUserName] = useState('');
     const [photoUser, setPhotoUser] = useState('');
     const [userID, setUserID] = useState('');
-    const [showComments, setShowComments] = useState(false);
 
     useEffect(() => {
         const getLikes = async () => {
@@ -133,149 +130,105 @@ function SinglePost({ post }: Props) {
         }
     };
 
-    const toggleComments = () => {
-        setShowComments(!showComments);
-        // const postCard = document.getElementById(post.id) as HTMLDivElement;
-        // if (!showComments) {
-        //     console.log('show', postCard.offsetTop);
-        //     window.scrollTo({
-        //         behavior: 'smooth',
-        //         top: postCard.offsetTop,
-        //     });
-        //     if (postCard.offsetTop < 100) {
-        //         console.log(postCard.offsetTop);
-        //         window.scrollTo({
-        //             behavior: 'smooth',
-        //             top: 0,
-        //         });
-        //     }
-        // } else {
-        //     console.log('unshow', postCard.offsetTop);
-        //     window.scrollTo({
-        //         behavior: 'smooth',
-        //         top: postCard.offsetTop,
-        //     });
-        //     if (postCard.offsetTop < 100) {
-        //         window.scrollTo({
-        //             behavior: 'smooth',
-        //             top: 0,
-        //         });
-        //     }
-        // }
-    };
-
     return (
-        // <Container css={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-        <div className={showComments ? postCardContainer : ''} id={post.id}>
-            <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
-                <Card.Header>
-                    <Text b css={{ whiteSpace: 'nowrap' }}>
-                        {post.title}
-                    </Text>
-                    <Row justify="flex-end">
-                        <Link to={`/user-profile?userId=${userID}`}>
-                            <User css={{ cursor: 'pointer' }} src={photoUser} name={userName} />
-                        </Link>
+        <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
+            <Card.Header>
+                <Text b css={{ whiteSpace: 'nowrap' }}>
+                    {post.title}
+                </Text>
+                <Row justify="flex-end">
+                    <Link to={`/user-profile?userId=${userID}`}>
+                        <User css={{ cursor: 'pointer' }} src={photoUser} name={userName} />
+                    </Link>
+                </Row>
+            </Card.Header>
+            <Card.Divider />
+            <Link to={`/post?postId=${post.id}`}>
+                <Card.Body css={{ py: '$10' }}>
+                    <Image
+                        width={400}
+                        height={170}
+                        containerCss={{ borderRadius: '3%' }}
+                        src={post.photoURL}
+                        alt="Default Image"
+                        objectFit="cover"
+                    />
+                    <Spacer y={0.2} />
+                    <Row>
+                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                            {' '}
+                            Liked by {likesLength}{' '}
+                        </Text>
                     </Row>
-                </Card.Header>
-                <Card.Divider />
-                <Link to={`/post?postId=${post.id}`}>
-                    <Card.Body css={{ py: '$10' }}>
-                        <Image
-                            width={400}
-                            height={170}
-                            containerCss={{ borderRadius: '3%' }}
-                            src={post.photoURL}
-                            alt="Default Image"
-                            objectFit="cover"
-                        />
-                        <Spacer y={0.2} />
-                        <Row>
-                            <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                                {' '}
-                                Liked by {likesLength}{' '}
-                            </Text>
-                        </Row>
-                        <Spacer y={0.3} />
-                        <Row>
-                            <Text
-                                css={{
-                                    height: '5em',
-                                    marginLeft: '$1',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    display: '-webkit-box',
-                                    WebkitBoxOrient: 'vertical',
-                                    WebkitLineClamp: 3,
-                                }}
-                            >
-                                Mod de preparare: {post.description}
-                            </Text>
-                        </Row>
-                        <Row>
-                            <Text>
-                                {' '}
-                                Time Cost: {post.timeCost} {post.timeUnit}
-                            </Text>
-                        </Row>
-                    </Card.Body>
-                </Link>
-                <Card.Divider />
+                    <Spacer y={0.3} />
+                    <Row>
+                        <Text
+                            css={{
+                                height: '5em',
+                                marginLeft: '$1',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 3,
+                            }}
+                        >
+                            Mod de preparare: {post.description}
+                        </Text>
+                    </Row>
+                    <Row>
+                        <Text>
+                            {' '}
+                            Time Cost: {post.timeCost} {post.timeUnit}
+                        </Text>
+                    </Row>
+                </Card.Body>
+            </Link>
+            <Card.Divider />
 
-                <Card.Footer>
-                    <Row justify="flex-start">
-                        {!liked ? (
-                            <Button
-                                auto
-                                css={{ mr: '$2', background: '$myColor' }}
-                                onPress={() => like()}
-                                icon={<HeartIcon fill="white" filled />}
-                            />
-                        ) : (
-                            <Button
-                                auto
-                                css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
-                                onPress={() => unlike()}
-                                icon={<HeartIcon filled fill="#F31260" />}
-                            />
-                        )}
-                        {!saved ? (
-                            <Button
-                                css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
-                                auto
-                                onPress={() => addToFav()}
-                            >
-                                Save
-                            </Button>
-                        ) : (
-                            <Button
-                                flat
-                                css={{ width: '75px', background: '$myColor', color: 'white' }}
-                                auto
-                                onPress={() => removeFromFav()}
-                            >
-                                Saved
-                            </Button>
-                        )}
-                    </Row>
-                    <Row justify="flex-end">
-                        <Button.Group>
-                            <Button css={{ mr: '$2' }} onPress={toggleComments}>
-                                {showComments ? 'Hide comment list' : 'View comment list'}
-                            </Button>
-                        </Button.Group>
-                    </Row>
-                </Card.Footer>
-            </Card>
-            {showComments && (
-                <div>
-                    {' '}
-                    <Spacer x={1} />
-                    <CommentCard post={post} />
-                </div>
-            )}
-        </div>
-        // </Container>
+            <Card.Footer>
+                <Row justify="flex-start">
+                    {!liked ? (
+                        <Button
+                            auto
+                            css={{ mr: '$2', background: '$myColor' }}
+                            onPress={() => like()}
+                            icon={<HeartIcon fill="white" filled />}
+                        />
+                    ) : (
+                        <Button
+                            auto
+                            css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
+                            onPress={() => unlike()}
+                            icon={<HeartIcon filled fill="#F31260" />}
+                        />
+                    )}
+                    {!saved ? (
+                        <Button
+                            css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
+                            auto
+                            onPress={() => addToFav()}
+                        >
+                            Save
+                        </Button>
+                    ) : (
+                        <Button
+                            flat
+                            css={{ width: '75px', background: '$myColor', color: 'white' }}
+                            auto
+                            onPress={() => removeFromFav()}
+                        >
+                            Saved
+                        </Button>
+                    )}
+                </Row>
+                <Row justify="flex-end">
+                    <Link to={`/post?postId=${post.id}`}>
+                        <Button>View comment list</Button>
+                    </Link>
+                </Row>
+            </Card.Footer>
+        </Card>
     );
 }
 export default SinglePost;

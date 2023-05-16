@@ -7,7 +7,7 @@ interface CommentListProps {
 
 const CommentList: React.FC<CommentListProps> = ({ comments }) => {
     return comments.length === 0 ? (
-        <Text>No comments yet😢</Text>
+        <Text css={{ marginLeft: '5px' }}>No comments yet😢</Text>
     ) : (
         <>
             {comments.map(comment => (

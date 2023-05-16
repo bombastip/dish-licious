@@ -1,4 +1,4 @@
-import { Container, Spacer } from '@nextui-org/react';
+import { Grid, Spacer } from '@nextui-org/react';
 import SinglePost from './SinglePost';
 import { useEffect, useState } from 'react';
 import { getDocs, getDoc, collection, doc, query, where } from 'firebase/firestore';
@@ -6,7 +6,6 @@ import { db } from '../config/firebase-config';
 import { PostType, Ingredient } from '../interfaces';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import * as styles from './Design-post.css';
 
 export const Post = () => {
     const ingredients = [{ name: '', quantity: 0, measureUnit: '' }];
@@ -20,8 +19,8 @@ export const Post = () => {
             ingredients,
             timeCost: 0,
             timeUnit: '',
-            comments: [],
             id: '',
+            comments: [],
         },
     ]);
     const postCollectionRef = collection(db, 'posts');
@@ -51,17 +50,15 @@ export const Post = () => {
     }, [user]);
 
     return (
-        <Container
-            gap={2}
-            justify="center"
-            css={{ marginTop: '20px', display: 'flex', justifyContent: 'center', justifyItems: 'center' }}
-        >
-            {postList.map(post => (
-                <div className={styles.postCard}>
-                    <SinglePost post={post} />
-                    <Spacer y={0.5} />
-                </div>
-            ))}
-        </Container>
+        <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
+            <div>
+                {postList.map(post => (
+                    <>
+                        <SinglePost post={post} />
+                        <Spacer y={0.5} />
+                    </>
+                ))}
+            </div>
+        </Grid.Container>
     );
 };

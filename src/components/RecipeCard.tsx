@@ -171,8 +171,8 @@ function RecipeCard({ post }: Props) {
             <Spacer y={2} />
             <Row>
                 <Col>
-                    <Card css={{ h: '450px', marginLeft: '20px', maxWidth:'90%'}} >
-                        <Card.Body css={{ p: 0 }} >
+                    <Card css={{ h: '450px', marginLeft: '20px', maxWidth: '90%' }}>
+                        <Card.Body css={{ p: 0 }}>
                             <Card.Image src={post.photoURL} objectFit="cover" width="100%" height="100%" />
                         </Card.Body>
                         <Card.Footer
@@ -245,7 +245,7 @@ function RecipeCard({ post }: Props) {
                 </Col>
                 <Spacer x={2} />
 
-                <Grid.Container gap={2} direction="column" css={{width: '100%'}}>
+                <Grid.Container gap={2} direction="column" css={{ width: '100%' }}>
                     <Text
                         h1
                         size={40}
@@ -294,9 +294,8 @@ function RecipeCard({ post }: Props) {
                         )}
                     </Row>
                     <Spacer y={0.5} />
-                    <Text >Liked by {likesLength}</Text>
+                    <Text>Liked by {likesLength}</Text>
                     <Text
-                       
                         h1
                         size={30}
                         textAlign="center"
@@ -307,14 +306,13 @@ function RecipeCard({ post }: Props) {
                     >
                         Ingrediente:
                     </Text>
-                    <Text size={20} >
+                    <Text size={20}>
                         {post.ingredients.map((ingredient: Ingredient, index: number) => (
                             <li
                                 key={index}
                             >{`${ingredient.quantity} ${ingredient.measureUnit} of ${ingredient.name} `}</li>
                         ))}
                     </Text>
-                    
                 </Grid.Container>
             </Row>
         </>
