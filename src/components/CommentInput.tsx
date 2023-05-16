@@ -40,6 +40,13 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
         }
     };
 
+    const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevents form submission on Enter key press
+            await handleSendComment();
+        }
+    };
+
     return (
         <Input
             aria-label="Comment"
@@ -48,6 +55,7 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
             width="300px"
             placeholder="Type your comment..."
             value={comment}
+            onKeyDown={handleKeyDown}
             onChange={e => setComment(e.target.value)}
             contentRight={
                 <Button
