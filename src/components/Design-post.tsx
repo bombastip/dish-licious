@@ -53,10 +53,10 @@ export const Post = () => {
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
-                    <>
+                    <div key={post.id}>
                         <SinglePost post={post} />
                         <Spacer y={0.5} />
-                    </>
+                    </div>
                 ))}
             </div>
         </Grid.Container>

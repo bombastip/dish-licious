@@ -127,15 +127,15 @@ function AddPost() {
     interface numberTypes {
         quantity: number;
     }
-    interface recepieInfo extends stringTypes, numberTypes {}
+    interface recipeInfo extends stringTypes, numberTypes {}
 
     // dynamic form
-    const [formFields, setFormfields] = useState<recepieInfo[]>([
-        { name: '', quantity: 0, measureUnit: '' } as recepieInfo,
+    const [formFields, setFormfields] = useState<recipeInfo[]>([
+        { name: '', quantity: 0, measureUnit: '' } as recipeInfo,
     ]);
 
     const handleFormChange = (event: ChangeEvent<FormElement>, index: number) => {
-        const data = [...formFields] as recepieInfo[];
+        const data = [...formFields] as recipeInfo[];
         if (event.target.name === 'quantity') {
             data[index].quantity = Number(event.target.value);
         }
@@ -160,6 +160,7 @@ function AddPost() {
         data.splice(index, 1);
         setFormfields(data);
     };
+
     return (
         <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
             <Grid sm={12} md={5}>

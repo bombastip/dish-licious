@@ -12,7 +12,7 @@ import {
     arrayUnion,
     deleteDoc,
 } from 'firebase/firestore';
-import { User } from '../interfaces';
+import { User, PostType } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);
@@ -337,4 +337,77 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         return true;
     }
     return false;
+}
+
+export async function getPostId(post: PostType) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    let postId = '';
+    querySnapshot.forEach(doc => {
+        const postFromDb = doc.data() as PostType;
+        if (postFromDb.title === post.title && postFromDb.userID === post.userID) {
+            postId = doc.id;
+        }
+    });
+    return postId;
+}
+
+export async function filterPostsByIngredients(ingredients: string[]) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        post.id = doc.id;
+        const postIngredients = post.ingredients.map(ingredient => ingredient.name.toLowerCase());
+
+        if (postIngredients.every(ingredient => ingredients.includes(ingredient.toLowerCase()))) {
+            posts.push(post);
+        }
+    });
+
+    return posts;
+}
+
+export async function filterPostsByTitle(title: string) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        post.id = doc.id;
+        if (post.title.toLowerCase() === title.toLowerCase()) {
+            posts.push(post);
+        }
+    });
+
+    return posts;
+}
+
+export async function filterPostsByTime(time: number, unit: string) {
+    if (unit == 'h') {
+        time = time * 60;
+        console.log('aici', time);
+    }
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        post.id = doc.id;
+        if (post.timeUnit === 'h') {
+            if (post.timeCost * 60 <= time) {
+                posts.push(post);
+            }
+        } else {
+            if (post.timeCost <= time) {
+                posts.push(post);
+            }
+        }
+    });
+    return posts;
 }

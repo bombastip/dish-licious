@@ -190,7 +190,7 @@ function UserProfile({ currentUserId }: Props) {
                         .slice()
                         .reverse()
                         .map(post => (
-                            <Grid wrap="wrap">
+                            <Grid wrap="wrap" key={post.id}>
                                 <SinglePost post={post} />
                                 <Spacer y={0.5} />
                             </Grid>

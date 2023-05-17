@@ -24,3 +24,4 @@ export { default as Comment } from './Comment';
 export { default as CommentList } from './CommentList';
 export { default as SendButton } from './SendButton';
 export { default as CommentCard } from './CommentCard';
+export { default as SinglePost } from './SinglePost';
