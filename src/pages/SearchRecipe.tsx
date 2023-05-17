@@ -100,6 +100,10 @@ const SearchRecipe = () => {
             alert('You need to complete at least one field!');
             return;
         }
+        if ((newTimeUnit !== '' && newTimeCost === 0) || (newTimeUnit === '' && newTimeCost !== 0)) {
+            alert('You need to complete both fields for time!');
+            return;
+        }
         const commonPosts = postsByIngredients.filter(post => {
             return (
                 postsByTitle.some(titlePost => titlePost.id === post.id) &&
