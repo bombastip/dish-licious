@@ -14,6 +14,7 @@ const SearchRecipe = () => {
     const [postsByTitle, setPostsByTitle] = useState<PostType[]>([]);
     const [postsByTime, setPostsByTime] = useState<PostType[]>([]);
     const [results, setResults] = useState<PostType[]>([]);
+    const [buttonPressed, setButtonPressed] = useState(false);
 
     const getAllPosts = async () => {
         const postCollectionRef = collection(db, 'posts');
@@ -61,7 +62,6 @@ const SearchRecipe = () => {
     };
 
     const removeFields = (index: number) => {
-        console.log(index);
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);
@@ -69,30 +69,20 @@ const SearchRecipe = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('title:', newPostTitle);
-            console.log('timeCost:', newTimeCost);
-            console.log('timeUnit:', newTimeUnit);
-            console.log('ingredients:', formFields);
-
             if (newPostTitle !== '') {
                 const postsByTitle = await filterPostsByTitle(newPostTitle);
                 setPostsByTitle(postsByTitle);
-                console.log('titlu:', postsByTitle);
-            } else {
-                console.log('titlu:', postsByTitle);
             }
 
             if (newTimeCost != 0 && newTimeUnit != '') {
                 const postsByTime = await filterPostsByTime(newTimeCost, newTimeUnit);
                 setPostsByTime(postsByTime);
-                console.log('time:', postsByTime);
             }
 
             const ingredients = formFields.map(ingredient => ingredient.name);
             if (formFields.length > 0 && ingredients[0] !== '') {
                 const postsByIngredients = await filterPostsByIngredients(ingredients);
                 setPostsByIngredients(postsByIngredients);
-                console.log('ingrediente:', postsByIngredients);
             }
         };
 
@@ -100,6 +90,7 @@ const SearchRecipe = () => {
     }, [newPostTitle, newTimeCost, newTimeUnit, formFields]);
 
     const handler = () => {
+        setButtonPressed(true);
         if (
             newPostTitle === '' &&
             newTimeCost === 0 &&
@@ -117,7 +108,6 @@ const SearchRecipe = () => {
             );
         });
 
-        console.log('rezultat:', commonPosts);
         setResults(commonPosts);
     };
 
@@ -267,12 +257,20 @@ const SearchRecipe = () => {
                 </Container>
                 <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
                     <div>
-                        {results.map(post => (
-                            <div key={post.id}>
-                                <SinglePost post={post} />
-                                <Spacer y={0.5} />
-                            </div>
-                        ))}
+                        {results.length
+                            ? results.map(post => (
+                                  <div key={post.id}>
+                                      <SinglePost post={post} />
+                                      <Spacer y={0.5} />
+                                  </div>
+                              ))
+                            : buttonPressed && (
+                                  <div>
+                                      <Text h5 size={40} align="center" color="secondary">
+                                          No results found
+                                      </Text>
+                                  </div>
+                              )}
                     </div>
                 </Grid.Container>
             </Container>
