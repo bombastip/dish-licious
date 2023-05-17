@@ -45,7 +45,11 @@ export const Post = () => {
                 }));
                 setPostList(filteredData);
             };
-            getPostList();
+            try {
+                async () => getPostList();
+            } catch (error) {
+                console.log(error);
+            }
         }
     }, [user]);
 

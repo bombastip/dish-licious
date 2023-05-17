@@ -33,7 +33,6 @@ const SearchRecipe = () => {
             setPostsByIngredients(posts);
             setPostsByTitle(posts);
             setPostsByTime(posts);
-            console.log('allPosts:', posts);
         };
         getPosts();
     }, []);

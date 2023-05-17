@@ -23,8 +23,6 @@ const FollowersQueryParam = () => {
             .then(doc => {
                 if (doc.exists()) {
                     setFollowers(doc.data().followers);
-                } else {
-                    console.log(`User documentnot found`);
                 }
             })
             .catch(error => {

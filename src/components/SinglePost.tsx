@@ -27,10 +27,15 @@ function SinglePost({ post }: Props) {
     const [userID, setUserID] = useState('');
     const [deleted, setDeleted] = useState(false);
 
+    if (post.id === '') {
+        return <> </>;
+    }
+
     useEffect(() => {
         const getLikes = async () => {
             try {
                 const docRef = doc(db, 'posts', post.id);
+                if (docRef === undefined || !docRef) return;
                 getDoc(docRef).then(doc => {
                     if (doc.exists()) {
                         setLikesLength(doc.data().likes.length);
@@ -59,7 +64,6 @@ function SinglePost({ post }: Props) {
                 const docUserSnap = await getDoc(userdocRef);
                 const saved = docUserSnap.data()?.favourites.includes(post.id);
                 setSaved(saved);
-                console.log(post.userID);
                 const userPostdocRef = doc(db, 'users', post.userID);
                 const docUserPostSnap = await getDoc(userPostdocRef);
                 const userName = docUserPostSnap.data()?.username;

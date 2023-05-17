@@ -37,10 +37,9 @@ const Recipe = () => {
                     post.comments = [];
                 }
                 setPost(post);
-                if (post) console.log('title:', post.title);
-                else return;
-            } else {
-                console.log(`Post document not found`);
+                if (!post) {
+                    return;
+                }
             }
         };
         getPost();

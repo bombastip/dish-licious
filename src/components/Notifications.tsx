@@ -31,9 +31,6 @@ function Notifications() {
     }, [user, location]);
 
     const handleNotif = async () => {
-        console.log('followersIds:', followersIds);
-        console.log('clicked');
-
         const newNotif = [];
         for (let i = 0; i < followersIds.length; i++) {
             const followerId = followersIds[i];
@@ -45,7 +42,6 @@ function Notifications() {
             newNotif.push(followerUsername);
         }
         setFollowersUsernames(newNotif);
-        console.log('build:', followersUsernames);
     };
 
     const handleAction = async (actionKey: string) => {
@@ -53,7 +49,6 @@ function Notifications() {
             return;
         }
         await removeNotification(user.uid, actionKey);
-        console.log('len:', followersIds.length);
         navigate(`/user-profile?userId=${actionKey}`);
     };
 

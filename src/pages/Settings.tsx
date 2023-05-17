@@ -54,7 +54,6 @@ const Settings = () => {
                 setModalVisible(true);
             }
             if (userData && !username && currentPhoto === userData.photoURL) {
-                console.log('No changes were made');
                 setErr('No changes were made');
                 return;
             }

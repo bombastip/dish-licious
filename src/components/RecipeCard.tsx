@@ -35,12 +35,14 @@ function RecipeCard({ post }: Props) {
             getDoc(docRef).then(doc => {
                 if (doc.exists()) {
                     setLikesLength(doc.data().likes.length);
-                } else {
-                    console.log(`User documentnot found`);
                 }
             });
         };
-        getLikes();
+        try {
+            async () => await getLikes();
+        } catch (error) {
+            console.log(error);
+        }
     }, [post.id]);
 
     useEffect(() => {
@@ -80,16 +82,14 @@ function RecipeCard({ post }: Props) {
         const check = async () => {
             try {
                 const docRef = doc(db, 'posts', post.id);
-                console.log('post.id: ', post.id);
                 const docSnap = await getDoc(docRef);
                 const liked = docSnap.data()?.likes.includes(user.uid);
                 setLiked(liked);
                 const userdocRef = doc(db, 'users', user.uid);
-                console.log('user.uid: ', user.uid);
+
                 const docUserSnap = await getDoc(userdocRef);
                 const saved = docUserSnap.data()?.favourites.includes(post.id);
                 setSaved(saved);
-                console.log('liked: ', liked);
             } catch (error) {
                 console.log(error);
             }
@@ -110,7 +110,6 @@ function RecipeCard({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                console.log(post.id);
                 const postDocRef = doc(postCollectionRef, post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayUnion(user.uid),
