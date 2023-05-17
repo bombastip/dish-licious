@@ -339,6 +339,20 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
     return false;
 }
 
+export async function getPostId(post: PostType) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    let postId = '';
+    querySnapshot.forEach(doc => {
+        const postFromDb = doc.data() as PostType;
+        if (postFromDb.title === post.title && postFromDb.userID === post.userID) {
+            postId = doc.id;
+        }
+    });
+    return postId;
+}
+
 export async function filterPostsByIngredients(ingredients: string[]) {
     const postsRef = collection(db, 'posts');
     const querySnapshot = await getDocs(postsRef);
@@ -346,6 +360,7 @@ export async function filterPostsByIngredients(ingredients: string[]) {
     const posts: PostType[] = [];
     querySnapshot.forEach(doc => {
         const post = doc.data() as PostType;
+        post.id = doc.id;
         const postIngredients = post.ingredients.map(ingredient => ingredient.name.toLowerCase());
 
         if (postIngredients.every(ingredient => ingredients.includes(ingredient.toLowerCase()))) {
@@ -363,6 +378,7 @@ export async function filterPostsByTitle(title: string) {
     const posts: PostType[] = [];
     querySnapshot.forEach(doc => {
         const post = doc.data() as PostType;
+        post.id = doc.id;
         if (post.title.toLowerCase() === title.toLowerCase()) {
             posts.push(post);
         }
@@ -382,6 +398,7 @@ export async function filterPostsByTime(time: number, unit: string) {
     const posts: PostType[] = [];
     querySnapshot.forEach(doc => {
         const post = doc.data() as PostType;
+        post.id = doc.id;
         if (post.timeUnit === 'h') {
             if (post.timeCost * 60 <= time) {
                 posts.push(post);

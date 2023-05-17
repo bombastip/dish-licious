@@ -16,4 +16,5 @@ export {
     filterPostsByIngredients,
     filterPostsByTitle,
     filterPostsByTime,
+    getPostId,
 } from './firestore-db';

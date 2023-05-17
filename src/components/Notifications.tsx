@@ -1,19 +1,10 @@
-import { Badge, Loading, styled, Dropdown, Navbar, Text, Container, Spacer } from '@nextui-org/react';
+import { Badge, Loading, Dropdown, Navbar, Text, Container, Spacer } from '@nextui-org/react';
 import NotificationsIcon from '../assets/NotificationsIcon';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { getFollowNotif, getUserData, removeNotification } from '../database';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-const StyledButton = styled('button', {
-    background: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    '&:active': {
-        opacity: 0.8,
-    },
-});
 
 function Notifications() {
     const { user, userLoading } = useContext(AuthContext);
@@ -70,7 +61,7 @@ function Notifications() {
         <Dropdown>
             <Navbar.Item>
                 <Dropdown.Button
-                    onClick={handleNotif}
+                    onPress={handleNotif}
                     auto
                     light
                     css={{
@@ -81,16 +72,14 @@ function Notifications() {
                     }}
                     ripple={false}
                 >
-                    <StyledButton aria-label="more than 99 notifications">
-                        <Badge
-                            color="error"
-                            content={followersIds.length}
-                            isInvisible={!followersIds.length ? true : false}
-                            shape="circle"
-                        >
-                            <NotificationsIcon fill="currentColor" size={30} />
-                        </Badge>
-                    </StyledButton>
+                    <Badge
+                        color="error"
+                        content={followersIds.length}
+                        isInvisible={!followersIds.length ? true : false}
+                        shape="circle"
+                    >
+                        <NotificationsIcon fill="currentColor" size={30} />
+                    </Badge>
                 </Dropdown.Button>
             </Navbar.Item>
             <Dropdown.Menu
@@ -115,7 +104,7 @@ function Notifications() {
             >
                 {followersIds.length ? (
                     followersUsernames.map((notif, index) => (
-                        <Dropdown.Item key={followersIds[index]}>
+                        <Dropdown.Item key={followersIds[index]} textValue="notifications">
                             <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Text b color="#ec9127">
                                     {notif}
@@ -126,7 +115,7 @@ function Notifications() {
                         </Dropdown.Item>
                     ))
                 ) : (
-                    <Dropdown.Item key="noNotif">
+                    <Dropdown.Item key="noNotif" textValue="noNotifications">
                         <Container css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Text b color="#ec9127">
                                 No new notifications

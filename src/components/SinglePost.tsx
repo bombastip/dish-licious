@@ -25,6 +25,7 @@ function SinglePost({ post }: Props) {
     const [userName, setUserName] = useState('');
     const [photoUser, setPhotoUser] = useState('');
     const [userID, setUserID] = useState('');
+    const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
         const getLikes = async () => {
@@ -136,6 +137,7 @@ function SinglePost({ post }: Props) {
         console.log('delete');
         try {
             await deletePost(post.id);
+            setDeleted(true);
         } catch (err) {
             console.error(err);
         }
@@ -148,171 +150,176 @@ function SinglePost({ post }: Props) {
     };
 
     return (
-        <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
-            <Card.Header>
-                <Text b css={{ whiteSpace: 'nowrap' }}>
-                    {post.title}
-                </Text>
-                <Row justify="flex-end">
-                    <Link to={`/user-profile?userId=${userID}`}>
-                        <User css={{ cursor: 'pointer' }} src={photoUser} name={userName} />
-                    </Link>
-                </Row>
-            </Card.Header>
-            <Card.Divider />
-            <Link to={`/post?postId=${post.id}`}>
-                <Card.Body css={{ py: '$10' }}>
-                    <Image
-                        width={400}
-                        height={170}
-                        containerCss={{ borderRadius: '3%' }}
-                        src={post.photoURL}
-                        alt="Default Image"
-                        objectFit="cover"
-                    />
-                    <Spacer y={0.2} />
-                    <Row css={{ display: 'flex' }}>
-                        <Text color="#ec9127" css={{ marginLeft: '$1' }}>
-                            {' '}
-                            Liked by {likesLength}{' '}
+        <>
+            {' '}
+            {!deleted ? (
+                <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
+                    <Card.Header>
+                        <Text b css={{ whiteSpace: 'nowrap' }}>
+                            {post.title}
                         </Text>
-                    </Row>
-                    <Spacer y={0.3} />
-                    <Row>
-                        <Text
-                            css={{
-                                height: '5em',
-                                marginLeft: '$1',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                display: '-webkit-box',
-                                WebkitBoxOrient: 'vertical',
-                                WebkitLineClamp: 3,
-                            }}
-                        >
-                            Mod de preparare: {post.description}
-                        </Text>
-                    </Row>
-                    <Row>
-                        <Text>
-                            {' '}
-                            Time Cost: {post.timeCost} {post.timeUnit}
-                        </Text>
-                    </Row>
-                </Card.Body>
-            </Link>
-            <Card.Divider />
-
-            <Card.Footer>
-                <Row justify="flex-start">
-                    {!liked ? (
-                        <Button
-                            auto
-                            css={{ mr: '$2', background: '$myColor' }}
-                            onPress={() => like()}
-                            icon={<HeartIcon fill="white" filled />}
-                        />
-                    ) : (
-                        <Button
-                            auto
-                            css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
-                            onPress={() => unlike()}
-                            icon={<HeartIcon filled fill="#F31260" />}
-                        />
-                    )}
-                    {!saved ? (
-                        <Button
-                            css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
-                            auto
-                            onPress={() => addToFav()}
-                        >
-                            Save
-                        </Button>
-                    ) : (
-                        <Button
-                            flat
-                            css={{ width: '75px', background: '$myColor', color: 'white' }}
-                            auto
-                            onPress={() => removeFromFav()}
-                        >
-                            Saved
-                        </Button>
-                    )}
-                </Row>
-                <Row justify="flex-end">
+                        <Row justify="flex-end">
+                            <Link to={`/user-profile?userId=${userID}`}>
+                                <User css={{ cursor: 'pointer' }} src={photoUser} name={userName} />
+                            </Link>
+                        </Row>
+                    </Card.Header>
+                    <Card.Divider />
                     <Link to={`/post?postId=${post.id}`}>
-                        <Button>View comment list</Button>
-                    </Link>
-                    <Spacer x={0.5} />
-                    {user && user.uid === post.userID && (
-                        <Dropdown>
-                            <Dropdown.Trigger>
-                                <Card
-                                    isPressable
+                        <Card.Body css={{ py: '$10' }}>
+                            <Image
+                                width={400}
+                                height={170}
+                                containerCss={{ borderRadius: '3%' }}
+                                src={post.photoURL}
+                                alt="Default Image"
+                                objectFit="cover"
+                            />
+                            <Spacer y={0.2} />
+                            <Row css={{ display: 'flex' }}>
+                                <Text color="#ec9127" css={{ marginLeft: '$1' }}>
+                                    {' '}
+                                    Liked by {likesLength}{' '}
+                                </Text>
+                            </Row>
+                            <Spacer y={0.3} />
+                            <Row>
+                                <Text
                                     css={{
-                                        width: '15px',
-                                        marginTop: '-20px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        size: '15px',
+                                        height: '5em',
+                                        marginLeft: '$1',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        display: '-webkit-box',
+                                        WebkitBoxOrient: 'vertical',
+                                        WebkitLineClamp: 3,
                                     }}
                                 >
-                                    <Col
-                                        css={{
-                                            marginTop: '-5px',
-                                            marginBottom: '-23px',
-                                            display: 'flex',
-                                            justifyContent: 'flex-end',
-                                            alignItems: 'flex-end',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        <Text>.</Text>
-                                    </Col>
-                                    <Col
-                                        css={{
-                                            marginBottom: '-23px',
-                                            display: 'flex',
-                                            justifyContent: 'flex-end',
-                                            alignItems: 'flex-end',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        <Text>.</Text>
-                                    </Col>
-                                    <Col
-                                        css={{
-                                            display: 'flex',
-                                            justifyContent: 'flex-end',
-                                            alignItems: 'flex-end',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        <Text>.</Text>
-                                    </Col>
-                                </Card>
-                            </Dropdown.Trigger>
-                            <Dropdown.Menu
-                                color="secondary"
-                                aria-label="Actions"
-                                onAction={actionKey => handleAction(actionKey as string)}
-                            >
-                                <Dropdown.Item
-                                    key="delete"
-                                    color="error"
-                                    icon={<DeleteDocumentIcon size={22} fill="currentColor" />}
-                                    css={{ fontWeight: '$semibold' }}
+                                    Mod de preparare: {post.description}
+                                </Text>
+                            </Row>
+                            <Row>
+                                <Text>
+                                    {' '}
+                                    Time Cost: {post.timeCost} {post.timeUnit}
+                                </Text>
+                            </Row>
+                        </Card.Body>
+                    </Link>
+                    <Card.Divider />
+
+                    <Card.Footer>
+                        <Row justify="flex-start">
+                            {!liked ? (
+                                <Button
+                                    auto
+                                    css={{ mr: '$2', background: '$myColor' }}
+                                    onPress={() => like()}
+                                    icon={<HeartIcon fill="white" filled />}
+                                />
+                            ) : (
+                                <Button
+                                    auto
+                                    css={{ mr: '$2', backgroundColor: 'transparent', border: 'none' }}
+                                    onPress={() => unlike()}
+                                    icon={<HeartIcon filled fill="#F31260" />}
+                                />
+                            )}
+                            {!saved ? (
+                                <Button
+                                    css={{ width: '75px', background: '#fdd8e5', color: '$myColor' }}
+                                    auto
+                                    onPress={() => addToFav()}
                                 >
-                                    Delete file
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    )}
-                </Row>
-            </Card.Footer>
-        </Card>
+                                    Save
+                                </Button>
+                            ) : (
+                                <Button
+                                    flat
+                                    css={{ width: '75px', background: '$myColor', color: 'white' }}
+                                    auto
+                                    onPress={() => removeFromFav()}
+                                >
+                                    Saved
+                                </Button>
+                            )}
+                        </Row>
+                        <Row justify="flex-end">
+                            <Link to={`/post?postId=${post.id}`}>
+                                <Button>View comment list</Button>
+                            </Link>
+                            <Spacer x={0.5} />
+                            {user && user.uid === post.userID && (
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <Card
+                                            isPressable
+                                            css={{
+                                                width: '15px',
+                                                marginTop: '-20px',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                size: '15px',
+                                            }}
+                                        >
+                                            <Col
+                                                css={{
+                                                    marginTop: '-5px',
+                                                    marginBottom: '-23px',
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'flex-end',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <Text>.</Text>
+                                            </Col>
+                                            <Col
+                                                css={{
+                                                    marginBottom: '-23px',
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'flex-end',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <Text>.</Text>
+                                            </Col>
+                                            <Col
+                                                css={{
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'flex-end',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <Text>.</Text>
+                                            </Col>
+                                        </Card>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Menu
+                                        color="secondary"
+                                        aria-label="Actions"
+                                        onAction={actionKey => handleAction(actionKey as string)}
+                                    >
+                                        <Dropdown.Item
+                                            key="delete"
+                                            color="error"
+                                            icon={<DeleteDocumentIcon size={22} fill="currentColor" />}
+                                            css={{ fontWeight: '$semibold' }}
+                                        >
+                                            Delete post
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            )}
+                        </Row>
+                    </Card.Footer>
+                </Card>
+            ) : null}
+        </>
     );
 }
 export default SinglePost;
