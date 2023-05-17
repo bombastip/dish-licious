@@ -1,18 +1,29 @@
 import { Container, Input, Row, Spacer, Text, Col, Button, Card, Grid, FormElement } from '@nextui-org/react';
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { filterPostsByIngredients, filterPostsByTitle, filterPostsByTime } from '../database';
+import { PostType } from '../interfaces';
 
 const SearchRecipe = () => {
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newTimeUnit, setNewTimeUnit] = useState('');
     const [newTimeCost, setNewTimeCost] = useState(0);
 
+    const getAllPosts = async () => {
+        const posts = await filterPostsByIngredients([]);
+        return posts;
+    };
+
+    const posts = getAllPosts();
+
+    const [postsByIngredients, setPostsByIngredients] = useState<PostType[]>(posts as unknown as PostType[]);
+    const [postsByTitle, setPostsByTitle] = useState<PostType[]>(posts as unknown as PostType[]);
+    const [postsByTime, setPostsByTime] = useState<PostType[]>(posts as unknown as PostType[]);
+
     interface recipeInfo {
         name: string;
     }
 
-    const [formFields, setFormfields] = useState<recipeInfo[]>([
-        { name: '', quantity: 0, measureUnit: '' } as recipeInfo,
-    ]);
+    const [formFields, setFormfields] = useState<recipeInfo[]>([{ name: '' } as recipeInfo]);
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,8 +49,40 @@ const SearchRecipe = () => {
         setFormfields(data);
     };
 
+    const onSearchPost = async () => {
+        console.log('title:', newPostTitle);
+        console.log('timeCost:', newTimeCost);
+        console.log('timeUnit:', newTimeUnit);
+        console.log('ingredients:', formFields);
+
+        if (newPostTitle) {
+            setPostsByTitle(await filterPostsByTitle(newPostTitle));
+            console.log(postsByTitle);
+        }
+
+        if (newTimeCost && newTimeUnit) {
+            setPostsByTime(await filterPostsByTime(newTimeCost, newTimeUnit));
+            console.log(postsByTime);
+        }
+
+        const ingredients = formFields.map(ingredient => ingredient.name);
+        if (formFields) {
+            setPostsByIngredients(await filterPostsByIngredients(ingredients));
+            console.log(postsByIngredients);
+        }
+
+        // get common posts from all arrays
+    };
+
+    const handler = () => {
+        if (newPostTitle === '' && newTimeCost === 0 && newTimeUnit === '' && !formFields) {
+            alert('You need to complete at least one field!');
+            return;
+        }
+        onSearchPost();
+    };
+
     return (
-        //
         <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
             <Grid sm={12} md={5}>
                 <Card aria-label="Add Post" css={{ width: '650px' }}>
@@ -151,8 +194,8 @@ const SearchRecipe = () => {
                             ></div>
                             <Row justify="center">
                                 <Button
-                                    buttonName={'Post'}
-                                    // clickFunc={handler}
+                                    buttonName={'Search'}
+                                    onPress={handler}
                                     placement="right"
                                     auto
                                     size="md"

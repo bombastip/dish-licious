@@ -13,4 +13,7 @@ export {
     removeNotification,
     addNotification,
     deletePost,
+    filterPostsByIngredients,
+    filterPostsByTitle,
+    filterPostsByTime,
 } from './firestore-db';

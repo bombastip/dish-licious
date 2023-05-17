@@ -12,7 +12,7 @@ import {
     arrayUnion,
     deleteDoc,
 } from 'firebase/firestore';
-import { User } from '../interfaces';
+import { User, PostType } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);
@@ -337,4 +337,60 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
         return true;
     }
     return false;
+}
+
+export async function filterPostsByIngredients(ingredients: string[]) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        const postIngredients = post.ingredients.map(ingredient => ingredient.name.toLowerCase());
+
+        if (postIngredients.every(ingredient => ingredients.includes(ingredient.toLowerCase()))) {
+            posts.push(post);
+        }
+    });
+
+    return posts;
+}
+
+export async function filterPostsByTitle(title: string) {
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        if (post.title.toLowerCase() === title.toLowerCase()) {
+            posts.push(post);
+        }
+    });
+
+    return posts;
+}
+
+export async function filterPostsByTime(time: number, unit: string) {
+    if (unit == 'h') {
+        time = time * 60;
+        console.log('aici', time);
+    }
+    const postsRef = collection(db, 'posts');
+    const querySnapshot = await getDocs(postsRef);
+
+    const posts: PostType[] = [];
+    querySnapshot.forEach(doc => {
+        const post = doc.data() as PostType;
+        if (post.timeUnit === 'h') {
+            if (post.timeCost * 60 <= time) {
+                posts.push(post);
+            }
+        } else {
+            if (post.timeCost <= time) {
+                posts.push(post);
+            }
+        }
+    });
+    return posts;
 }
