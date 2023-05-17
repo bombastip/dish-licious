@@ -29,7 +29,7 @@ const UserSearchResults = (props: UserSearchProps) => {
     }, []);
 
     useEffect(() => {
-        const filteredList = users.filter(user => user.username.includes(props.username));
+        const filteredList = users.filter(user => user.username.toLowerCase().includes(props.username.toLowerCase()));
         setFilteredList(filteredList);
     }, [props.username]);
 
@@ -39,7 +39,7 @@ const UserSearchResults = (props: UserSearchProps) => {
         ) : (
             <>
                 {filteredList.map(user => (
-                    <UserCard user={user} />
+                    <UserCard user={user} key={user.id} />
                 ))}
             </>
         )

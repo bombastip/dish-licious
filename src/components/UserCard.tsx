@@ -13,7 +13,7 @@ const UserCard = (props: UserCardProps) => {
             gap={2}
             css={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}
         >
-            <Card isPressable variant="bordered" css={{ mw: '330px' }}>
+            <Card variant="bordered" css={{ mw: '330px' }}>
                 <Link to={`/user-profile?userId=${props.user.id}`}>
                     <Row key={props.user.id} xs={3} css={{ display: 'flex', alignItems: 'center' }}>
                         <Avatar src={props.user.photoURL} size="lg" />

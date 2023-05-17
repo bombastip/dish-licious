@@ -33,7 +33,6 @@ const SearchRecipe = () => {
             setPostsByIngredients(posts);
             setPostsByTitle(posts);
             setPostsByTime(posts);
-            console.log('allPosts:', posts);
         };
         getPosts();
     }, []);
@@ -117,7 +116,7 @@ const SearchRecipe = () => {
 
     return (
         <Row>
-            <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
+            <Grid.Container gap={2} justify="center" alignItems="center">
                 <Grid sm={12} md={5}>
                     <Card aria-label="Add Post" css={{ minWidth: '460px', marginTop: '20px' }}>
                         <Card.Header>
@@ -145,7 +144,6 @@ const SearchRecipe = () => {
                                 justify="center"
                                 alignItems="center"
                                 css={{
-                                    textAlign: 'center',
                                     marginTop: '20px',
                                     display: 'flex',
                                     justifyContent: 'center',

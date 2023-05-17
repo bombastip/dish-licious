@@ -52,12 +52,12 @@ const SearchNavbarItem = () => {
                     },
                 }}
             >
-                <Dropdown.Item key="recipes">
+                <Dropdown.Item key="recipes" textValue="search recipe">
                     <Button light onPress={handleSearchRecipes}>
                         Search Recipe
                     </Button>
                 </Dropdown.Item>
-                <Dropdown.Item key="people">
+                <Dropdown.Item key="people" textValue="search people">
                     <Button light onPress={handleSearchPeople}>
                         Find People
                     </Button>

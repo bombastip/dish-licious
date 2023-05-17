@@ -1,4 +1,4 @@
-import { Spacer, Switch } from '@nextui-org/react';
+import { Loading, Spacer, Switch } from '@nextui-org/react';
 import {
     UsernameInput,
     SettingsCard,
@@ -23,6 +23,7 @@ const Settings = () => {
     const { setReloadUserData } = useContext(UserDataContext);
     const [err, setErr] = useState<ErrorMessasge>(null);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const modalHandler = () => {
         navigate('/');
@@ -37,7 +38,6 @@ const Settings = () => {
             if (username) {
                 if (username.length < 3) {
                     setErr('Username must be at least 3 characters long!');
-                    console.log(err);
                     return;
                 }
                 if (userData && username === userData.username) {
@@ -49,19 +49,22 @@ const Settings = () => {
                     setErr('Username already taken!');
                     return;
                 }
+                setLoading(true);
                 await changeUsername(user.uid, username);
                 setReloadUserData(true);
                 setModalVisible(true);
+                setLoading(false);
             }
             if (userData && !username && currentPhoto === userData.photoURL) {
-                console.log('No changes were made');
                 setErr('No changes were made');
                 return;
             }
             if (userData && currentPhoto !== userData.photoURL) {
+                setLoading(true);
                 await changePhotoURL(user.uid, currentPhoto);
                 setReloadUserData(true);
                 setModalVisible(true);
+                setLoading(false);
             }
         } catch (error: unknown) {
             throw new Error(`Error changing settings: ${error}`);
@@ -69,7 +72,7 @@ const Settings = () => {
     };
     const darkMode = useDarkMode(false);
 
-    const { component, currentPhoto } = ProfilePic();
+    const { component, currentPhoto, photoLoading } = ProfilePic();
 
     return (
         <SettingsCard>
@@ -94,14 +97,18 @@ const Settings = () => {
                 setVisible={setModalVisible}
                 buttonFunction={modalHandler}
             />
-            <ErrPopButton
-                clickFunc={handleChangeSettings}
-                buttonName="Save changes"
-                error={err}
-                setError={setErr}
-                placement="bottom"
-                offset={40}
-            />
+            {photoLoading || loading ? (
+                <Loading />
+            ) : (
+                <ErrPopButton
+                    clickFunc={handleChangeSettings}
+                    buttonName="Save changes"
+                    error={err}
+                    setError={setErr}
+                    placement="bottom"
+                    offset={40}
+                />
+            )}
         </SettingsCard>
     );
 };

@@ -11,26 +11,29 @@ function ProfilePic() {
     const [imageUpload, setImageUpload] = useState<File | null>(null);
     const { userData } = useContext(UserDataContext);
     const [currentPhoto, setCurrentPhoto] = useState(userData?.photoURL || '');
+    const [photoLoading, setPhotoLoading] = useState(false);
 
     useEffect(() => {
         setCurrentPhoto(currentPhoto);
     }, [currentPhoto]);
 
     const handleUploadPic = () => {
+        setPhotoLoading(true);
         const imageRef = ref(storage, `profile-pics/${imageUpload?.name + v4()}`);
         if (!imageUpload) {
             return;
         }
         uploadBytes(imageRef, imageUpload).then(() => {
-            console.log('Image uploaded!');
             getDownloadURL(imageRef)
                 .then(url => {
                     setCurrentPhoto(url);
+                    setPhotoLoading(false);
                 })
                 .catch(error => {
                     console.error(error);
                 });
         });
+        // setLoading(false);
     };
     const [showUploadButton, setShowUploadButton] = useState(false); // state to show or hide our upload button
 
@@ -69,6 +72,7 @@ function ProfilePic() {
             </>
         ),
         currentPhoto,
+        photoLoading,
     };
 }
 

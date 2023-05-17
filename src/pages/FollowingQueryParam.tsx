@@ -23,8 +23,6 @@ const FollowingQueryParam = () => {
             .then(doc => {
                 if (doc.exists()) {
                     setFollowing(doc.data().following);
-                } else {
-                    console.log(`User documentnot found`);
                 }
             })
             .catch(error => {

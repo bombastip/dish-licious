@@ -72,12 +72,6 @@ const Login = () => {
                 return;
             }
 
-            // auth.updateCurrentUser(null);
-            // sendSignInLinkToEmail(auth, email, actionCodeSettings)
-            //   .then(() => {
-            //     window.localStorage.setItem("emailForSignIn", email);
-            //     console.log(window.localStorage.emailForSignIn);
-            //   })
             redirect('/');
         } catch (error: unknown) {
             setErr((error as FirebaseError).message);

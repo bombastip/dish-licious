@@ -35,8 +35,6 @@ function RecipeCard({ post }: Props) {
             getDoc(docRef).then(doc => {
                 if (doc.exists()) {
                     setLikesLength(doc.data().likes.length);
-                } else {
-                    console.log(`User documentnot found`);
                 }
             });
         };
@@ -80,16 +78,14 @@ function RecipeCard({ post }: Props) {
         const check = async () => {
             try {
                 const docRef = doc(db, 'posts', post.id);
-                console.log('post.id: ', post.id);
                 const docSnap = await getDoc(docRef);
                 const liked = docSnap.data()?.likes.includes(user.uid);
                 setLiked(liked);
                 const userdocRef = doc(db, 'users', user.uid);
-                console.log('user.uid: ', user.uid);
+
                 const docUserSnap = await getDoc(userdocRef);
                 const saved = docUserSnap.data()?.favourites.includes(post.id);
                 setSaved(saved);
-                console.log('liked: ', liked);
             } catch (error) {
                 console.log(error);
             }
@@ -110,7 +106,6 @@ function RecipeCard({ post }: Props) {
     const like = async () => {
         try {
             if (user !== null) {
-                console.log(post.id);
                 const postDocRef = doc(postCollectionRef, post.id);
                 await updateDoc(postDocRef, {
                     likes: arrayUnion(user.uid),
@@ -192,7 +187,7 @@ function RecipeCard({ post }: Props) {
                                         </Link>
                                         <Spacer x={0.6} />
                                         <Link to={`/user-profile?userId=${userId}`}>
-                                            <Text isPressable color="#d1d1d1" size={18}>
+                                            <Text color="#d1d1d1" size={18}>
                                                 {username}
                                             </Text>
                                         </Link>
@@ -232,7 +227,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={30}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                             marginLeft: '32px',
@@ -249,7 +243,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={40}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                         }}
@@ -298,7 +291,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={30}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                         }}

@@ -1,5 +1,5 @@
 import { Button, Input, Loading } from '@nextui-org/react';
-import { SendButton } from '.';
+// import { SendButton } from '.';
 import { SendIcon } from '../assets/SendIcon';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { AuthContext } from '../context';
@@ -65,10 +65,10 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
                     }}
                     icon={
                         !loading ? (
-                            <SendButton>
-                                <SendIcon />
-                            </SendButton>
+                            // <SendButton>
+                            <SendIcon />
                         ) : (
+                            // </SendButton>
                             <Loading color="currentColor" size="sm" />
                         )
                     }

@@ -15,7 +15,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [err, setErr] = useState<ErrorMessasge>(null);
     const { user, userLoading } = useContext(AuthContext);
-    const { fromRegister, setFromRegister } = useContext(fromRegisterContext) as fromRegisterContextType;
+    const { setFromRegister } = useContext(fromRegisterContext) as fromRegisterContextType;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +26,6 @@ const Register = () => {
 
     const handleRegister = async () => {
         try {
-            // FIXME: email password and username regex alert
             if (username.length < 3 || password.length < 6 || email.length < 4) {
                 setErr('You completed the fields wrong!');
                 return;
@@ -40,9 +39,7 @@ const Register = () => {
             await auth.signOut();
             createUserCollection(result.user, username);
             sendEmailVerification(result.user, actionCodeSettings);
-            // FIXME: Handle email already in use error
             setFromRegister(true);
-            console.log(fromRegister);
             navigate('/login');
         } catch (error: unknown) {
             console.error(error);

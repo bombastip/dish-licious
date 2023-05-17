@@ -28,9 +28,7 @@ export async function createUserCollection(user: User, username: string) {
         feed: [],
     };
     setDoc(docRef, data)
-        .then(() => {
-            console.log('User written with ID: ', user.uid);
-        })
+        .then()
         .catch(error => {
             console.log(error);
         });
@@ -40,11 +38,8 @@ export async function getUserData(uid: string) {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        // console.log('Document data:', docSnap.data());
         return docSnap.data();
     } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
         return false;
     }
 }
@@ -103,10 +98,8 @@ export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data from getFollowing:', docSnap.data().following);
         return docSnap.data().following;
     } else {
-        console.log('No such document!');
         return null;
     }
 }
@@ -116,11 +109,9 @@ export async function getFollowers(id: string) {
     const followRef = doc(db, 'users', id);
     const docSnap = await getDoc(followRef);
     if (docSnap.exists()) {
-        console.log('Document data from getFollowers:', docSnap.data().followers);
         return docSnap.data().followers;
     } else {
         // doc.data() will be undefined in this case
-        console.log('No such document!');
         return false;
     }
 }
@@ -130,11 +121,8 @@ export async function getFollowNotif(id: string) {
     const followNotifRef = doc(db, 'users', id);
     const docSnap = await getDoc(followNotifRef);
     if (docSnap.exists()) {
-        console.log('Document data from getFollowNotif:', docSnap.data().followNotif);
         return docSnap.data().followNotif;
     } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
         return false;
     }
 }
@@ -144,16 +132,13 @@ export async function addNotification(wantToFollow: string, user: string) {
     const followNotifRef = doc(db, 'users', wantToFollow);
     const followNotifList = await getFollowNotif(wantToFollow);
     if (followNotifList) {
-        console.log('foloooow:', followNotifList);
         if (!followNotifList.includes(user)) {
             followNotifList.push(user);
             const data = {
                 followNotif: followNotifList,
             };
             setDoc(followNotifRef, data, { merge: true })
-                .then(() => {
-                    console.log('FollowNotif added successfully in followNotifList: ', followNotifList);
-                })
+                .then()
                 .catch(error => {
                     console.log(error);
                 });
@@ -174,9 +159,7 @@ export async function removeNotification(user: string, wantToRemove: string) {
             };
 
             setDoc(followNotifRef, data, { merge: true })
-                .then(() => {
-                    console.log('FollowNotif removed successfully from followNotifList: ', wantToRemove);
-                })
+                .then()
                 .catch(error => {
                     console.log(error);
                 });
@@ -188,7 +171,6 @@ export async function deletePost(post: string) {
     const postRef = doc(db, 'posts', post);
     const postSnap = await getDoc(postRef);
     if (postSnap.exists()) {
-        console.log('Document data from deletePost:', postSnap.data());
         const userRef = doc(db, 'users', postSnap.data().userID);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
@@ -199,9 +181,7 @@ export async function deletePost(post: string) {
                 favourites: favoritesList,
             };
             setDoc(userRef, data, { merge: true })
-                .then(() => {
-                    console.log('Post removed successfully from postsList and favoritesList: ', post);
-                })
+                .then()
                 .catch(error => {
                     console.log(error);
                 });
@@ -217,9 +197,7 @@ export async function deletePost(post: string) {
                         favourites: updatedList,
                     };
                     setDoc(docRef, data, { merge: true })
-                        .then(() => {
-                            console.log('Post removed successfully from favouritesList: ', post);
-                        })
+                        .then()
                         .catch(error => {
                             console.log(error);
                         });
@@ -228,7 +206,6 @@ export async function deletePost(post: string) {
                 }
             });
             await deleteDoc(postRef);
-            console.log('Post deleted successfully: ', post);
         } else {
             console.log('No user document!');
         }
@@ -248,7 +225,6 @@ export async function follow(wantToFollow: string, user: string) {
                 else return false;
             })
         ) {
-            console.log('Already following');
             return false;
         } else {
             followingList.push(wantToFollow);
@@ -256,9 +232,7 @@ export async function follow(wantToFollow: string, user: string) {
                 following: followingList,
             };
             setDoc(followRef, data, { merge: true })
-                .then(() => {
-                    console.log('Following added successfully in followingList: ', followingList);
-                })
+                .then()
                 .catch(error => {
                     console.log(error);
                 });
@@ -271,9 +245,7 @@ export async function follow(wantToFollow: string, user: string) {
                     followers: followersList,
                 };
                 setDoc(followersRef, data, { merge: true })
-                    .then(() => {
-                        console.log('Followers added successfully in followersList: ', followersList);
-                    })
+                    .then()
                     .catch(error => {
                         console.log(error);
                     });
@@ -294,9 +266,7 @@ export async function unfollow(wantToUnfollow: string, user: string) {
         };
 
         setDoc(followRef, data, { merge: true })
-            .then(() => {
-                console.log('Following removed successfully from followingList: ', wantToUnfollow);
-            })
+            .then()
             .catch(error => {
                 console.log(error);
             });
@@ -310,9 +280,7 @@ export async function unfollow(wantToUnfollow: string, user: string) {
                 followers: updatedList,
             };
             setDoc(followersRef, data, { merge: true })
-                .then(() => {
-                    console.log('Followers removed successfully from followersList: ', user);
-                })
+                .then()
                 .catch(error => {
                     console.log(error);
                 });
@@ -325,10 +293,8 @@ export async function unfollow(wantToUnfollow: string, user: string) {
 export async function checkFollow(user: string, wantToFollow: string): Promise<boolean> {
     const followingList = await getFollowing(user);
     if (followingList === null) {
-        console.log('Document does not exist!');
         return false;
     }
-    console.log('Document data from checkFollow:', followingList);
     if (
         followingList.some((element: string) => {
             return element === wantToFollow;
@@ -390,7 +356,6 @@ export async function filterPostsByTitle(title: string) {
 export async function filterPostsByTime(time: number, unit: string) {
     if (unit == 'h') {
         time = time * 60;
-        console.log('aici', time);
     }
     const postsRef = collection(db, 'posts');
     const querySnapshot = await getDocs(postsRef);

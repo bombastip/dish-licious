@@ -40,7 +40,6 @@ function AddPost() {
 
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
         navigate('/login');
     };
 
@@ -55,7 +54,6 @@ function AddPost() {
         }
 
         uploadBytes(imageRef, imageUpload).then(() => {
-            console.log('Image uploaded!');
             getDownloadURL(imageRef)
                 .then(url => {
                     setPhotoURL(url);
@@ -155,14 +153,13 @@ function AddPost() {
         setFormfields([...formFields, object]);
     };
     const removeFields = (index: number) => {
-        console.log(index);
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);
     };
 
     return (
-        <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
+        <Grid.Container gap={2} justify="center" alignItems="center">
             <Grid sm={12} md={5}>
                 <Card aria-label="Add Post" css={{ width: '650px' }}>
                     <Card.Header>
@@ -186,7 +183,7 @@ function AddPost() {
                             aria-label="Add-Post-Container"
                             justify="center"
                             alignItems="center"
-                            css={{ textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center' }}
+                            css={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
                         >
                             <Input
                                 aria-label="Title-Add-Post"

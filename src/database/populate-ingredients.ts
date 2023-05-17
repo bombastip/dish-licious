@@ -148,7 +148,6 @@ const ingredients: string[] = [
 export function createIngredientsCollection() {
     const ingredientsRef = collection(db, 'ingredients');
     ingredients.forEach(async (ingredient: string) => {
-        const docRef = await addDoc(ingredientsRef, { name: ingredient });
-        console.log('Document written with ID: ', docRef.id);
+        await addDoc(ingredientsRef, { name: ingredient });
     });
 }
