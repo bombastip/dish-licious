@@ -50,7 +50,7 @@ const Recipe = () => {
             <div style={{ width: '80%' }}>
                 <RecipeCard post={post} />
             </div>
-            <div style={{ padding: '55px 0', paddingRight: '30px' }}>
+            <div style={{ padding: '55px 0 0 0' }}>
                 <CommentList comments={!post.comments ? [] : post.comments} />
                 <CommentInput postID={post.id} setReloadComments={setReloadComments} reloadComments={reloadComents} />
             </div>

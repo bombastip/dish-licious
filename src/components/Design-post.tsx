@@ -31,19 +31,25 @@ export const Post = () => {
             const getPostList = async () => {
                 // READ THE DATA
                 // SET THE POST LIST
-                const userdocRef = doc(db, 'users', user.uid);
-                const docUserSnap = await getDoc(userdocRef);
-                const following = docUserSnap.data()?.following;
+                try {
+                    const userdocRef = doc(db, 'users', user.uid);
+                    const docUserSnap = await getDoc(userdocRef);
+                    const following = docUserSnap.data()?.following;
 
-                // Filter posts by following users
-                const q = query(postCollectionRef, where('userID', 'in', following));
-                const querySnapshot = await getDocs(q);
-                const filteredData = querySnapshot.docs.map(doc => ({
-                    ...(doc.data() as PostType),
-                    id: doc.id,
-                    ingredients: doc.data().ingredients as Ingredient[],
-                }));
-                setPostList(filteredData);
+                    // Filter posts by following users
+                    const q = query(postCollectionRef, where('userID', 'in', following));
+                    const querySnapshot = await getDocs(q);
+
+                    const filteredData = querySnapshot.docs.map(doc => ({
+                        ...(doc.data() as PostType),
+                        id: doc.id,
+                        ingredients: doc.data().ingredients as Ingredient[],
+                    }));
+
+                    setPostList(filteredData);
+                } catch (error) {
+                    console.log(error);
+                }
             };
             getPostList();
         }

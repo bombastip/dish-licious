@@ -123,7 +123,6 @@ export async function getFollowNotif(id: string) {
     if (docSnap.exists()) {
         return docSnap.data().followNotif;
     } else {
-        // doc.data() will be undefined in this case
         return false;
     }
 }
