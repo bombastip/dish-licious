@@ -38,12 +38,10 @@ function UserProfile({ currentUserId }: Props) {
                     setFollowers(doc.data().followers);
                     setFollowersLength(followers.length);
                     setFollowing(doc.data().following);
-                } else {
-                    console.log(`User documentnot found`);
                 }
             })
             .catch(error => {
-                console.log(`Error retrieving user document: ${error}`);
+                console.log(error);
             });
     }, [user, username, userLoading, currentUserId]);
 
@@ -77,7 +75,6 @@ function UserProfile({ currentUserId }: Props) {
                     }
                     setPosts(myPosts);
                 } else {
-                    console.log('No such document!');
                     setPosts([]);
                 }
             } catch (error) {
@@ -91,7 +88,6 @@ function UserProfile({ currentUserId }: Props) {
     const handleFollowers = () => {
         if (user?.uid !== currentUserId) {
             navigate(`/user-followers?userId=${currentUserId}`);
-            console.log('here');
             return;
         }
         navigate('/followers');
@@ -100,7 +96,6 @@ function UserProfile({ currentUserId }: Props) {
     const handleFollowing = () => {
         if (user?.uid !== currentUserId) {
             navigate(`/user-following?userId=${currentUserId}`);
-            console.log('here');
             return;
         }
         navigate('/following');

@@ -29,7 +29,6 @@ function Favorites() {
                     }
                     setFavorites(myFavorites);
                 } else {
-                    console.log('No such document!');
                     setFavorites([]);
                 }
             } catch (error) {

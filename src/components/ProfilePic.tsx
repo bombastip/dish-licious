@@ -22,7 +22,6 @@ function ProfilePic() {
             return;
         }
         uploadBytes(imageRef, imageUpload).then(() => {
-            console.log('Image uploaded!');
             getDownloadURL(imageRef)
                 .then(url => {
                     setCurrentPhoto(url);

@@ -40,7 +40,6 @@ function AddPost() {
 
     const closeHandler = () => {
         setVisible(false);
-        console.log('closed');
         navigate('/login');
     };
 
@@ -55,7 +54,6 @@ function AddPost() {
         }
 
         uploadBytes(imageRef, imageUpload).then(() => {
-            console.log('Image uploaded!');
             getDownloadURL(imageRef)
                 .then(url => {
                     setPhotoURL(url);
@@ -155,7 +153,6 @@ function AddPost() {
         setFormfields([...formFields, object]);
     };
     const removeFields = (index: number) => {
-        console.log(index);
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);

@@ -24,6 +24,7 @@ const SearchPeople = () => {
             <Spacer y={2} />
             <Row justify="center" align="center">
                 <Input
+                    aria-label="Username"
                     bordered
                     size="xl"
                     placeholder="Username"

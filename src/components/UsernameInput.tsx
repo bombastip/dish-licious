@@ -9,6 +9,7 @@ interface UsernameInputProps {
 const UsernameInput: FC<UsernameInputProps> = props => {
     return (
         <Input
+            aria-label="Username"
             label="Username"
             clearable
             bordered

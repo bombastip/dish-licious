@@ -39,8 +39,6 @@ function SinglePost({ post }: Props) {
                 getDoc(docRef).then(doc => {
                     if (doc.exists()) {
                         setLikesLength(doc.data().likes.length);
-                    } else {
-                        console.log(`User document not found`);
                     }
                 });
             } catch (error) {
@@ -138,7 +136,6 @@ function SinglePost({ post }: Props) {
     };
 
     const handleDeletePost = async () => {
-        console.log('delete');
         try {
             await deletePost(post.id);
             setDeleted(true);
@@ -257,7 +254,6 @@ function SinglePost({ post }: Props) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <Card
-                                            isPressable
                                             css={{
                                                 width: '15px',
                                                 marginTop: '-20px',

@@ -191,7 +191,7 @@ function RecipeCard({ post }: Props) {
                                         </Link>
                                         <Spacer x={0.6} />
                                         <Link to={`/user-profile?userId=${userId}`}>
-                                            <Text isPressable color="#d1d1d1" size={18}>
+                                            <Text color="#d1d1d1" size={18}>
                                                 {username}
                                             </Text>
                                         </Link>
