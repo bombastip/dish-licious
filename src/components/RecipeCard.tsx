@@ -38,11 +38,7 @@ function RecipeCard({ post }: Props) {
                 }
             });
         };
-        try {
-            async () => await getLikes();
-        } catch (error) {
-            console.log(error);
-        }
+        getLikes();
     }, [post.id]);
 
     useEffect(() => {

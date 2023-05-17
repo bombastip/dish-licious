@@ -27,7 +27,7 @@ function Notifications() {
             setFollowersIds(followNotifResult);
         };
 
-        async () => await myFollowNotif();
+        myFollowNotif();
     }, [user, location]);
 
     const handleNotif = async () => {
