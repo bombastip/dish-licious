@@ -72,7 +72,7 @@ function ProfilePic() {
             </>
         ),
         currentPhoto,
-        photoLoading
+        photoLoading,
     };
 }
 

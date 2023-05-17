@@ -231,7 +231,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={30}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                             marginLeft: '32px',
@@ -248,7 +247,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={40}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                         }}
@@ -297,7 +295,6 @@ function RecipeCard({ post }: Props) {
                     <Text
                         h1
                         size={30}
-                        textAlign="center"
                         css={{
                             textGradient: '90deg, #fedb58, #fc924c',
                         }}

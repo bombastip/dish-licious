@@ -159,7 +159,7 @@ function AddPost() {
     };
 
     return (
-        <Grid.Container gap={2} justify="center" alignItems="center" css={{ textAlign: 'center' }}>
+        <Grid.Container gap={2} justify="center" alignItems="center">
             <Grid sm={12} md={5}>
                 <Card aria-label="Add Post" css={{ width: '650px' }}>
                     <Card.Header>
@@ -183,7 +183,7 @@ function AddPost() {
                             aria-label="Add-Post-Container"
                             justify="center"
                             alignItems="center"
-                            css={{ textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center' }}
+                            css={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
                         >
                             <Input
                                 aria-label="Title-Add-Post"
