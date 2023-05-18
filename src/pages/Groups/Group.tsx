@@ -12,7 +12,7 @@ const Group = () => {
                 <Sidebar groupID={groupID} />
             </Col>
             <Col span={10}>
-                <GroupPosts groupID={groupID}/>
+                <GroupPosts groupID={groupID} />
             </Col>
         </div>
     );

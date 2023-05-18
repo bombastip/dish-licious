@@ -1,7 +1,5 @@
 const CreateGroup = () => {
-  return (
-    <div>CreateGroup</div>
-  )
-}
+    return <div>CreateGroup</div>;
+};
 
-export default CreateGroup
+export default CreateGroup;

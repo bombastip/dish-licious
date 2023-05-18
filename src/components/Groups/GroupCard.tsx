@@ -2,6 +2,7 @@ import { Button, Card } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 // import { GroupCardInfo } from '../../interfaces';
 
+// daca e admin de grup eventual sa aiba si optiunea de edit grup
 const GroupCard = ({ groupCardInfo }: { groupCardInfo: string }) => {
     return (
         <Card css={{ width: '300px', height: '400px', margin: '10px' }}>

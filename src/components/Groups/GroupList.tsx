@@ -8,7 +8,7 @@ const GroupList = () => {
     return (
         <Container css={{ display: 'flex', justifyContent: 'center' }}>
             {groupCardInfo.map(group => (
-                <GroupCard groupCardInfo={group} key={group}/>
+                <GroupCard groupCardInfo={group} key={group} />
             ))}
         </Container>
     );
