@@ -26,6 +26,7 @@ function SinglePost({ post }: Props) {
     const [photoUser, setPhotoUser] = useState('');
     const [userID, setUserID] = useState('');
     const [deleted, setDeleted] = useState(false);
+    const [unfav, setUnfav] = useState(false);
 
     if (post.id === '') {
         return <> </>;
@@ -93,6 +94,7 @@ function SinglePost({ post }: Props) {
 
     const removeFromFav = async () => {
         if (user) {
+            setUnfav(true);
             const userDocRef = doc(userCollectionRef, user.uid);
             try {
                 await updateDoc(userDocRef, {
@@ -153,7 +155,7 @@ function SinglePost({ post }: Props) {
     return (
         <>
             {' '}
-            {!deleted ? (
+            {!deleted && !unfav ? (
                 <Card isHoverable variant="bordered" css={{ mw: '400px' }}>
                     <Card.Header>
                         <Text b css={{ whiteSpace: 'nowrap' }}>

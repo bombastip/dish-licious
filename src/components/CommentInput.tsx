@@ -17,6 +17,10 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
     const [loading, setLoading] = useState(false);
 
     const handleSendComment = async () => {
+        if (!comment || comment[0] === ' ') {
+            alert('Comment cannot be empty or start with a space');
+            return;
+        }
         if (!user || userLoading) {
             return;
         }
@@ -58,21 +62,24 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
             onKeyDown={handleKeyDown}
             onChange={e => setComment(e.target.value)}
             contentRight={
-                <Button
-                    auto
-                    onPress={async () => {
-                        await handleSendComment();
-                    }}
-                    icon={
-                        !loading ? (
-                            // <SendButton>
-                            <SendIcon />
-                        ) : (
-                            // </SendButton>
-                            <Loading color="currentColor" size="sm" />
-                        )
-                    }
-                ></Button>
+                comment &&
+                comment[0] !== ' ' && (
+                    <Button
+                        auto
+                        onPress={async () => {
+                            await handleSendComment();
+                        }}
+                        icon={
+                            !loading ? (
+                                // <SendButton>
+                                <SendIcon />
+                            ) : (
+                                // </SendButton>
+                                <Loading color="currentColor" size="sm" />
+                            )
+                        }
+                    ></Button>
+                )
             }
         />
     );
