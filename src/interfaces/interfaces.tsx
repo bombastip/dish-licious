@@ -42,3 +42,5 @@ export type UserData = {
 };
 
 export type PostList = [id: string];
+
+// group interfaces

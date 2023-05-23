@@ -17,4 +17,5 @@ export {
     filterPostsByTitle,
     filterPostsByTime,
     getPostId,
+    createGroup,
 } from './firestore-db';
