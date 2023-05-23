@@ -63,6 +63,9 @@ export async function getUserData(uid: string) {
 }
 
 export async function getGroupData(groupId: string) {
+    if (groupId === '') {
+        return false;
+    }
     const docRef = doc(db, 'groups', groupId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {

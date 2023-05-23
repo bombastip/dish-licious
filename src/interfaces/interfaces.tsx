@@ -47,7 +47,7 @@ export type PostList = [id: string];
 export type GroupType = {
     name: string;
     description: string;
-    photoURL: string;
+    photo: string;
     members: string[];
     admin: string;
     feed: string[];

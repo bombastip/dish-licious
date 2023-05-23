@@ -9,7 +9,7 @@ const Group = () => {
     const queryParams = new URLSearchParams(useLocation().search);
     const groupId = queryParams.get('groupId') as string;
     const [group, setGroup] = useState({} as GroupType);
-    
+
     useEffect(() => {
         const getGroup = async () => {
             const group = await getGroupData(groupId);
@@ -20,7 +20,6 @@ const Group = () => {
     }, []);
 
     return (
-        
         <div>
             <h1>{group.name}</h1>
             <Col span={2} css={{ paddingLeft: '0px' }}>
