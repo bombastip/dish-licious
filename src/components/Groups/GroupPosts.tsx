@@ -2,11 +2,11 @@ import { Grid } from '@nextui-org/react';
 // import { SinglePost } from "..";
 
 interface GroupPostsProps {
-    groupID: string;
+    groupId: string;
 }
 // request la id-urile postarilot din grup
 // request la postarile id-urilor
-const GroupPosts = ({ groupID }: GroupPostsProps) => {
+const GroupPosts = ({ groupId }: GroupPostsProps) => {
     const posts = ['post1', 'post2', 'post3'];
     return (
         <Grid.Container css={{ display: 'flex', justifyContent: 'center' }}>
