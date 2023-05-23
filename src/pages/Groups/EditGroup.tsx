@@ -1,8 +1,5 @@
 const EditGroup = () => {
-  
-  return (
-    <div>EditGroup</div>
-  )
-}
+    return <div>EditGroup</div>;
+};
 
-export default EditGroup
+export default EditGroup;

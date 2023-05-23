@@ -4,6 +4,7 @@ import {
     doc,
     setDoc,
     getDoc,
+    addDoc,
     query,
     where,
     getDocs,
@@ -26,12 +27,29 @@ export async function createUserCollection(user: User, username: string) {
         posts: [],
         favourites: [],
         feed: [],
+        groups: [],
     };
     setDoc(docRef, data)
         .then()
         .catch(error => {
             console.log(error);
         });
+}
+
+export async function createGroup(uid: string, groupName: string, description: string, photoURL: string) {
+    const GroupCollectionRef = collection(db, 'groups');
+    const newGroupRef = await addDoc(GroupCollectionRef, {
+        name: groupName,
+        photo: photoURL,
+        description: description,
+        admin: uid,
+        members: [uid],
+        feed: [],
+    });
+    const userDocRef = doc(db, 'users', uid);
+    await updateDoc(userDocRef, {
+        groups: arrayUnion(newGroupRef.id),
+    });
 }
 
 export async function getUserData(uid: string) {
