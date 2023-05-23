@@ -1,4 +1,4 @@
-import { Loading, Spacer, Switch } from '@nextui-org/react';
+import { Loading, Spacer, Switch, Text } from '@nextui-org/react';
 import {
     UsernameInput,
     SettingsCard,
@@ -76,7 +76,17 @@ const Settings = () => {
 
     return (
         <SettingsCard>
-            <h1>Settings</h1>
+            <Text
+                aria-label="Header-Add-Post"
+                h1
+                size={40}
+                css={{
+                    textGradient: '90deg, #fedb58, #fc924c',
+                }}
+                weight="bold"
+            >
+                Settings
+            </Text>
             <Switch
                 checked={darkMode.value}
                 onChange={darkMode.toggle}
