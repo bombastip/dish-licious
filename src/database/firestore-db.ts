@@ -62,6 +62,16 @@ export async function getUserData(uid: string) {
     }
 }
 
+export async function getGroupData(groupId: string) {
+    const docRef = doc(db, 'groups', groupId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return docSnap.data();
+    } else {
+        return false;
+    }
+}
+
 export async function checkUsername(username: string) {
     const q = query(collection(db, 'users'), where('username', '==', username));
 
