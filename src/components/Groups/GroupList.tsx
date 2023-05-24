@@ -11,7 +11,7 @@ const GroupList = (props: GroupListInterface) => {
     return (
         <Container css={{ display: 'flex', justifyContent: 'center' }}>
             {props.groups.map(group => (
-                <GroupCard  group={group} key={group.id} />
+                <GroupCard group={group} key={group.id} />
             ))}
         </Container>
     );

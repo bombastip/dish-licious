@@ -44,7 +44,7 @@ export type UserData = {
 export type PostList = [id: string];
 
 // group interfaces
-export interface Group {
+export interface GroupType {
     admin: string;
     description: string;
     feed: [string];
@@ -60,4 +60,3 @@ export interface GroupCardInfo {
     name: string;
     photo: string;
 }
-
