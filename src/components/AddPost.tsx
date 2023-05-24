@@ -1,7 +1,7 @@
-import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row } from '@nextui-org/react';
+import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row, Checkbox } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { collection, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc, arrayUnion, getDocs, where, query } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../config/firebase-config';
@@ -16,9 +16,11 @@ import ErrPopButton from './ErrPopButton';
 function AddPost() {
     // modal
     const [visible, setVisible] = React.useState(false);
+    const [visibleGroups, setVisibleGroups] = React.useState(false);
     const { user } = useContext(AuthContext);
     const postCollectionRef = collection(db, 'posts');
     const userCollectionRef = collection(db, 'users');
+    const groupCollectionRef = collection(db, 'groups');
     const navigate = useNavigate();
 
     // new post states
@@ -26,6 +28,8 @@ function AddPost() {
     const [newDescription, setNewDescription] = useState('');
     const [newTimeUnit, setNewTimeUnit] = useState('');
     const [newTimeCost, setNewTimeCost] = useState(0);
+    const [profileSpace, setProfileSpace] = React.useState(false);
+    const [groupNames, setGroupNames] = useState<string[]>([]);
 
     // photo
     const [newphotoURL, setPhotoURL] = useState('');
@@ -77,6 +81,7 @@ function AddPost() {
                     photoURL: newphotoURL,
                     ingredients: formFields,
                     userID: user.uid,
+                    profile: profileSpace,
                 });
                 if (newPostTitle === '') {
                     setErr('Title is required');
@@ -110,6 +115,21 @@ function AddPost() {
                 await updateDoc(userDocRef, {
                     posts: arrayUnion(newPostRef.id),
                 });
+
+                // Caută grupul cu numele dat
+                groupNames.map(async groupName => {
+                    const groupsQuery = query(groupCollectionRef, where('name', '==', groupName));
+                    const groupsSnapshot = await getDocs(groupsQuery);
+
+                    if (!groupsSnapshot.empty) {
+                        const groupDoc = groupsSnapshot.docs[0];
+
+                        // Actualizează câmpul "feed" al grupului cu ID-ul postării noi
+                        await updateDoc(groupDoc.ref, {
+                            feed: arrayUnion(newPostRef.id),
+                        });
+                    }
+                });
                 setVisible(true);
             }
         } catch (err) {
@@ -120,6 +140,10 @@ function AddPost() {
     interface stringTypes {
         name: string;
         measureUnit: string;
+    }
+
+    interface stringTypesGroups {
+        name: string;
     }
 
     interface numberTypes {
@@ -143,6 +167,21 @@ function AddPost() {
         setFormfields(data);
     };
 
+    //dynamic form for groups name
+    const [formFieldsGroups, setFormfieldsGroups] = useState([{ name: '' }]);
+
+    const handleFormGroupChange = (event: ChangeEvent<FormElement> | ChangeEvent<HTMLSelectElement>, index: number) => {
+        console.log('am intrat');
+        const data = [...formFieldsGroups];
+        if (event.target.name === 'name') {
+            const updatedGroupNames = [...groupNames];
+            updatedGroupNames[index] = event.target.value;
+            setGroupNames(updatedGroupNames);
+        }
+        data[index][event.target.name as keyof stringTypesGroups] = event.target.value;
+        setFormfieldsGroups(data);
+    };
+
     const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     };
@@ -154,10 +193,23 @@ function AddPost() {
         };
         setFormfields([...formFields, object]);
     };
+    const addFieldsGroups = () => {
+        const object = {
+            name: '',
+        };
+        setFormfieldsGroups([...formFieldsGroups, object]);
+    };
     const removeFields = (index: number) => {
         const data = [...formFields];
         data.splice(index, 1);
         setFormfields(data);
+    };
+
+    const handleProfileSpace = () => {
+        setProfileSpace(true);
+    };
+    const handleVisibleGroups = () => {
+        setVisibleGroups(true);
     };
 
     return (
@@ -323,6 +375,53 @@ function AddPost() {
                                     <Spacer y={3} />
                                 </Row>
                             </div>
+                            <Checkbox value="profile" onChange={handleProfileSpace}>
+                                Profile
+                            </Checkbox>
+                            <Spacer y={1} />
+                            <Row>
+                                <Checkbox value="groups" onChange={handleVisibleGroups}>
+                                    Groups
+                                </Checkbox>
+                            </Row>
+                            {visibleGroups && (
+                                <div>
+                                    <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                                        <form onSubmit={submit}>
+                                            {formFieldsGroups.map((form, index) => {
+                                                return (
+                                                    <table key={index} style={{ marginTop: '5px' }}>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style={{ paddingRight: '10px' }}>
+                                                                    <Input
+                                                                        aria-label="Group-Name-Add-Post"
+                                                                        bordered
+                                                                        name="name"
+                                                                        placeholder="Name Group"
+                                                                        width="150px"
+                                                                        onChange={(event: ChangeEvent<FormElement>) =>
+                                                                            handleFormGroupChange(event, index)
+                                                                        }
+                                                                        value={form.name}
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                );
+                                            })}
+                                        </form>
+                                        <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
+                                            +
+                                        </Button>
+                                        <Spacer y={3} />
+                                    </Row>
+                                </div>
+                            )}
+
+                            <Spacer y={1} />
+
                             <div
                                 style={{
                                     display: 'flex',

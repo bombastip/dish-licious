@@ -122,8 +122,8 @@ const Group = () => {
                         <Text size={19}>{group.description}</Text>
                     </Col>
                 </Row>
+                <GroupPosts groupId={groupId} />
             </Container>
-            <GroupPosts groupId={groupId} />
         </div>
     );
 };
