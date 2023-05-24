@@ -125,7 +125,7 @@ function AddPost() {
     interface numberTypes {
         quantity: number;
     }
-    interface recipeInfo extends stringTypes, numberTypes { }
+    interface recipeInfo extends stringTypes, numberTypes {}
 
     // dynamic form
     const [formFields, setFormfields] = useState<recipeInfo[]>([
@@ -136,8 +136,7 @@ function AddPost() {
         const data = [...formFields] as recipeInfo[];
         if (event.target.name === 'quantity') {
             data[index].quantity = Number(event.target.value);
-        }
-        else if (event.target.name === 'measureUnit') {
+        } else if (event.target.name === 'measureUnit') {
             data[index].measureUnit = event.target.value;
         }
         data[index][event.target.name as keyof stringTypes] = event.target.value;
@@ -182,10 +181,7 @@ function AddPost() {
                     </Card.Header>
                     <Card.Divider />
                     <Card.Body css={{ py: '$10' }}>
-                        <Container
-                            aria-label="Add-Post-Container"
-                            css={{ marginTop: '20px', }}
-                        >
+                        <Container aria-label="Add-Post-Container" css={{ marginTop: '20px' }}>
                             <Input
                                 aria-label="Title-Add-Post"
                                 bordered
@@ -279,10 +275,9 @@ function AddPost() {
                                                                     <select
                                                                         name="measureUnit"
                                                                         value={form.measureUnit}
-                                                                        onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                                                                            handleFormChange(event, index)
-                                                                        }
-
+                                                                        onChange={(
+                                                                            event: ChangeEvent<HTMLSelectElement>,
+                                                                        ) => handleFormChange(event, index)}
                                                                         style={{
                                                                             padding: '8px',
                                                                             border: '1px solid #ccc',
@@ -290,13 +285,14 @@ function AddPost() {
                                                                             width: '150px',
                                                                         }}
                                                                     >
-                                                                        <option value="">{form.measureUnit || "Measure Unit"}</option>
+                                                                        <option value="">
+                                                                            {form.measureUnit || 'Measure Unit'}
+                                                                        </option>
                                                                         <option value="g">g</option>
                                                                         <option value="kg">kg</option>
                                                                         <option value="l">l</option>
                                                                         <option value="ml">ml</option>
                                                                         <option value="buc">buc</option>
-
                                                                     </select>
                                                                 </label>
                                                                 <br />

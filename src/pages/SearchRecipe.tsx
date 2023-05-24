@@ -141,10 +141,8 @@ const SearchRecipe = () => {
                         <Card.Body css={{ py: '$10' }}>
                             <Container
                                 aria-label="Add-Post-Container"
-
                                 css={{
                                     marginTop: '20px',
-
                                 }}
                             >
                                 <Input
@@ -190,12 +188,14 @@ const SearchRecipe = () => {
                                         <br />
                                     </form>
                                 </div>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
                                     <form onSubmit={submit}>
                                         {formFields.map((form, index) => {
                                             return (
@@ -279,18 +279,18 @@ const SearchRecipe = () => {
                     <div>
                         {results.length
                             ? results.map(post => (
-                                <div key={post.id}>
-                                    <SinglePost post={post} />
-                                    <Spacer y={0.5} />
-                                </div>
-                            ))
+                                  <div key={post.id}>
+                                      <SinglePost post={post} />
+                                      <Spacer y={0.5} />
+                                  </div>
+                              ))
                             : buttonPressed && (
-                                <div>
-                                    <Text h5 size={40} align="center" color="secondary">
-                                        No results found
-                                    </Text>
-                                </div>
-                            )}
+                                  <div>
+                                      <Text h5 size={40} align="center" color="secondary">
+                                          No results found
+                                      </Text>
+                                  </div>
+                              )}
                     </div>
                 </Grid.Container>
             </Container>
