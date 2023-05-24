@@ -4,6 +4,7 @@ import {
     doc,
     setDoc,
     getDoc,
+    addDoc,
     query,
     where,
     getDocs,
@@ -26,12 +27,29 @@ export async function createUserCollection(user: User, username: string) {
         posts: [],
         favourites: [],
         feed: [],
+        groups: [],
     };
     setDoc(docRef, data)
         .then()
         .catch(error => {
             console.log(error);
         });
+}
+
+export async function createGroup(uid: string, groupName: string, description: string, photoURL: string) {
+    const GroupCollectionRef = collection(db, 'groups');
+    const newGroupRef = await addDoc(GroupCollectionRef, {
+        name: groupName,
+        photo: photoURL,
+        description: description,
+        admin: uid,
+        members: [uid],
+        feed: [],
+    });
+    const userDocRef = doc(db, 'users', uid);
+    await updateDoc(userDocRef, {
+        groups: arrayUnion(newGroupRef.id),
+    });
 }
 
 export async function getUserData(uid: string) {
@@ -44,8 +62,31 @@ export async function getUserData(uid: string) {
     }
 }
 
+export async function getGroupData(groupId: string) {
+    if (groupId === '') {
+        return false;
+    }
+    const docRef = doc(db, 'groups', groupId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return docSnap.data();
+    } else {
+        return false;
+    }
+}
+
 export async function checkUsername(username: string) {
     const q = query(collection(db, 'users'), where('username', '==', username));
+
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+        return true;
+    }
+    return false;
+}
+
+export async function checkGroupName(groupName: string) {
+    const q = query(collection(db, 'groups'), where('name', '==', groupName));
 
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
@@ -85,6 +126,15 @@ export const changeUsername = async (uid: string, newUsername: string) => {
     }
 };
 
+export const changeGroupName = async (groupId: string, newGroupName: string) => {
+    const docRef = doc(db, 'groups', groupId);
+    try {
+        await setDoc(docRef, { name: newGroupName }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing group name: ${error}`);
+    }
+};
+
 export const changePhotoURL = async (uid: string, newPhotoUrl: string) => {
     const docRef = doc(db, 'users', uid);
     try {
@@ -93,6 +143,25 @@ export const changePhotoURL = async (uid: string, newPhotoUrl: string) => {
         throw new Error(`Error changing photoURL: ${error}`);
     }
 };
+
+export const changeGroupPhoto = async (groupId: string, newPhoto: string) => {
+    const docRef = doc(db, 'groups', groupId);
+    try {
+        await setDoc(docRef, { photo: newPhoto }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing group photoURL: ${error}`);
+    }
+};
+
+export const changeGroupDescription = async (groupId: string, newDescription: string) => {
+    const docRef = doc(db, 'groups', groupId);
+    try {
+        await setDoc(docRef, { description: newDescription }, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error changing group description: ${error}`);
+    }
+};
+
 // function to get following array from firestore users collection
 export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);
