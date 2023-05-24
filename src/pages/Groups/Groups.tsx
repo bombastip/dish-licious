@@ -1,5 +1,5 @@
 import { Button, Container, Text } from '@nextui-org/react';
-import { GroupList } from '../../components/Groups';
+// import { GroupList } from '../../components/Groups';
 
 const Gropus = () => {
     const handleCreateGroup = () => {
@@ -24,7 +24,7 @@ const Gropus = () => {
                     Create a group
                 </Button>
             </Container>
-            <GroupList />
+            {/* <GroupList /> */}
         </>
     );
 };

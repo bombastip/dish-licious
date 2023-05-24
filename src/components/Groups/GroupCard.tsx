@@ -1,17 +1,19 @@
 import { Button, Card } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
-// import { GroupCardInfo } from '../../interfaces';
+import { GroupCardInfo } from '../../interfaces/interfaces';
 
-// daca e admin de grup eventual sa aiba si optiunea de edit grup
-const GroupCard = ({ groupCardInfo }: { groupCardInfo: string }) => {
+interface GroupCardProps {
+    group: GroupCardInfo;
+}
+const GroupCard = ({ group }: GroupCardProps) => {
     return (
         <Card css={{ width: '300px', height: '400px', margin: '10px' }}>
-            <Card.Header>{groupCardInfo}</Card.Header>
+            <Card.Header>{group.name}</Card.Header>
             <Card.Body>
-                <Card.Image src="http://www.venisoncache.com/wp-content/uploads/2019/02/steak-1.jpg" />
+                <Card.Image src={group.photo} />
             </Card.Body>
             <Card.Footer css={{ display: 'flex', justifyContent: 'center' }}>
-                <Link to={`/group?groupID=${groupCardInfo}`}>
+                <Link to={`/group?groupID=${group.id}`}>
                     <Button>Visit</Button>
                 </Link>
             </Card.Footer>

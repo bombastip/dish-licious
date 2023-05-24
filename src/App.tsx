@@ -16,6 +16,7 @@ import {
     SearchPeople,
     Recipe,
     FavoriteRecipes,
+    SearchGroups,
 } from './pages';
 import { PrivateRoute } from './route';
 import { Groups, Group, CreateGroup, EditGroup } from './pages/Groups';
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
                     {
                         path: 'search/people',
                         element: <SearchPeople />,
+                    },
+                    {
+                        path: 'search/groups',
+                        element: <SearchGroups />,
                     },
                     {
                         path: 'post',
