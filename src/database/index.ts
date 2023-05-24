@@ -19,4 +19,9 @@ export {
     getPostId,
     createGroup,
     getGroupData,
+    checkGroupName,
+    changeGroupName,
+    changeGroupPhoto,
+    changeGroupDescription,
+    getGroups,
 } from './firestore-db';

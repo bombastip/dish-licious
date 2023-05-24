@@ -1,10 +1,8 @@
-import { Col, Container, Text, Image, Card, Row, Button, Spacer, Avatar } from '@nextui-org/react';
-import { GroupPosts, Sidebar } from '../../components/Groups';
+import { Col, Container, Text, Card, Row, Button, Spacer, Avatar } from '@nextui-org/react';
 import { Link, useLocation } from 'react-router-dom';
 import { getGroupData, getUserData } from '../../database';
 import { useEffect, useState } from 'react';
 import { GroupType, UserData } from '../../interfaces';
-import { CompleteFn } from 'firebase/auth';
 
 const Group = () => {
     const queryParams = new URLSearchParams(useLocation().search);
@@ -119,7 +117,7 @@ const Group = () => {
                     </Col>
                 </Row>
                 <Spacer y={1} />
-                <Row align="center" justify='flex-start'>
+                <Row align="center" justify="flex-start">
                     <Col span={9}>
                         <Text size={30} b color="primary">
                             Description:

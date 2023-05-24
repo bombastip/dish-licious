@@ -51,4 +51,5 @@ export type GroupType = {
     members: string[];
     admin: string;
     feed: string[];
+    id: string;
 };

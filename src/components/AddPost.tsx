@@ -132,10 +132,12 @@ function AddPost() {
         { name: '', quantity: 0, measureUnit: '' } as recipeInfo,
     ]);
 
-    const handleFormChange = (event: ChangeEvent<FormElement>, index: number) => {
+    const handleFormChange = (event: ChangeEvent<FormElement> | ChangeEvent<HTMLSelectElement>, index: number) => {
         const data = [...formFields] as recipeInfo[];
         if (event.target.name === 'quantity') {
             data[index].quantity = Number(event.target.value);
+        } else if (event.target.name === 'measureUnit') {
+            data[index].measureUnit = event.target.value;
         }
         data[index][event.target.name as keyof stringTypes] = event.target.value;
         setFormfields(data);
@@ -179,12 +181,7 @@ function AddPost() {
                     </Card.Header>
                     <Card.Divider />
                     <Card.Body css={{ py: '$10' }}>
-                        <Container
-                            aria-label="Add-Post-Container"
-                            justify="center"
-                            alignItems="center"
-                            css={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
-                        >
+                        <Container aria-label="Add-Post-Container" css={{ marginTop: '20px' }}>
                             <Input
                                 aria-label="Title-Add-Post"
                                 bordered
@@ -202,16 +199,33 @@ function AddPost() {
                                 onChange={e => setNewTimeCost(Number(e.target.value))}
                                 css={{ width: '100%' }}
                             />
-                            <Spacer y={2.5} />
-                            <Input
-                                aria-label="TimeUnit-Add-Post"
-                                clearable
-                                bordered
-                                labelPlaceholder="TimeUnit"
-                                onChange={e => setNewTimeUnit(e.target.value)}
-                                css={{ width: '100%' }}
-                            />
-                            <Spacer y={2.5} />
+                            <Spacer y={0.5} />
+                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text aria-label="Time Unit" b color="#ec9127" style={{ marginRight: '15px' }}>
+                                    Time Unit:
+                                </Text>
+                                <form style={{ marginTop: '20px', marginLeft: 0 }}>
+                                    <label>
+                                        <select
+                                            value={newTimeUnit}
+                                            onChange={e => setNewTimeUnit(e.target.value)}
+                                            style={{
+                                                padding: '8px',
+                                                border: '1px solid #ccc',
+                                                borderRadius: '12px',
+                                                width: '150px',
+                                            }}
+                                        >
+                                            <option value="">Select an option</option>
+                                            <option value="h">h</option>
+                                            <option value="min">min</option>
+                                        </select>
+                                    </label>
+                                    <br />
+                                    <br />
+                                </form>
+                            </div>
+                            <Spacer y={0.5} />
                             <Textarea
                                 aria-label="Description-Add-Post"
                                 bordered
@@ -219,13 +233,12 @@ function AddPost() {
                                 onChange={e => setNewDescription(e.target.value)}
                                 css={{ width: '100%' }}
                             />
-                            <Spacer y={1} />
-
+                            <Spacer y={0.5} />
                             <div>
                                 <form onSubmit={submit}>
                                     {formFields.map((form, index) => {
                                         return (
-                                            <table key={index} style={{ marginTop: '20px' }}>
+                                            <table key={index} style={{ marginTop: '5px' }}>
                                                 <tbody>
                                                     <tr>
                                                         <td style={{ paddingRight: '10px' }}>
@@ -257,17 +270,34 @@ function AddPost() {
                                                             />
                                                         </td>
                                                         <td style={{ paddingRight: '10px' }}>
-                                                            <Input
-                                                                aria-label="Ingredient-Measure-Unit-Add-Post"
-                                                                bordered
-                                                                name="measureUnit"
-                                                                placeholder="Measure Unit"
-                                                                width="120px"
-                                                                onChange={(event: ChangeEvent<FormElement>) =>
-                                                                    handleFormChange(event, index)
-                                                                }
-                                                                value={form.measureUnit}
-                                                            />
+                                                            <form style={{ marginTop: '20px', marginLeft: 0 }}>
+                                                                <label>
+                                                                    <select
+                                                                        name="measureUnit"
+                                                                        value={form.measureUnit}
+                                                                        onChange={(
+                                                                            event: ChangeEvent<HTMLSelectElement>,
+                                                                        ) => handleFormChange(event, index)}
+                                                                        style={{
+                                                                            padding: '8px',
+                                                                            border: '1px solid #ccc',
+                                                                            borderRadius: '12px',
+                                                                            width: '150px',
+                                                                        }}
+                                                                    >
+                                                                        <option value="">
+                                                                            {form.measureUnit || 'Measure Unit'}
+                                                                        </option>
+                                                                        <option value="g">g</option>
+                                                                        <option value="kg">kg</option>
+                                                                        <option value="l">l</option>
+                                                                        <option value="ml">ml</option>
+                                                                        <option value="buc">buc</option>
+                                                                    </select>
+                                                                </label>
+                                                                <br />
+                                                                <br />
+                                                            </form>
                                                         </td>
                                                         <td>
                                                             <Button
@@ -286,7 +316,7 @@ function AddPost() {
                                         );
                                     })}
                                 </form>
-                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                                     <Button color="warning" onPress={addFields} auto rounded flat>
                                         Add ingredient
                                     </Button>
