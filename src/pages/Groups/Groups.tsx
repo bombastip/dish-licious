@@ -1,7 +1,7 @@
 import { Button, Container, Spacer, Text } from '@nextui-org/react';
 import { GroupList } from '../../components/Groups';
 
-const Gropus = () => {
+const Groups = () => {
     const handleCreateGroup = () => {
         window.location.href = '/group/create';
     };
@@ -28,4 +28,4 @@ const Gropus = () => {
     );
 };
 
-export default Gropus;
+export default Groups;
