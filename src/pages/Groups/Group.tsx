@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { getGroupData, getUserData } from '../../database';
 import { useEffect, useState } from 'react';
 import { GroupType, UserData } from '../../interfaces';
+import { GroupPosts } from '../../components/Groups';
 
 const Group = () => {
     const queryParams = new URLSearchParams(useLocation().search);
@@ -122,6 +123,7 @@ const Group = () => {
                     </Col>
                 </Row>
             </Container>
+            <GroupPosts groupId={groupId} />
         </div>
     );
 };
