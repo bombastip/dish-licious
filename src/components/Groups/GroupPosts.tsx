@@ -31,7 +31,6 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
                     finalPosts.push(postData as PostType);
                     setPosts(finalPosts);
                 });
-                
             } catch (error) {
                 console.log(error);
             }
@@ -42,12 +41,14 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
 
     return (
         <Grid.Container gap={2} css={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            {posts.map(post => (
-                <div key={groupId}>
-                    <SinglePost post={post} />
-                    <Spacer y={0.5} />
-                </div>
-            ))}
+            <div>
+                {posts.map(post => (
+                    <div key={groupId}>
+                        <SinglePost post={post} />
+                        <Spacer y={1} />
+                    </div>
+                ))}
+            </div>
         </Grid.Container>
     );
 };

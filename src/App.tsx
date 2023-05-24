@@ -20,7 +20,7 @@ import {
 } from './pages';
 import { GroupSettings } from './pages/Groups';
 import { PrivateRoute } from './route';
-import { Groups, Group, CreateGroup, EditGroup } from './pages/Groups';
+import { Groups, Group, CreateGroup } from './pages/Groups';
 
 const router = createBrowserRouter([
     {
@@ -104,10 +104,6 @@ const router = createBrowserRouter([
                     {
                         path: 'group/create',
                         element: <CreateGroup />,
-                    },
-                    {
-                        path: 'group/edit',
-                        element: <EditGroup />,
                     },
                     {
                         path: 'group/settings',

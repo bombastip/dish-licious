@@ -153,21 +153,18 @@ const SearchRecipe = () => {
                                     css={{ width: '100%' }}
                                 />
                                 <Spacer y={2.5} />
-                                <Input
-                                    aria-label="TimeCost-Add-Post"
-                                    bordered
-                                    labelPlaceholder="TimeCost"
-                                    type="number"
-                                    min="0"
-                                    onChange={e => setNewTimeCost(Number(e.target.value))}
-                                    css={{ width: '100%' }}
-                                />
-                                <Spacer y={0.5} />
-                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text aria-label="Time Unit" b color="#ec9127" style={{ marginRight: '15px' }}>
-                                        Time Unit:
-                                    </Text>
-                                    <form style={{ marginTop: '20px', marginLeft: 0 }}>
+                                <Row>
+                                    <Input
+                                        aria-label="TimeCost-Add-Post"
+                                        bordered
+                                        labelPlaceholder="TimeCost"
+                                        type="number"
+                                        min="0"
+                                        onChange={e => setNewTimeCost(Number(e.target.value))}
+                                        css={{ width: '100%' }}
+                                    />
+                                    <Spacer y={0.5} />
+                                    <form style={{ marginLeft: 0 }}>
                                         <label>
                                             <select
                                                 value={newTimeUnit}
@@ -176,10 +173,10 @@ const SearchRecipe = () => {
                                                     padding: '8px',
                                                     border: '1px solid #ccc',
                                                     borderRadius: '12px',
-                                                    width: '150px',
+                                                    width: '140px',
                                                 }}
                                             >
-                                                <option value="">Select an option</option>
+                                                <option value="">Time Unit</option>
                                                 <option value="h">h</option>
                                                 <option value="min">min</option>
                                             </select>
@@ -187,7 +184,8 @@ const SearchRecipe = () => {
                                         <br />
                                         <br />
                                     </form>
-                                </div>
+                                </Row>
+                                <Spacer y={0.5} />
                                 <div
                                     style={{
                                         display: 'flex',
