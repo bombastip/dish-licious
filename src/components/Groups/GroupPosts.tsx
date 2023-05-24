@@ -19,6 +19,7 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
                 const postList = (await getDoc(groupdocRef)).data() as GroupType;
                 const postsFeed = postList.feed;
                 console.log(postsFeed);
+                const finalPosts: PostType[] = [];
                 postsFeed.map(async postId => {
                     const postDocRef = doc(db, 'posts', postId);
                     const postDoc = await getDoc(postDocRef);
@@ -27,8 +28,10 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
                     }
                     const postData = postDoc.data();
                     postData.id = postId;
-                    setPosts(posts => [...posts, postData] as PostType[]);
+                    finalPosts.push(postData as PostType);
+                    setPosts(finalPosts);
                 });
+                
             } catch (error) {
                 console.log(error);
             }
