@@ -55,6 +55,7 @@ const GroupCard = ({ groupCardInfo }: GroupCardProps) => {
                     ))}
                 </Avatar.Group>
             </Card.Body>
+            <Card.Divider />
             <Card.Footer css={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Link to={`/group?groupId=${groupCardInfo.id}`}>
                     <Button>Visit</Button>
