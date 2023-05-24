@@ -162,6 +162,16 @@ export const changeGroupDescription = async (groupId: string, newDescription: st
     }
 };
 
+export const getGroups = async (uid: string) => {
+    const userDocRef = doc(db, 'users', uid);
+    const docUserSnap = await getDoc(userDocRef);
+    if (!docUserSnap.exists()) {
+        return [];
+    }
+    const groups = docUserSnap.data().groups as string[];
+    return groups;
+};
+
 // function to get following array from firestore users collection
 export async function getFollowing(id: string) {
     const followRef = doc(db, 'users', id);

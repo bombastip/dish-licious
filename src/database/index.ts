@@ -23,4 +23,5 @@ export {
     changeGroupName,
     changeGroupPhoto,
     changeGroupDescription,
+    getGroups,
 } from './firestore-db';
