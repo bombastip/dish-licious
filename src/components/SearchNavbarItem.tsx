@@ -13,6 +13,10 @@ const SearchNavbarItem = () => {
         navigate('/search/people');
     };
 
+    const handleSearchGroups = () => {
+        navigate('/search/groups');
+    };
+
     return (
         <Dropdown>
             <Navbar.Item>
@@ -60,6 +64,11 @@ const SearchNavbarItem = () => {
                 <Dropdown.Item key="people" textValue="search people">
                     <Button light onPress={handleSearchPeople}>
                         Find People
+                    </Button>
+                </Dropdown.Item>
+                <Dropdown.Item key="groups" textValue="search groups">
+                    <Button light onPress={handleSearchGroups}>
+                        Find Groups
                     </Button>
                 </Dropdown.Item>
             </Dropdown.Menu>

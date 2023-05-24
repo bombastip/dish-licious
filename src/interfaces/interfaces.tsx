@@ -44,12 +44,19 @@ export type UserData = {
 export type PostList = [id: string];
 
 // group interfaces
-export type GroupType = {
-    name: string;
-    description: string;
-    photo: string;
-    members: string[];
+export interface GroupType {
     admin: string;
-    feed: string[];
+    description: string;
+    feed: [string];
     id: string;
-};
+    members: [string];
+    name: string;
+    photo: string;
+}
+
+export interface GroupCardInfo {
+    id: string;
+    members: [string];
+    name: string;
+    photo: string;
+}
