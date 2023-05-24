@@ -141,12 +141,8 @@ const SearchRecipe = () => {
                         <Card.Body css={{ py: '$10' }}>
                             <Container
                                 aria-label="Add-Post-Container"
-                                justify="center"
-                                alignItems="center"
                                 css={{
                                     marginTop: '20px',
-                                    display: 'flex',
-                                    justifyContent: 'center',
                                 }}
                             >
                                 <Input
@@ -166,22 +162,44 @@ const SearchRecipe = () => {
                                     onChange={e => setNewTimeCost(Number(e.target.value))}
                                     css={{ width: '100%' }}
                                 />
-                                <Spacer y={2.5} />
-                                <Input
-                                    aria-label="TimeUnit-Add-Post"
-                                    clearable
-                                    bordered
-                                    labelPlaceholder="TimeUnit"
-                                    onChange={e => setNewTimeUnit(e.target.value)}
-                                    css={{ width: '100%' }}
-                                />
-                                <Spacer y={2.5} />
-
-                                <div>
+                                <Spacer y={0.5} />
+                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text aria-label="Time Unit" b color="#ec9127" style={{ marginRight: '15px' }}>
+                                        Time Unit:
+                                    </Text>
+                                    <form style={{ marginTop: '20px', marginLeft: 0 }}>
+                                        <label>
+                                            <select
+                                                value={newTimeUnit}
+                                                onChange={e => setNewTimeUnit(e.target.value)}
+                                                style={{
+                                                    padding: '8px',
+                                                    border: '1px solid #ccc',
+                                                    borderRadius: '12px',
+                                                    width: '150px',
+                                                }}
+                                            >
+                                                <option value="">Select an option</option>
+                                                <option value="h">h</option>
+                                                <option value="min">min</option>
+                                            </select>
+                                        </label>
+                                        <br />
+                                        <br />
+                                    </form>
+                                </div>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
                                     <form onSubmit={submit}>
                                         {formFields.map((form, index) => {
                                             return (
-                                                <table key={index} style={{ marginTop: '20px', paddingRight: '30px' }}>
+                                                <table key={index} style={{ marginTop: '15px' }}>
                                                     <tbody>
                                                         <tr>
                                                             <td style={{ paddingRight: '10px' }}>

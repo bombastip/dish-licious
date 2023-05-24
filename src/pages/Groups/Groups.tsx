@@ -1,15 +1,13 @@
-import { Button, Container, Text } from '@nextui-org/react';
-// import { GroupList } from '../../components/Groups';
+import { Button, Container, Spacer, Text } from '@nextui-org/react';
+import { GroupList } from '../../components/Groups';
 
-const Gropus = () => {
+const Groups = () => {
     const handleCreateGroup = () => {
         window.location.href = '/group/create';
     };
     return (
         <>
-            <Container
-                css={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px' }}
-            >
+            <Container css={{ display: 'flex', flexDirection: 'row', marginTop: '10px', justifyContent: 'center' }}>
                 <Text
                     h1
                     size={40}
@@ -18,8 +16,9 @@ const Gropus = () => {
                     }}
                     weight="bold"
                 >
-                    Connect with fellow fodies via group communities
+                    Connect with fellow foodies via group communities
                 </Text>
+                <Spacer x={1} />
                 <Button color="primary" css={{ marginTop: '10px' }} onClick={handleCreateGroup}>
                     Create a group
                 </Button>
@@ -29,4 +28,4 @@ const Gropus = () => {
     );
 };
 
-export default Gropus;
+export default Groups;

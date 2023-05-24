@@ -1,17 +1,44 @@
-import { Container } from '@nextui-org/react';
+import { Container, Loading } from '@nextui-org/react';
 import { GroupCard } from '.';
-import { GroupCardInfo } from '../../interfaces/interfaces';
+import { GroupType } from '../../interfaces';
+import { AuthContext } from '../../context';
+import { useContext, useEffect, useState } from 'react';
+import { getGroups, getGroupData } from '../../database';
 
-interface GroupListInterface {
-    groups: GroupCardInfo[];
-}
+const GroupList = () => {
+    const { user } = useContext(AuthContext);
+    const [groupIds, setGroupIds] = useState<string[]>([]);
+    const [groupCardInfo, setGroupCardInfo] = useState<GroupType[]>([]);
+    if (!user) {
+        return <Loading />;
+    }
+    useEffect(() => {
+        const getGroupsList = async () => {
+            const groups = await getGroups(user.uid);
+            console.log('groups: ', groups);
+            setGroupIds(groups);
+        };
+        getGroupsList();
+    }, [user]);
 
-const GroupList = (props: GroupListInterface) => {
-    // luat grupurile din baza de date si afisate cu GroupCards
+    useEffect(() => {
+        const getGroupsData = async () => {
+            groupIds.map(async groupId => {
+                const groupData = await getGroupData(groupId);
+                if (!groupData) {
+                    return;
+                }
+                groupData.id = groupId;
+                setGroupCardInfo(groupCardInfo => [...groupCardInfo, groupData] as GroupType[]);
+            }, []);
+        };
+        getGroupsData();
+    }, [groupIds]);
+
     return (
         <Container css={{ display: 'flex', justifyContent: 'center' }}>
-            {props.groups.map(group => (
-                <GroupCard group={group} key={group.id} />
+            {groupCardInfo.map(group => (
+                <GroupCard groupCardInfo={group} key={group.name} />
             ))}
         </Container>
     );
