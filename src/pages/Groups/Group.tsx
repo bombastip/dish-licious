@@ -124,9 +124,6 @@ const Group = () => {
                 </Row>
                 <GroupPosts groupId={groupId} />
             </Container>
-            
-            
-            
         </div>
     );
 };
