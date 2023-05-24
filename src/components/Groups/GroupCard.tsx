@@ -11,7 +11,7 @@ const GroupCard = ({ groupCardInfo }: { groupCardInfo: string }) => {
                 <Card.Image src="http://www.venisoncache.com/wp-content/uploads/2019/02/steak-1.jpg" />
             </Card.Body>
             <Card.Footer css={{ display: 'flex', justifyContent: 'center' }}>
-                <Link to={`/group?groupID=${groupCardInfo}`}>
+                <Link to={`/group?groupId=${groupCardInfo}`}>
                     <Button>Visit</Button>
                 </Link>
             </Card.Footer>

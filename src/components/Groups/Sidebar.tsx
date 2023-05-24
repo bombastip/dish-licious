@@ -1,12 +1,12 @@
 import { Container } from '@nextui-org/react';
 
 interface SidebarProps {
-    groupID: string;
+    groupId: string;
 }
 
 // request la userii din grup
 // afisat userii din grup, eventual grop description sau idk
-const Sidebar = ({ groupID }: SidebarProps) => {
+const Sidebar = ({ groupId }: SidebarProps) => {
     return <Container>Sidebar </Container>;
 };
 
