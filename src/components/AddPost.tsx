@@ -117,18 +117,19 @@ function AddPost() {
                 });
 
                 // Caută grupul cu numele dat
-                groupNames.map(async (groupName) => {
-                const groupsQuery = query(groupCollectionRef, where('name', '==', groupName));
-                const groupsSnapshot = await getDocs(groupsQuery);
+                groupNames.map(async groupName => {
+                    const groupsQuery = query(groupCollectionRef, where('name', '==', groupName));
+                    const groupsSnapshot = await getDocs(groupsQuery);
 
-                if (!groupsSnapshot.empty) {
-                    const groupDoc = groupsSnapshot.docs[0];
+                    if (!groupsSnapshot.empty) {
+                        const groupDoc = groupsSnapshot.docs[0];
 
-                    // Actualizează câmpul "feed" al grupului cu ID-ul postării noi
-                    await updateDoc(groupDoc.ref, {
-                        feed: arrayUnion(newPostRef.id),
-                    });
-                }})
+                        // Actualizează câmpul "feed" al grupului cu ID-ul postării noi
+                        await updateDoc(groupDoc.ref, {
+                            feed: arrayUnion(newPostRef.id),
+                        });
+                    }
+                });
                 setVisible(true);
             }
         } catch (err) {
@@ -148,13 +149,12 @@ function AddPost() {
     interface numberTypes {
         quantity: number;
     }
-    interface recipeInfo extends stringTypes, numberTypes { }
+    interface recipeInfo extends stringTypes, numberTypes {}
 
     // dynamic form
     const [formFields, setFormfields] = useState<recipeInfo[]>([
         { name: '', quantity: 0, measureUnit: '' } as recipeInfo,
     ]);
-
 
     const handleFormChange = (event: ChangeEvent<FormElement> | ChangeEvent<HTMLSelectElement>, index: number) => {
         const data = [...formFields] as recipeInfo[];
@@ -168,20 +168,17 @@ function AddPost() {
     };
 
     //dynamic form for groups name
-    const [formFieldsGroups, setFormfieldsGroups] = useState([
-        { name: '' },
-    ]);
-    
+    const [formFieldsGroups, setFormfieldsGroups] = useState([{ name: '' }]);
+
     const handleFormGroupChange = (event: ChangeEvent<FormElement> | ChangeEvent<HTMLSelectElement>, index: number) => {
-        console.log("am intrat");
+        console.log('am intrat');
         const data = [...formFieldsGroups];
         if (event.target.name === 'name') {
             const updatedGroupNames = [...groupNames];
             updatedGroupNames[index] = event.target.value;
             setGroupNames(updatedGroupNames);
-            
         }
-        data[index][event.target.name as keyof stringTypesGroups ] = event.target.value;
+        data[index][event.target.name as keyof stringTypesGroups] = event.target.value;
         setFormfieldsGroups(data);
     };
 
@@ -210,10 +207,10 @@ function AddPost() {
 
     const handleProfileSpace = () => {
         setProfileSpace(true);
-    }
+    };
     const handleVisibleGroups = () => {
         setVisibleGroups(true);
-    }
+    };
 
     return (
         <Grid.Container gap={2} justify="center" alignItems="center">
@@ -378,45 +375,49 @@ function AddPost() {
                                     <Spacer y={3} />
                                 </Row>
                             </div>
-                            <Checkbox value="profile" onChange={handleProfileSpace}>Profile</Checkbox>
+                            <Checkbox value="profile" onChange={handleProfileSpace}>
+                                Profile
+                            </Checkbox>
                             <Spacer y={1} />
                             <Row>
-                                <Checkbox value="groups" onChange={handleVisibleGroups}>Groups</Checkbox>
+                                <Checkbox value="groups" onChange={handleVisibleGroups}>
+                                    Groups
+                                </Checkbox>
                             </Row>
-                            {visibleGroups && (<div>
-                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                                    <form onSubmit={submit} >
-                                        {formFieldsGroups.map((form, index) => {
-                                            return (
-                                                <table key={index} style={{ marginTop: '5px' }}>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style={{ paddingRight: '10px' }}>
-                                                                <Input
-                                                                    aria-label="Group-Name-Add-Post"
-                                                                    bordered
-                                                                    name="name"
-                                                                    placeholder="Name Group"
-                                                                    width="150px"
-                                                                    onChange={(
-                                                                        event: ChangeEvent<FormElement>,
-                                                                    ) => handleFormGroupChange(event, index)}
-                                                                    value={form.name}
-                                                                />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            );
-                                        })}
-                                    </form>
-                                    <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
-                                        +
-                                    </Button>
-                                    <Spacer y={3} />
-                                </Row>
-                            </div>
-
+                            {visibleGroups && (
+                                <div>
+                                    <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                                        <form onSubmit={submit}>
+                                            {formFieldsGroups.map((form, index) => {
+                                                return (
+                                                    <table key={index} style={{ marginTop: '5px' }}>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style={{ paddingRight: '10px' }}>
+                                                                    <Input
+                                                                        aria-label="Group-Name-Add-Post"
+                                                                        bordered
+                                                                        name="name"
+                                                                        placeholder="Name Group"
+                                                                        width="150px"
+                                                                        onChange={(event: ChangeEvent<FormElement>) =>
+                                                                            handleFormGroupChange(event, index)
+                                                                        }
+                                                                        value={form.name}
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                );
+                                            })}
+                                        </form>
+                                        <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
+                                            +
+                                        </Button>
+                                        <Spacer y={3} />
+                                    </Row>
+                                </div>
                             )}
 
                             <Spacer y={1} />

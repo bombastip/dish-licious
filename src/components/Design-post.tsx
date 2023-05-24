@@ -41,11 +41,13 @@ export const Post = () => {
                     const q = query(postCollectionRef, where('userID', 'in', following));
                     const querySnapshot = await getDocs(q);
 
-                    const filteredData = querySnapshot.docs.map(doc => ({
-                        ...(doc.data() as PostType),
-                        id: doc.id,
-                        ingredients: doc.data().ingredients as Ingredient[],
-                    })).filter(post => post.profile === true);
+                    const filteredData = querySnapshot.docs
+                        .map(doc => ({
+                            ...(doc.data() as PostType),
+                            id: doc.id,
+                            ingredients: doc.data().ingredients as Ingredient[],
+                        }))
+                        .filter(post => post.profile === true);
 
                     setPostList(filteredData);
                 } catch (error) {
