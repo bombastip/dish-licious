@@ -11,10 +11,14 @@ interface UserSearchProps {
 const getGroups = async () => {
     const q = query(collection(db, 'groups'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as GroupCardInfo);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data as GroupCardInfo;
+    });
 };
 
-const UserSearchResults = (props: UserSearchProps) => {
+const GroupSearchResults = (props: UserSearchProps) => {
     const [groups, setGroups] = useState<GroupCardInfo[]>([]);
     const [filteredList, setFilteredList] = useState<GroupCardInfo[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -29,11 +33,15 @@ const UserSearchResults = (props: UserSearchProps) => {
     }, []);
 
     useEffect(() => {
+        if (props.groupName === '') {
+            setFilteredList([]);
+            return;
+        }
         const filteredList = groups.filter(group => group.name.toLowerCase().includes(props.groupName.toLowerCase()));
         setFilteredList(filteredList);
     }, [props.groupName]);
 
-    return props.groupName ? isLoading ? <Loading size="xl" /> : <GroupList groups={filteredList} /> : <></>;
+    return isLoading ? <Loading size="xl" /> : <GroupList groups={filteredList} />;
 };
 
-export default UserSearchResults;
+export default GroupSearchResults;

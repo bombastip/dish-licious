@@ -1,11 +1,11 @@
 import { Button, Card, Avatar, Spacer, Text, Image } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
-import { GroupType } from '../../interfaces';
+import { GroupCardInfo } from '../../interfaces';
 import { useState, useEffect } from 'react';
 import { getUserData } from '../../database';
 
 interface GroupCardProps {
-    groupCardInfo: GroupType;
+    groupCardInfo: GroupCardInfo;
 }
 
 // daca e admin de grup eventual sa aiba si optiunea de edit grup

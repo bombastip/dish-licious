@@ -34,12 +34,6 @@ const Group = () => {
 
     return (
         <div>
-            {/* <Col span={2} css={{ paddingLeft: '0px' }}>
-                <Sidebar groupId={groupId} />
-            </Col> */}
-            {/* <Col span={10}>
-                <GroupPosts groupId={groupId} />
-            </Col> */}
             <Spacer y={1} />
             <Container css={{ w: '80%', h: '500px' }}>
                 <Row align="center" justify="center">
