@@ -28,6 +28,7 @@ export interface PostType {
     userID: string;
     id: string;
     comments: { uid: string; comment: string }[];
+    profile: boolean;
 }
 
 export type UserCompleteData = {

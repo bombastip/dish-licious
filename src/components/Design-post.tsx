@@ -21,6 +21,7 @@ export const Post = () => {
             timeUnit: '',
             id: '',
             comments: [],
+            profile: false,
         },
     ]);
     const postCollectionRef = collection(db, 'posts');
@@ -44,7 +45,7 @@ export const Post = () => {
                         ...(doc.data() as PostType),
                         id: doc.id,
                         ingredients: doc.data().ingredients as Ingredient[],
-                    }));
+                    })).filter(post => post.profile === true);
 
                     setPostList(filteredData);
                 } catch (error) {

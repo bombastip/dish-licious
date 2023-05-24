@@ -71,7 +71,8 @@ function UserProfile({ currentUserId }: Props) {
                         const postRef = doc(db, 'posts', post);
                         const data = (await getDoc(postRef)).data() as PostType;
                         data.id = post;
-                        myPosts.push(data as PostType);
+                        if(data.profile == true)
+                            myPosts.push(data as PostType);
                     }
                     setPosts(myPosts);
                 } else {
