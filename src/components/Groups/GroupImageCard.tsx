@@ -94,9 +94,7 @@ const GroupImageCard = ({ group, groupId }: GroupImageCardProps) => {
                                     </Button>
                                 )}
                                 <Spacer x={1} />
-                                {!isAdmin && (
-                                    <LeaveJoinButtons isMember={isMember} setIsMember={setIsMember} />
-                                )}
+                                {!isAdmin && <LeaveJoinButtons isMember={isMember} setIsMember={setIsMember} />}
                             </Row>
                         </Col>
                     </Row>

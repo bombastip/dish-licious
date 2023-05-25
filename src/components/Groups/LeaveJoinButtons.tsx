@@ -1,6 +1,6 @@
-import { Button, Text } from "@nextui-org/react";
-import { useContext } from "react";
-import { AuthContext } from "../../context";
+import { Button, Text } from '@nextui-org/react';
+import { useContext } from 'react';
+import { AuthContext } from '../../context';
 
 interface LeaveJoinButtonsProps {
     isMember: boolean;

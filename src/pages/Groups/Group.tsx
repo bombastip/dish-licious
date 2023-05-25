@@ -1,4 +1,4 @@
-import { Container, Spacer} from '@nextui-org/react';
+import { Container, Spacer } from '@nextui-org/react';
 import { useLocation } from 'react-router-dom';
 import { getGroupData, getUserData } from '../../database';
 import { useEffect, useState } from 'react';
@@ -39,7 +39,7 @@ const Group = () => {
             <Container css={{ w: '80%', h: '500px' }}>
                 <GroupImageCard group={group} groupId={groupId} />
                 <Spacer y={1} />
-                <GroupDetails group={group} admin={admin}/>
+                <GroupDetails group={group} admin={admin} />
                 <GroupPosts groupId={groupId} />
             </Container>
         </div>

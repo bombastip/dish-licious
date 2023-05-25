@@ -1,7 +1,8 @@
-import { Avatar, Col, Link, Row, Spacer, Text } from '@nextui-org/react';
+import { Avatar, Col, Row, Spacer, Text } from '@nextui-org/react';
 import { GroupType, UserData } from '../../interfaces';
 import { AuthContext } from '../../context';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 interface GroupDetailsProps {
     group: GroupType;
