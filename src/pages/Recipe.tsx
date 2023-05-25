@@ -20,8 +20,9 @@ const Recipe = () => {
         ingredients: [{ name: '', quantity: 0, measureUnit: '' }],
         timeCost: 0,
         timeUnit: '',
-        comments: [],
         id: '',
+        profile: true,
+        comments: [],
     });
     useEffect(() => {
         const getPost = async () => {
