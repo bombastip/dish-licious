@@ -24,7 +24,7 @@ const GroupMembers = () => {
         setMembers(group.members);
     }, [group.members]);
 
-    return <ListOfUsers users={members} currentUserId={user?.uid || ''} title="Fellow foodies" />;
+    return <ListOfUsers users={members} currentUserId={user?.uid || ''} title="Group members" />;
 };
 
 export default GroupMembers;
