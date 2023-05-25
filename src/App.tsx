@@ -18,7 +18,7 @@ import {
     FavoriteRecipes,
     SearchGroups,
 } from './pages';
-import { GroupSettings } from './pages/Groups';
+import { GroupMembers, GroupSettings } from './pages/Groups';
 import { PrivateRoute } from './route';
 import { Groups, Group, CreateGroup } from './pages/Groups';
 
@@ -100,6 +100,10 @@ const router = createBrowserRouter([
                     {
                         path: 'group',
                         element: <Group />,
+                    },
+                    {
+                        path: 'group/members',
+                        element: <GroupMembers />,
                     },
                     {
                         path: 'group/create',

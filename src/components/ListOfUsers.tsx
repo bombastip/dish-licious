@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context';
 
 type Props = {
+    title?: string;
     users: string[];
     currentUserId: string;
 };
@@ -36,7 +37,7 @@ async function getListOfUsers(users: string[], currentUserId: string) {
     return list;
 }
 
-function ListOfUsers({ users, currentUserId }: Props) {
+function ListOfUsers({ title, users, currentUserId }: Props) {
     const location = useLocation();
     const isFollowers = location.pathname.includes('followers');
     const { user, userLoading } = useContext(AuthContext);
@@ -105,7 +106,7 @@ function ListOfUsers({ users, currentUserId }: Props) {
                                 }}
                                 weight="bold"
                             >
-                                {isFollowers ? 'Followers' : 'Following'}
+                                {title ? title : isFollowers ? 'Followers' : 'Following'}
                             </Text>
                             <Spacer y={1} />
                             {list.map(item => (
@@ -138,9 +139,15 @@ function ListOfUsers({ users, currentUserId }: Props) {
                                         )}
                                         <Spacer y={1} />
                                         <Spacer css={{ flex: 1 }} />
-                                        <Link to={`/user-profile?userId=${item.id}`}>
-                                            <Text css={{ cursor: 'pointer' }}>{item.username}</Text>
-                                        </Link>
+                                        {user.uid !== item.id ? (
+                                            <Link to={`/user-profile?userId=${item.id}`}>
+                                                <Text css={{ cursor: 'pointer' }}>{item.username}</Text>
+                                            </Link>
+                                        ) : (
+                                            <Link to="/profile">
+                                                <Text css={{ cursor: 'pointer' }}>{item.username}</Text>
+                                            </Link>
+                                        )}
                                         <Spacer css={{ flex: 1 }} />
                                         {user.uid !== item.id && (
                                             <Button
