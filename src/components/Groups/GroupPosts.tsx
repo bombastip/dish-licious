@@ -18,7 +18,6 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
                 const groupdocRef = doc(db, 'groups', groupId);
                 const postList = (await getDoc(groupdocRef)).data() as GroupType;
                 const postsFeed = postList.feed;
-                console.log(postsFeed);
                 const finalPosts: PostType[] = [];
                 postsFeed.map(async postId => {
                     const postDocRef = doc(db, 'posts', postId);
@@ -37,7 +36,6 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
         };
         getPostList();
     }, []);
-    //console.log(posts);
 
     return (
         <Grid.Container gap={2} css={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
