@@ -50,33 +50,33 @@ function AddPost() {
 
     useEffect(() => {
         const fetchUserGroups = async () => {
-          if (user !== null) {
-            const userDocRef = doc(userCollectionRef, user.uid);
-            const userDocSnapshot = await getDoc(userDocRef);
-            if (userDocSnapshot.exists()) {
-              const userData = userDocSnapshot.data();
-              if (userData.groups) {
-                const groupIds = userData.groups;
-                const groupNamesArray = [];
-      
-                // pt fiecare id se obtine numele grupului
-                for (const groupId of groupIds) {
-                  const groupDocRef = doc(groupCollectionRef, groupId);
-                  const groupDocSnapshot = await getDoc(groupDocRef);
-                  if (groupDocSnapshot.exists()) {
-                    const groupData = groupDocSnapshot.data();
-                    const groupName = groupData.name; 
-                    groupNamesArray.push(groupName);
-                  }
+            if (user !== null) {
+                const userDocRef = doc(userCollectionRef, user.uid);
+                const userDocSnapshot = await getDoc(userDocRef);
+                if (userDocSnapshot.exists()) {
+                    const userData = userDocSnapshot.data();
+                    if (userData.groups) {
+                        const groupIds = userData.groups;
+                        const groupNamesArray = [];
+
+                        // pt fiecare id se obtine numele grupului
+                        for (const groupId of groupIds) {
+                            const groupDocRef = doc(groupCollectionRef, groupId);
+                            const groupDocSnapshot = await getDoc(groupDocRef);
+                            if (groupDocSnapshot.exists()) {
+                                const groupData = groupDocSnapshot.data();
+                                const groupName = groupData.name;
+                                groupNamesArray.push(groupName);
+                            }
+                        }
+
+                        setGroupNamesDrop(groupNamesArray);
+                    }
                 }
-      
-                setGroupNamesDrop(groupNamesArray);
-              }
             }
-          }
         };
         fetchUserGroups();
-      }, [user, userCollectionRef]);
+    }, [user, userCollectionRef]);
 
     useEffect(() => {
         setPhotoURL(newphotoURL);
@@ -199,7 +199,7 @@ function AddPost() {
     };
 
     //dynamic form for groups name
-    const [formFieldsGroups, setFormfieldsGroups] = useState([{ name:'' }]);
+    const [formFieldsGroups, setFormfieldsGroups] = useState([{ name: '' }]);
 
     const handleFormGroupChange = (event: ChangeEvent<HTMLSelectElement>, index: number) => {
         const data = [...formFieldsGroups];
@@ -214,7 +214,6 @@ function AddPost() {
         }
         data[index][event.target.name as keyof stringTypesGroups] = event.target.value;
         setFormfieldsGroups(data);
-       
     };
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
@@ -417,44 +416,46 @@ function AddPost() {
                             </Row>
                             {visibleGroups && (
                                 <div>
-                                <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                                  <form onSubmit={submit}>
-                                    {formFieldsGroups.map((form, index) => (
-                                      <table key={index} style={{ marginTop: '5px' }}>
-                                        <tbody>
-                                          <tr>
-                                            <td style={{ paddingRight: '10px' }}>
-                                              <select
-                                                aria-label={`Group-Name-Add-Post-${index}`}
-                                                name={"name"}
-                                                value={form.name}
-                                                onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFormGroupChange(event, index)}
-                                                style={{
-                                                  padding: '8px',
-                                                  border: '1px solid #ccc',
-                                                  borderRadius: '12px',
-                                                  width: '200px',
-                                                }}
-                                              >
-                                                <option value="">Select Group</option>
-                                                {groupNamesDrop.map((groupName, index) => (
-                                                  <option key={index} value={groupName}>
-                                                    {groupName}
-                                                  </option>
-                                                ))}
-                                              </select>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    ))}
-                                    <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
-                                      +
-                                    </Button>
-                                    <Spacer y={3} />
-                                  </form>
-                                </Row>
-                              </div>
+                                    <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                                        <form onSubmit={submit}>
+                                            {formFieldsGroups.map((form, index) => (
+                                                <table key={index} style={{ marginTop: '5px' }}>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style={{ paddingRight: '10px' }}>
+                                                                <select
+                                                                    aria-label={`Group-Name-Add-Post-${index}`}
+                                                                    name={'name'}
+                                                                    value={form.name}
+                                                                    onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+                                                                        handleFormGroupChange(event, index)
+                                                                    }
+                                                                    style={{
+                                                                        padding: '8px',
+                                                                        border: '1px solid #ccc',
+                                                                        borderRadius: '12px',
+                                                                        width: '200px',
+                                                                    }}
+                                                                >
+                                                                    <option value="">Select Group</option>
+                                                                    {groupNamesDrop.map((groupName, index) => (
+                                                                        <option key={index} value={groupName}>
+                                                                            {groupName}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            ))}
+                                            <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
+                                                +
+                                            </Button>
+                                            <Spacer y={3} />
+                                        </form>
+                                    </Row>
+                                </div>
                             )}
 
                             <Spacer y={1} />
