@@ -17,6 +17,11 @@ export interface Ingredient {
     measureUnit: string;
 }
 
+export interface groupNotif {
+    userID: string;
+    groupID: string;
+}
+
 export interface PostType {
     description: string;
     likes: string[];
