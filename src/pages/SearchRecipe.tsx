@@ -1,10 +1,10 @@
 import { Container, Input, Row, Spacer, Text, Col, Button, Card, Grid, FormElement } from '@nextui-org/react';
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { filterPostsByIngredients, filterPostsByTitle, filterPostsByTime } from '../database';
-import { PostType, Ingredient } from '../interfaces';
+import { PostType, Ingredient, ErrorMessasge } from '../interfaces';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
-import { SinglePost } from '../components';
+import { ErrPopButton, SinglePost } from '../components';
 
 const SearchRecipe = () => {
     const [newPostTitle, setNewPostTitle] = useState('');
@@ -15,6 +15,7 @@ const SearchRecipe = () => {
     const [postsByTime, setPostsByTime] = useState<PostType[]>([]);
     const [results, setResults] = useState<PostType[]>([]);
     const [buttonPressed, setButtonPressed] = useState(false);
+    const [err, setErr] = useState<ErrorMessasge>(null);
 
     const getAllPosts = async () => {
         const postCollectionRef = collection(db, 'posts');
@@ -97,11 +98,11 @@ const SearchRecipe = () => {
             formFields.length <= 1 &&
             formFields[0].name === ''
         ) {
-            alert('You need to complete at least one field!');
+            setErr('You need to complete at least one field!');
             return;
         }
         if ((newTimeUnit !== '' && newTimeCost === 0) || (newTimeUnit === '' && newTimeCost !== 0)) {
-            alert('You need to complete both fields for time!');
+            setErr('You need to complete both fields for time!');
             return;
         }
         const commonPosts = postsByIngredients.filter(post => {
@@ -246,9 +247,14 @@ const SearchRecipe = () => {
                                     }}
                                 ></div>
                                 <Row justify="center">
-                                    <Button onPress={handler} placement="right" auto size="md" offset={15}>
-                                        Search
-                                    </Button>
+                                    <ErrPopButton
+                                        error={err}
+                                        buttonName={'Search'}
+                                        setError={setErr}
+                                        clickFunc={handler}
+                                        placement={'bottom'}
+                                        offset={40}
+                                    />
                                 </Row>
                             </Container>
                         </Card.Body>

@@ -8,6 +8,7 @@ interface VerificationModalProps {
     buttonMessage: string;
     setVisible: (value: boolean) => void;
     buttonFunction?: () => void;
+    
 }
 
 const VerificationModal: FC<VerificationModalProps> = props => {
