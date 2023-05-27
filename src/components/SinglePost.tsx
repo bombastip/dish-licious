@@ -7,9 +7,10 @@ import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { deletePost } from '../database';
 import { DeleteDocumentIcon } from '../assets/DeleteDocumentIcon';
+import { EditIcon } from '../assets/EditIcon';
 
 type Props = {
     post: PostType;
@@ -27,6 +28,7 @@ function SinglePost({ post }: Props) {
     const [userID, setUserID] = useState('');
     const [deleted, setDeleted] = useState(false);
     const [unfav, setUnfav] = useState(false);
+    const navigate = useNavigate();
 
     if (post.id === '') {
         return <> </>;
@@ -149,6 +151,8 @@ function SinglePost({ post }: Props) {
     const handleAction = async (action: string) => {
         if (action === 'delete') {
             await handleDeletePost();
+        } else if (action === 'edit') {
+            navigate(`/edit-post?postId=${post.id}`);
         }
     };
 
@@ -313,6 +317,13 @@ function SinglePost({ post }: Props) {
                                             css={{ fontWeight: '$semibold' }}
                                         >
                                             Delete post
+                                        </Dropdown.Item>
+                                        <Dropdown.Item
+                                            key="edit"
+                                            icon={<EditIcon size={22} fill="#ec9127" />}
+                                            css={{ fontWeight: '$semibold', color: '#ec9127' }}
+                                        >
+                                            Edit post
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>

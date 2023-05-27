@@ -17,6 +17,7 @@ import {
     Recipe,
     FavoriteRecipes,
     SearchGroups,
+    EditPost,
 } from './pages';
 import { GroupMembers, GroupSettings } from './pages/Groups';
 import { PrivateRoute } from './route';
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
                     {
                         path: 'group/settings',
                         element: <GroupSettings />,
+                    },
+                    {
+                        path: 'edit-post',
+                        element: <EditPost />,
                     },
                 ],
             },

@@ -16,6 +16,7 @@ export {
     filterPostsByIngredients,
     filterPostsByTitle,
     filterPostsByTime,
+    getPostData,
     getPostId,
     createGroup,
     getGroupData,
@@ -30,4 +31,5 @@ export {
     isRequestSent,
     addGroupMember,
     removeGroupMember,
+    updatePost,
 } from './firestore-db';
