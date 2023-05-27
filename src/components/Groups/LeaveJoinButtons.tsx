@@ -42,7 +42,7 @@ const LeaveJoinButtons = ({ isMember, setIsMember, group, groupId }: LeaveJoinBu
     const handleLeaveGroup = () => {
         if (user) {
             setIsMember(false);
-            removeGroupMember(user.uid, groupId);
+            removeGroupMember(groupId, user.uid);
         }
     };
     console.log('isMember: ', isMember);

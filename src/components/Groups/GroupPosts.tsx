@@ -40,12 +40,15 @@ const GroupPosts = ({ groupId }: GroupPostsProps) => {
     return (
         <Grid.Container gap={2} css={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
             <div>
-                {posts.map(post => (
-                    <div key={groupId}>
-                        <SinglePost post={post} />
-                        <Spacer y={1} />
-                    </div>
-                ))}
+                {posts
+                    .slice(0)
+                    .reverse()
+                    .map(post => (
+                        <div key={groupId}>
+                            <SinglePost post={post} />
+                            <Spacer y={1} />
+                        </div>
+                    ))}
             </div>
         </Grid.Container>
     );

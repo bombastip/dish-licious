@@ -108,12 +108,14 @@ export const getUsernamePhotos = async (uid: string) => {
 };
 
 export const getGroupMembers = async (groupId: string) => {
+    console.log('groupID: ', groupId);
     const groupDocRef = doc(db, 'groups', groupId);
     const docGroupSnap = await getDoc(groupDocRef);
     if (!docGroupSnap.exists()) {
         return [];
     }
-    const members = docGroupSnap.data().members as string[];
+    const members = docGroupSnap.data().members;
+    console.log('getGroupMembers: ', members);
     return members;
 };
 

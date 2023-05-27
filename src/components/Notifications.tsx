@@ -34,6 +34,7 @@ function Notifications() {
     const [myGroupsIds, setMyGroupsIds] = useState([] as string[]);
     const [myGroupsNames, setMyGroupsNames] = useState([] as string[]);
     const [messages, setMessages] = useState([] as NotificationType[]);
+    const [disabledKeys, setDisabledKeys] = useState(['noNotif'] as string[]);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -109,6 +110,7 @@ function Notifications() {
                     message: ` wants to join your group `,
                 };
                 messages.push(data as NotificationType);
+                setDisabledKeys([...disabledKeys, data.userID + ' ' + data.groupID]);
             }
             setMessages(messages);
         };
@@ -165,10 +167,14 @@ function Notifications() {
     const handleAccept = async (userID: string, groupID: string) => {
         await addGroupMember(groupID, userID);
         await removeGroupNotif(userID, groupID, user.uid);
+        setMessages(messages.filter(message => message.userID !== userID || message.groupID !== groupID));
+        setPossibleMembersIds(possibleMembersIds.filter(id => id !== userID));
     };
 
     const handleReject = async (userID: string, groupID: string) => {
         await removeGroupNotif(userID, groupID, user.uid);
+        setMessages(messages.filter(message => message.userID !== userID || message.groupID !== groupID));
+        setPossibleMembersIds(possibleMembersIds.filter(id => id !== userID));
     };
 
     return (
@@ -197,6 +203,7 @@ function Notifications() {
                 </Dropdown.Button>
             </Navbar.Item>
             <Dropdown.Menu
+                disabledKeys={disabledKeys}
                 onAction={actionKey => handleAction(actionKey as string)}
                 aria-label="Notifications"
                 css={{
@@ -245,7 +252,7 @@ function Notifications() {
                                                 shape="round"
                                                 color="primary"
                                                 variant="ghost"
-                                                onClick={handleAccept(notif.userID, notif.groupID)}
+                                                onClick={() => handleAccept(notif.userID, notif.groupID)}
                                             >
                                                 Accept
                                             </Button>
@@ -254,7 +261,7 @@ function Notifications() {
                                                 shape="round"
                                                 color="primary"
                                                 variant="ghost"
-                                                onClick={handleReject(notif.userID, notif.groupID)}
+                                                onClick={() => handleReject(notif.userID, notif.groupID)}
                                             >
                                                 Reject
                                             </Button>
