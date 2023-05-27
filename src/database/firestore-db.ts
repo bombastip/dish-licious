@@ -508,6 +508,16 @@ export async function checkFollow(user: string, wantToFollow: string): Promise<b
     return false;
 }
 
+export async function getPostData(postId: string) {
+    const docRef = doc(db, 'posts', postId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return docSnap.data() as PostType;
+    } else {
+        return false;
+    }
+}
+
 export async function getPostId(post: PostType) {
     const postsRef = collection(db, 'posts');
     const querySnapshot = await getDocs(postsRef);
@@ -520,6 +530,15 @@ export async function getPostId(post: PostType) {
         }
     });
     return postId;
+}
+
+export async function updatePost(postId: string, post: PostType) {
+    const docRef = doc(db, 'posts', postId);
+    try {
+        await setDoc(docRef, post, { merge: true });
+    } catch (error: unknown) {
+        throw new Error(`Error updating post: ${error}`);
+    }
 }
 
 export async function filterPostsByIngredients(ingredients: string[]) {
