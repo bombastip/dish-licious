@@ -24,4 +24,10 @@ export {
     changeGroupPhoto,
     changeGroupDescription,
     getGroups,
+    getGroupNotif,
+    addGroupNotif,
+    removeGroupNotif,
+    isRequestSent,
+    addGroupMember,
+    removeGroupMember,
 } from './firestore-db';

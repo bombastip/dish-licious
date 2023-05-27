@@ -13,7 +13,7 @@ import {
     arrayUnion,
     deleteDoc,
 } from 'firebase/firestore';
-import { User, PostType } from '../interfaces';
+import { User, PostType, groupNotif } from '../interfaces';
 
 export async function createUserCollection(user: User, username: string) {
     const docRef = doc(db, 'users', user.uid);
@@ -24,6 +24,7 @@ export async function createUserCollection(user: User, username: string) {
         following: [],
         followers: [],
         followNotif: [],
+        groupNotif: [] as groupNotif[],
         posts: [],
         favourites: [],
         feed: [],
@@ -106,6 +107,17 @@ export const getUsernamePhotos = async (uid: string) => {
     return { photoURL, username };
 };
 
+export const getGroupMembers = async (groupId: string) => {
+    console.log('groupID: ', groupId);
+    const groupDocRef = doc(db, 'groups', groupId);
+    const docGroupSnap = await getDoc(groupDocRef);
+    if (!docGroupSnap.exists()) {
+        return [];
+    }
+    const members = docGroupSnap.data().members;
+    return members;
+};
+
 export const addComment = async (postId: string, comment: string, uid: string) => {
     const userDocRef = doc(db, 'posts', postId);
     try {
@@ -114,6 +126,61 @@ export const addComment = async (postId: string, comment: string, uid: string) =
         });
     } catch (err) {
         console.error(err);
+    }
+};
+
+export const addGroupMember = async (groupId: string, uid: string) => {
+    const groupDocRef = doc(db, 'groups', groupId);
+    try {
+        await updateDoc(groupDocRef, {
+            members: arrayUnion(uid),
+        });
+    } catch (err) {
+        console.error(err);
+    }
+    const userDocRef = doc(db, 'users', uid);
+    try {
+        await updateDoc(userDocRef, {
+            groups: arrayUnion(groupId),
+        });
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const removeGroupMember = async (groupId: string, uid: string) => {
+    const GroupRef = doc(db, 'groups', groupId);
+    const memberList = await getGroupMembers(groupId);
+    if (memberList) {
+        if (memberList.includes(uid)) {
+            const updatedList = memberList.filter((element: string) => element !== uid);
+            const data = {
+                members: updatedList,
+            };
+
+            setDoc(GroupRef, data, { merge: true })
+                .then()
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+    const userDocRef = doc(db, 'users', uid);
+    const groupList = await getGroups(uid);
+    console.log(groupList);
+    if (groupList) {
+        if (groupList.includes(groupId)) {
+            const updatedList = groupList.filter((element: string) => element !== groupId);
+            const data = {
+                groups: updatedList,
+            };
+
+            setDoc(userDocRef, data, { merge: true })
+                .then()
+                .catch(error => {
+                    console.log(error);
+                });
+        }
     }
 };
 
@@ -206,6 +273,16 @@ export async function getFollowNotif(id: string) {
     }
 }
 
+export async function getGroupNotif(id: string) {
+    const groupNotifRef = doc(db, 'users', id);
+    const docSnap = await getDoc(groupNotifRef);
+    if (docSnap.exists()) {
+        return docSnap.data().groupNotif;
+    } else {
+        return [];
+    }
+}
+
 // add followNotif to user's followNotif array in firestore in users collection
 export async function addNotification(wantToFollow: string, user: string) {
     const followNotifRef = doc(db, 'users', wantToFollow);
@@ -222,6 +299,25 @@ export async function addNotification(wantToFollow: string, user: string) {
                     console.log(error);
                 });
             return true;
+        }
+    }
+    return false;
+}
+
+// groupNotif is a map with userID as key and groupID as value
+export async function addGroupNotif(userID: string, groupID: string, groupAdmin: string) {
+    const groupNotifRef = doc(db, 'users', groupAdmin);
+    const groupNotifList = await getGroupNotif(groupAdmin);
+    if (groupNotifList) {
+        console.log(groupNotifList);
+        try {
+            await updateDoc(groupNotifRef, {
+                groupNotif: arrayUnion({ userID: userID, groupID: groupID }),
+            });
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
         }
     }
 }
@@ -243,6 +339,34 @@ export async function removeNotification(user: string, wantToRemove: string) {
                     console.log(error);
                 });
         }
+    }
+}
+
+export async function removeGroupNotif(userID: string, groupID: string, groupAdmin: string) {
+    const groupNotifRef = doc(db, 'users', groupAdmin);
+    const groupNotifList = await getGroupNotif(groupAdmin);
+    if (groupNotifList) {
+        const updatedList = groupNotifList.filter(
+            (element: { userID: string; groupID: string }) => element.userID !== userID && element.groupID !== groupID,
+        );
+        const data = {
+            groupNotif: updatedList,
+        };
+        setDoc(groupNotifRef, data, { merge: true })
+            .then()
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}
+
+export async function isRequestSent(groupID: string, userID: string, groupAdmin: string) {
+    const getNotifList = await getGroupNotif(groupAdmin);
+    if (getNotifList) {
+        const isSent = getNotifList.some(
+            (element: { userID: string; groupID: string }) => element.userID === userID && element.groupID === groupID,
+        );
+        return isSent;
     }
 }
 

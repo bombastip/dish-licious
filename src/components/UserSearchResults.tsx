@@ -43,9 +43,7 @@ const UserSearchResults = (props: UserSearchProps) => {
                 ))}
             </>
         )
-    ) : (
-        <></>
-    );
+    ) : null;
 };
 
 export default UserSearchResults;

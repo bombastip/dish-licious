@@ -149,7 +149,7 @@ function ListOfUsers({ title, users, currentUserId }: Props) {
                                             </Link>
                                         )}
                                         <Spacer css={{ flex: 1 }} />
-                                        {user.uid !== item.id && (
+                                        {user.uid !== item.id ? (
                                             <Button
                                                 auto
                                                 color={item.isFollowing ? 'gray300' : 'secondary'}
@@ -158,10 +158,16 @@ function ListOfUsers({ title, users, currentUserId }: Props) {
                                                         ? handleUnfollow(item.id, currentUserId)
                                                         : handleFollow(item.id, currentUserId)
                                                 }
-                                                css={{ width: '100px' }}
+                                                css={{ width: '108px' }}
                                             >
                                                 {item.isFollowing ? 'Unfollow' : 'Follow'}
                                             </Button>
+                                        ) : (
+                                            <Link to="/settings">
+                                                <Button auto color="gray300" css={{ width: '108px' }} disabled>
+                                                    Edit profile
+                                                </Button>
+                                            </Link>
                                         )}
                                     </Grid>
                                 </Grid.Container>
