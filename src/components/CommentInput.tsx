@@ -1,10 +1,9 @@
-import { Button, Card, Input, Loading, Popover, Row, Text } from '@nextui-org/react';
+import { Button, Input, Loading } from '@nextui-org/react';
 // import { SendButton } from '.';
 import { SendIcon } from '../assets/SendIcon';
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { AuthContext } from '../context';
 import { addComment } from '../database/firestore-db';
-import { ErrorMessasge } from '../interfaces';
 
 interface CommentInputProps {
     postID: string;
@@ -44,36 +43,36 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
     };
 
     return (
-            <Input
-                aria-label="Comment"
-                clearable
-                contentRightStyling={false}
-                width="300px"
-                placeholder="Type your comment..."
-                value={comment}
-                onKeyDown={handleKeyDown}
-                onChange={e => setComment(e.target.value)}
-                contentRight={
-                    comment &&
-                    comment[0] !== ' ' && (
-                            <Button
-                                auto
-                                onPress={async () => {
-                                    await handleSendComment();
-                                }}
-                                icon={
-                                    !loading ? (
-                                        // <SendButton>
-                                        <SendIcon />
-                                    ) : (
-                                        // </SendButton>
-                                        <Loading color="currentColor" size="sm" />
-                                    )
-                                }
-                            ></Button>
-                    )
-                }
-            />
+        <Input
+            aria-label="Comment"
+            clearable
+            contentRightStyling={false}
+            width="300px"
+            placeholder="Type your comment..."
+            value={comment}
+            onKeyDown={handleKeyDown}
+            onChange={e => setComment(e.target.value)}
+            contentRight={
+                comment &&
+                comment[0] !== ' ' && (
+                    <Button
+                        auto
+                        onPress={async () => {
+                            await handleSendComment();
+                        }}
+                        icon={
+                            !loading ? (
+                                // <SendButton>
+                                <SendIcon />
+                            ) : (
+                                // </SendButton>
+                                <Loading color="currentColor" size="sm" />
+                            )
+                        }
+                    ></Button>
+                )
+            }
+        />
     );
 };
 export default CommentInput;
