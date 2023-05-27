@@ -1,4 +1,4 @@
-import { Avatar, Card, Grid, Row, Spacer, Text } from '@nextui-org/react';
+import { Avatar, Card, Grid, Row, Text } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 import { UserCompleteData } from '../interfaces';
 

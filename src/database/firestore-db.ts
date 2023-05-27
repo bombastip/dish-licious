@@ -115,7 +115,6 @@ export const getGroupMembers = async (groupId: string) => {
         return [];
     }
     const members = docGroupSnap.data().members;
-    console.log('getGroupMembers: ', members);
     return members;
 };
 
@@ -152,7 +151,6 @@ export const addGroupMember = async (groupId: string, uid: string) => {
 export const removeGroupMember = async (groupId: string, uid: string) => {
     const GroupRef = doc(db, 'groups', groupId);
     const memberList = await getGroupMembers(groupId);
-    console.log('members:', memberList);
     if (memberList) {
         if (memberList.includes(uid)) {
             const updatedList = memberList.filter((element: string) => element !== uid);
