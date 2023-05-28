@@ -6,9 +6,12 @@ import { db } from '../config/firebase-config';
 import { PostType, Ingredient } from '../interfaces';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
+import EmptyFeed from '../pages/EmptyFeed';
 
 export const Post = () => {
     const ingredients = [{ name: '', quantity: 0, measureUnit: '' }];
+    const [emptyList, setEmptyList] = useState<boolean>(false);
+    const [checkList, setCheckList] = useState<boolean>(false);
     const [postList, setPostList] = useState<PostType[]>([
         {
             userID: '',
@@ -25,7 +28,7 @@ export const Post = () => {
         },
     ]);
     const postCollectionRef = collection(db, 'posts');
-    const { user } = useContext(AuthContext);
+    const { user, userLoading } = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
@@ -50,15 +53,26 @@ export const Post = () => {
                         .filter(post => post.profile === true);
 
                     setPostList(filteredData);
+                    setCheckList(true);
                 } catch (error) {
                     console.log(error);
                 }
             };
             getPostList();
+            console.log(postList);
         }
-    }, [user]);
+    }, [user, userLoading]);
 
-    return (
+    useEffect(() => {
+        console.log(postList.at(0)?.userID);
+        // if (postList.at(0)?.userID === "") {
+        //     setEmptyList(true)
+        // }
+    }, [checkList]);
+
+    return emptyList ? (
+        <EmptyFeed />
+    ) : (
         <Grid.Container gap={2} justify="center" css={{ marginTop: '20px' }}>
             <div>
                 {postList.map(post => (
