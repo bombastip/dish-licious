@@ -1,4 +1,3 @@
-import { Navbar } from '@nextui-org/react';
 export { default as Navbar } from './Navbar';
 export { default as AuthCard } from './AuthCard';
 export { default as EmailInput } from './EmailInput';
@@ -27,4 +26,4 @@ export { default as SendButton } from './SendButton';
 export { default as CommentCard } from './CommentCard';
 export { default as SinglePost } from './SinglePost';
 export { default as EditPostCard } from './EditPostCard';
-export { default as NavbarCollapse } from './NavbarCollapse'
+export { default as NavbarCollapse } from './NavbarCollapse';
