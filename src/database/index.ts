@@ -32,4 +32,5 @@ export {
     addGroupMember,
     removeGroupMember,
     updatePost,
+    getFollowingPosts,
 } from './firestore-db';
