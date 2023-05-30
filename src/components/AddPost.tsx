@@ -1,4 +1,16 @@
-import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row, Dropdown, Checkbox } from '@nextui-org/react';
+import {
+    Input,
+    Card,
+    Text,
+    Grid,
+    Spacer,
+    Button,
+    Textarea,
+    FormElement,
+    Row,
+    Dropdown,
+    Checkbox,
+} from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc, doc, updateDoc, arrayUnion, getDocs, where, query, getDoc } from 'firebase/firestore';
@@ -39,19 +51,19 @@ function AddPost() {
     // error states
     const [err, setErr] = useState<ErrorMessasge>(null);
 
-    const [selected, setSelected] = useState(["Select group"]);
-    
+    const [selected, setSelected] = useState(['Select group']);
+
     const handleSelectionChange = (keys: any) => {
-      const updatedSelection = [...keys];
-      if (updatedSelection.length > 1 && updatedSelection.includes("Select group")) {
-        const index = updatedSelection.indexOf("Select group");
-        updatedSelection.splice(index, 1);
-      }
-      setSelected(updatedSelection);
-      setGroupNames(updatedSelection);
+        const updatedSelection = [...keys];
+        if (updatedSelection.length > 1 && updatedSelection.includes('Select group')) {
+            const index = updatedSelection.indexOf('Select group');
+            updatedSelection.splice(index, 1);
+        }
+        setSelected(updatedSelection);
+        setGroupNames(updatedSelection);
     };
-    
-    const selectedValue = Array.from(selected).join(", ");
+
+    const selectedValue = Array.from(selected).join(', ');
 
     const handler = () => {
         onSubmitPost();
@@ -84,7 +96,6 @@ function AddPost() {
                             }
                         }
                         setGroupNamesDrop(groupNamesArray);
-
                     }
                 }
             }
@@ -94,7 +105,7 @@ function AddPost() {
 
     useEffect(() => {
         console.log(groupNamesDrop);
-    }, [groupNamesDrop])
+    }, [groupNamesDrop]);
 
     useEffect(() => {
         setPhotoURL(newphotoURL);
@@ -194,7 +205,7 @@ function AddPost() {
     interface numberTypes {
         quantity: number;
     }
-    interface recipeInfo extends stringTypes, numberTypes { }
+    interface recipeInfo extends stringTypes, numberTypes {}
 
     // dynamic form
     const [formFields, setFormfields] = useState<recipeInfo[]>([
@@ -409,7 +420,7 @@ function AddPost() {
                                 <div>
                                     <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                                         <Dropdown>
-                                            <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
+                                            <Dropdown.Button flat color="secondary" css={{ tt: 'capitalize' }}>
                                                 {selectedValue}
                                             </Dropdown.Button>
                                             <Dropdown.Menu
@@ -420,15 +431,13 @@ function AddPost() {
                                                 selectedKeys={Array.from(selected)}
                                                 onSelectionChange={handleSelectionChange}
                                             >
-                                                {groupNamesDrop.map((groupName) => (
-                                                <Dropdown.Item key={groupName}>{groupName}</Dropdown.Item>
+                                                {groupNamesDrop.map(groupName => (
+                                                    <Dropdown.Item key={groupName}>{groupName}</Dropdown.Item>
                                                 ))}
-                            
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Row>
                                 </div>
-
                             )}
 
                             <Spacer y={1} />
