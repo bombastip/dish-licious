@@ -1,7 +1,19 @@
-import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row, Checkbox } from '@nextui-org/react';
+import {
+    Input,
+    Card,
+    Text,
+    Grid,
+    Spacer,
+    Button,
+    Textarea,
+    FormElement,
+    Row,
+    Dropdown,
+    Checkbox,
+} from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { collection, addDoc, doc, updateDoc, arrayUnion, getDocs, where, query } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc, arrayUnion, getDocs, where, query, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../config/firebase-config';
@@ -30,6 +42,7 @@ function AddPost() {
     const [newTimeCost, setNewTimeCost] = useState(0);
     const [profileSpace, setProfileSpace] = React.useState(false);
     const [groupNames, setGroupNames] = useState<string[]>([]);
+    const [groupNamesDrop, setGroupNamesDrop] = useState<string[]>([]);
 
     // photo
     const [newphotoURL, setPhotoURL] = useState('');
@@ -37,6 +50,20 @@ function AddPost() {
 
     // error states
     const [err, setErr] = useState<ErrorMessasge>(null);
+
+    const [selected, setSelected] = useState(['Select group']);
+
+    const handleSelectionChange = (keys: any) => {
+        const updatedSelection = [...keys];
+        if (updatedSelection.length > 1 && updatedSelection.includes('Select group')) {
+            const index = updatedSelection.indexOf('Select group');
+            updatedSelection.splice(index, 1);
+        }
+        setSelected(updatedSelection);
+        setGroupNames(updatedSelection);
+    };
+
+    const selectedValue = Array.from(selected).join(', ');
 
     const handler = () => {
         onSubmitPost();
@@ -46,6 +73,39 @@ function AddPost() {
         setVisible(false);
         navigate('/');
     };
+
+    useEffect(() => {
+        const fetchUserGroups = async () => {
+            if (user !== null) {
+                const userDocRef = doc(userCollectionRef, user.uid);
+                const userDocSnapshot = await getDoc(userDocRef);
+                if (userDocSnapshot.exists()) {
+                    const userData = userDocSnapshot.data();
+                    if (userData.groups) {
+                        const groupIds = userData.groups;
+                        const groupNamesArray = [];
+
+                        // pt fiecare id se obtine numele grupului
+                        for (const groupId of groupIds) {
+                            const groupDocRef = doc(groupCollectionRef, groupId);
+                            const groupDocSnapshot = await getDoc(groupDocRef);
+                            if (groupDocSnapshot.exists()) {
+                                const groupData = groupDocSnapshot.data();
+                                const groupName = groupData.name;
+                                groupNamesArray.push(groupName);
+                            }
+                        }
+                        setGroupNamesDrop(groupNamesArray);
+                    }
+                }
+            }
+        };
+        fetchUserGroups();
+    }, [user]);
+
+    useEffect(() => {
+        console.log(groupNamesDrop);
+    }, [groupNamesDrop]);
 
     useEffect(() => {
         setPhotoURL(newphotoURL);
@@ -142,10 +202,6 @@ function AddPost() {
         measureUnit: string;
     }
 
-    interface stringTypesGroups {
-        name: string;
-    }
-
     interface numberTypes {
         quantity: number;
     }
@@ -167,21 +223,6 @@ function AddPost() {
         setFormfields(data);
     };
 
-    //dynamic form for groups name
-    const [formFieldsGroups, setFormfieldsGroups] = useState([{ name: '' }]);
-
-    const handleFormGroupChange = (event: ChangeEvent<FormElement> | ChangeEvent<HTMLSelectElement>, index: number) => {
-        console.log('am intrat');
-        const data = [...formFieldsGroups];
-        if (event.target.name === 'name') {
-            const updatedGroupNames = [...groupNames];
-            updatedGroupNames[index] = event.target.value;
-            setGroupNames(updatedGroupNames);
-        }
-        data[index][event.target.name as keyof stringTypesGroups] = event.target.value;
-        setFormfieldsGroups(data);
-    };
-
     const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     };
@@ -193,12 +234,7 @@ function AddPost() {
         };
         setFormfields([...formFields, object]);
     };
-    const addFieldsGroups = () => {
-        const object = {
-            name: '',
-        };
-        setFormfieldsGroups([...formFieldsGroups, object]);
-    };
+
     const removeFields = (index: number) => {
         const data = [...formFields];
         data.splice(index, 1);
@@ -383,35 +419,23 @@ function AddPost() {
                             {visibleGroups && (
                                 <div>
                                     <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                                        <form onSubmit={submit}>
-                                            {formFieldsGroups.map((form, index) => {
-                                                return (
-                                                    <table key={index} style={{ marginTop: '5px' }}>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td style={{ paddingRight: '10px' }}>
-                                                                    <Input
-                                                                        aria-label="Group-Name-Add-Post"
-                                                                        bordered
-                                                                        name="name"
-                                                                        placeholder="Name Group"
-                                                                        width="150px"
-                                                                        onChange={(event: ChangeEvent<FormElement>) =>
-                                                                            handleFormGroupChange(event, index)
-                                                                        }
-                                                                        value={form.name}
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                );
-                                            })}
-                                        </form>
-                                        <Button color="warning" onPress={addFieldsGroups} auto rounded flat>
-                                            +
-                                        </Button>
-                                        <Spacer y={3} />
+                                        <Dropdown>
+                                            <Dropdown.Button flat color="secondary" css={{ tt: 'capitalize' }}>
+                                                {selectedValue}
+                                            </Dropdown.Button>
+                                            <Dropdown.Menu
+                                                aria-label="Multiple selection actions"
+                                                color="secondary"
+                                                disallowEmptySelection
+                                                selectionMode="multiple"
+                                                selectedKeys={Array.from(selected)}
+                                                onSelectionChange={handleSelectionChange}
+                                            >
+                                                {groupNamesDrop.map(groupName => (
+                                                    <Dropdown.Item key={groupName}>{groupName}</Dropdown.Item>
+                                                ))}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
                                     </Row>
                                 </div>
                             )}

@@ -3,7 +3,7 @@ import { styled } from '@nextui-org/react';
 import { useContext } from 'react';
 import Logo from '../assets/icon.png';
 import { UserDataContext } from '../context';
-import { redirect, useNavigate, useLocation, Link } from 'react-router-dom';
+import { redirect, useNavigate, Link } from 'react-router-dom';
 import { auth } from '../config';
 import { NavbarCollapse, SearchNavbarItem } from '.';
 import { Notifications } from '.';
@@ -13,7 +13,6 @@ export const Box = styled('div', {
 });
 
 function NavbarF() {
-    const location = useLocation();
     const { userData } = useContext(UserDataContext);
 
     const navigate = useNavigate();
@@ -50,18 +49,16 @@ function NavbarF() {
                     <Image src={Logo} height={70} />
                 </Link>
                 <Link to={'/'}>
-                    <Text b hideIn="xs">
-                        Dish-licious
-                    </Text>
+                    <Text>Dish-licious</Text>
                 </Link>
             </Navbar.Brand>
             <Navbar.Content activeColor="secondary" hideIn="xs">
-                <Navbar.Link isActive={location.pathname === '/add-post'} href="/add-post">
-                    Add post
-                </Navbar.Link>
-                <Navbar.Link isActive={location.pathname === '/favourites'} href="/favourites">
-                    Favourites
-                </Navbar.Link>
+                <Link to="/add-post">
+                    <Text>Add post</Text>
+                </Link>
+                <Link to="/favourites">
+                    <Text>Favourites</Text>
+                </Link>
                 <SearchNavbarItem />
                 <Notifications />
             </Navbar.Content>
