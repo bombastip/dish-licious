@@ -598,3 +598,21 @@ export async function filterPostsByTime(time: number, unit: string) {
     });
     return posts;
 }
+
+export async function getFollowingPosts(uid: string) {
+    const followingList = await getFollowing(uid);
+    if (followingList) {
+        const postsRef = collection(db, 'posts');
+        const querySnapshot = await getDocs(postsRef);
+
+        const posts: PostType[] = [];
+        querySnapshot.forEach(doc => {
+            const post = doc.data() as PostType;
+            post.id = doc.id;
+            if (followingList.includes(post.userID)) {
+                posts.push(post);
+            }
+        });
+        return posts;
+    }
+}

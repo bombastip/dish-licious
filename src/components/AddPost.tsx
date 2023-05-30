@@ -44,7 +44,7 @@ function AddPost() {
 
     const closeHandler = () => {
         setVisible(false);
-        navigate('/login');
+        navigate('/');
     };
 
     useEffect(() => {

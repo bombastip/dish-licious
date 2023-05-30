@@ -63,7 +63,7 @@ function EditPostCard({ postId }: { postId: string }) {
 
     const closeHandler = () => {
         setVisible(false);
-        navigate('/login');
+        navigate('/profile');
     };
 
     useEffect(() => {

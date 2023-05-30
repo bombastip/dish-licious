@@ -1,12 +1,11 @@
-import { Navbar, Link, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
+import { Navbar, Text, Avatar, Dropdown, Image } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { useContext } from 'react';
 import Logo from '../assets/icon.png';
 import { UserDataContext } from '../context';
-import { redirect, useNavigate } from 'react-router-dom';
+import { redirect, useNavigate, useLocation, Link } from 'react-router-dom';
 import { auth } from '../config';
-import { useLocation } from 'react-router-dom';
-import { SearchNavbarItem } from '.';
+import { NavbarCollapse, SearchNavbarItem } from '.';
 import { Notifications } from '.';
 
 export const Box = styled('div', {
@@ -18,7 +17,6 @@ function NavbarF() {
     const { userData } = useContext(UserDataContext);
 
     const navigate = useNavigate();
-    const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
 
     const handleLogOut = async () => {
         try {
@@ -48,15 +46,16 @@ function NavbarF() {
                     },
                 }}
             >
-                <Image src={Logo} height={70} />
-                <Text b hideIn="xs">
-                    Dish-licious
-                </Text>
+                <Link to={'/'}>
+                    <Image src={Logo} height={70} />
+                </Link>
+                <Link to={'/'}>
+                    <Text b hideIn="xs">
+                        Dish-licious
+                    </Text>
+                </Link>
             </Navbar.Brand>
             <Navbar.Content activeColor="secondary" hideIn="xs">
-                <Navbar.Link isActive={location.pathname === '/'} href="/">
-                    Feed
-                </Navbar.Link>
                 <Navbar.Link isActive={location.pathname === '/add-post'} href="/add-post">
                     Add post
                 </Navbar.Link>
@@ -105,28 +104,7 @@ function NavbarF() {
                     </Dropdown.Menu>
                 </Dropdown>
             </Navbar.Content>
-            <Navbar.Collapse>
-                {collapseItems.map((item, index) => (
-                    <Navbar.CollapseItem
-                        key={item}
-                        activeColor="#fedebe"
-                        css={{
-                            color: index === collapseItems.length - 1 ? '$error' : '',
-                        }}
-                        isActive={index === 2}
-                    >
-                        <Link
-                            color="secondary"
-                            css={{
-                                minWidth: '100%',
-                            }}
-                            href="#"
-                        >
-                            {item}
-                        </Link>
-                    </Navbar.CollapseItem>
-                ))}
-            </Navbar.Collapse>
+            <NavbarCollapse />
         </Navbar>
     );
 }
