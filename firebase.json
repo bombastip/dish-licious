@@ -1,0 +1,14 @@
+{
+    "hosting": {
+        "site": "dish--licious",
+
+        "public": "dist",
+
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    }
+}
