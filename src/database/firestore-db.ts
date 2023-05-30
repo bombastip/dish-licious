@@ -108,7 +108,6 @@ export const getUsernamePhotos = async (uid: string) => {
 };
 
 export const getGroupMembers = async (groupId: string) => {
-    console.log('groupID: ', groupId);
     const groupDocRef = doc(db, 'groups', groupId);
     const docGroupSnap = await getDoc(groupDocRef);
     if (!docGroupSnap.exists()) {
@@ -167,7 +166,6 @@ export const removeGroupMember = async (groupId: string, uid: string) => {
     }
     const userDocRef = doc(db, 'users', uid);
     const groupList = await getGroups(uid);
-    console.log(groupList);
     if (groupList) {
         if (groupList.includes(groupId)) {
             const updatedList = groupList.filter((element: string) => element !== groupId);
@@ -309,7 +307,6 @@ export async function addGroupNotif(userID: string, groupID: string, groupAdmin:
     const groupNotifRef = doc(db, 'users', groupAdmin);
     const groupNotifList = await getGroupNotif(groupAdmin);
     if (groupNotifList) {
-        console.log(groupNotifList);
         try {
             await updateDoc(groupNotifRef, {
                 groupNotif: arrayUnion({ userID: userID, groupID: groupID }),

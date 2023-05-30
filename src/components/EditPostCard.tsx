@@ -43,10 +43,6 @@ function EditPostCard({ postId }: { postId: string }) {
     }, [postId, user]);
 
     useEffect(() => {
-        console.log(post);
-    }, [post]);
-
-    useEffect(() => {
         if (!user) return;
         if (!post) return;
         setNewPostTitle(post.title);
@@ -90,7 +86,6 @@ function EditPostCard({ postId }: { postId: string }) {
 
     const onSubmitPost = async () => {
         try {
-            console.log('fields: ', newDescription);
             if (user !== null) {
                 const newPost = {
                     title: newPostTitle,

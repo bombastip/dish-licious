@@ -104,10 +104,6 @@ function AddPost() {
     }, [user]);
 
     useEffect(() => {
-        console.log(groupNamesDrop);
-    }, [groupNamesDrop]);
-
-    useEffect(() => {
         setPhotoURL(newphotoURL);
     }, [newphotoURL]);
 

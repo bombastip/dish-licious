@@ -74,7 +74,6 @@ function Notifications() {
             for (let i = 0; i < groupNotifResult.length; i++) {
                 myGroupsIds.push(groupNotifResult[i].groupID);
                 possibleMembersIds.push(groupNotifResult[i].userID);
-                console.log(groupNotifResult[i].groupID);
             }
             setMyGroupsIds(myGroupsIds);
             setPossibleMembersIds(possibleMembersIds);

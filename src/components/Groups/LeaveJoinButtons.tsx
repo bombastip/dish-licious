@@ -45,8 +45,6 @@ const LeaveJoinButtons = ({ isMember, setIsMember, group, groupId }: LeaveJoinBu
             removeGroupMember(groupId, user.uid);
         }
     };
-    console.log('isMember: ', isMember);
-    console.log('requestSent: ', requestSent);
 
     return (
         <>

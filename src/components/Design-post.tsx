@@ -34,13 +34,11 @@ export const Post = () => {
                 try {
                     const postList = await getFollowingPosts(user.uid);
                     setPostList(postList as PostType[]);
-                    console.log('postList:', postList);
                 } catch (error) {
                     console.log(error);
                 }
             };
             getPostList();
-            console.log(postList);
         }
     }, [user]);
 
