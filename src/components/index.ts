@@ -25,3 +25,5 @@ export { default as CommentList } from './CommentList';
 export { default as SendButton } from './SendButton';
 export { default as CommentCard } from './CommentCard';
 export { default as SinglePost } from './SinglePost';
+export { default as EditPostCard } from './EditPostCard';
+export { default as NavbarCollapse } from './NavbarCollapse';

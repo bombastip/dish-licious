@@ -45,7 +45,7 @@ const GroupSettings = () => {
     }, []);
 
     const modalHandler = () => {
-        navigate('/');
+        navigate('/group?groupId=' + groupId);
     };
 
     const [imageUpload, setImageUpload] = useState<File | null>(null);

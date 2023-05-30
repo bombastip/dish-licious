@@ -1,20 +1,6 @@
-import {
-    Input,
-    Card,
-    Text,
-    Grid,
-    Spacer,
-    Button,
-    Textarea,
-    FormElement,
-    Row,
-    Dropdown,
-    Checkbox,
-} from '@nextui-org/react';
+import { Input, Card, Text, Grid, Spacer, Button, Textarea, FormElement, Row } from '@nextui-org/react';
 import { Container } from '@nextui-org/react';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { collection, addDoc, doc, updateDoc, arrayUnion, getDocs, where, query, getDoc } from 'firebase/firestore';
-import { db } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../config/firebase-config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -22,17 +8,15 @@ import { v4 } from 'uuid';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { NoErrPopButton, VerificationModal } from '.';
-import { ErrorMessasge } from '../interfaces';
+import { ErrorMessasge, PostType, Ingredient } from '../interfaces';
 import ErrPopButton from './ErrPopButton';
+import { getPostData, updatePost } from '../database';
 
-function AddPost() {
+function EditPostCard({ postId }: { postId: string }) {
     // modal
+    const [post, setPost] = useState<PostType | null>(null); // [post, setPost
     const [visible, setVisible] = React.useState(false);
-    const [visibleGroups, setVisibleGroups] = React.useState(false);
     const { user } = useContext(AuthContext);
-    const postCollectionRef = collection(db, 'posts');
-    const userCollectionRef = collection(db, 'users');
-    const groupCollectionRef = collection(db, 'groups');
     const navigate = useNavigate();
 
     // new post states
@@ -40,9 +24,6 @@ function AddPost() {
     const [newDescription, setNewDescription] = useState('');
     const [newTimeUnit, setNewTimeUnit] = useState('');
     const [newTimeCost, setNewTimeCost] = useState(0);
-    const [profileSpace, setProfileSpace] = React.useState(false);
-    const [groupNames, setGroupNames] = useState<string[]>([]);
-    const [groupNamesDrop, setGroupNamesDrop] = useState<string[]>([]);
 
     // photo
     const [newphotoURL, setPhotoURL] = useState('');
@@ -51,19 +32,30 @@ function AddPost() {
     // error states
     const [err, setErr] = useState<ErrorMessasge>(null);
 
-    const [selected, setSelected] = useState(['Select group']);
+    useEffect(() => {
+        if (!user) return;
+        const getPost = async () => {
+            const myPost = await getPostData(postId);
+            if (!myPost) return;
+            setPost(myPost);
+        };
+        getPost();
+    }, [postId, user]);
 
-    const handleSelectionChange = (keys: any) => {
-        const updatedSelection = [...keys];
-        if (updatedSelection.length > 1 && updatedSelection.includes('Select group')) {
-            const index = updatedSelection.indexOf('Select group');
-            updatedSelection.splice(index, 1);
-        }
-        setSelected(updatedSelection);
-        setGroupNames(updatedSelection);
-    };
+    useEffect(() => {
+        console.log(post);
+    }, [post]);
 
-    const selectedValue = Array.from(selected).join(', ');
+    useEffect(() => {
+        if (!user) return;
+        if (!post) return;
+        setNewPostTitle(post.title);
+        setNewDescription(post.description);
+        setNewTimeUnit(post.timeUnit);
+        setNewTimeCost(post.timeCost);
+        setPhotoURL(post.photoURL);
+        setFormfields(post.ingredients as Ingredient[]);
+    }, [postId, user, post]);
 
     const handler = () => {
         onSubmitPost();
@@ -71,41 +63,8 @@ function AddPost() {
 
     const closeHandler = () => {
         setVisible(false);
-        navigate('/');
+        navigate('/profile');
     };
-
-    useEffect(() => {
-        const fetchUserGroups = async () => {
-            if (user !== null) {
-                const userDocRef = doc(userCollectionRef, user.uid);
-                const userDocSnapshot = await getDoc(userDocRef);
-                if (userDocSnapshot.exists()) {
-                    const userData = userDocSnapshot.data();
-                    if (userData.groups) {
-                        const groupIds = userData.groups;
-                        const groupNamesArray = [];
-
-                        // pt fiecare id se obtine numele grupului
-                        for (const groupId of groupIds) {
-                            const groupDocRef = doc(groupCollectionRef, groupId);
-                            const groupDocSnapshot = await getDoc(groupDocRef);
-                            if (groupDocSnapshot.exists()) {
-                                const groupData = groupDocSnapshot.data();
-                                const groupName = groupData.name;
-                                groupNamesArray.push(groupName);
-                            }
-                        }
-                        setGroupNamesDrop(groupNamesArray);
-                    }
-                }
-            }
-        };
-        fetchUserGroups();
-    }, [user]);
-
-    useEffect(() => {
-        console.log(groupNamesDrop);
-    }, [groupNamesDrop]);
 
     useEffect(() => {
         setPhotoURL(newphotoURL);
@@ -131,8 +90,9 @@ function AddPost() {
 
     const onSubmitPost = async () => {
         try {
+            console.log('fields: ', newDescription);
             if (user !== null) {
-                const newPostRef = await addDoc(postCollectionRef, {
+                const newPost = {
                     title: newPostTitle,
                     description: newDescription,
                     timeCost: newTimeCost,
@@ -141,8 +101,7 @@ function AddPost() {
                     photoURL: newphotoURL,
                     ingredients: formFields,
                     userID: user.uid,
-                    profile: profileSpace,
-                });
+                } as unknown as PostType;
                 if (newPostTitle === '') {
                     setErr('Title is required');
                     return;
@@ -171,25 +130,7 @@ function AddPost() {
                     setErr('All ingredient fields are required');
                     return;
                 }
-                const userDocRef = doc(userCollectionRef, user.uid);
-                await updateDoc(userDocRef, {
-                    posts: arrayUnion(newPostRef.id),
-                });
-
-                // Caută grupul cu numele dat
-                groupNames.map(async groupName => {
-                    const groupsQuery = query(groupCollectionRef, where('name', '==', groupName));
-                    const groupsSnapshot = await getDocs(groupsQuery);
-
-                    if (!groupsSnapshot.empty) {
-                        const groupDoc = groupsSnapshot.docs[0];
-
-                        // Actualizează câmpul "feed" al grupului cu ID-ul postării noi
-                        await updateDoc(groupDoc.ref, {
-                            feed: arrayUnion(newPostRef.id),
-                        });
-                    }
-                });
+                await updatePost(postId, newPost);
                 setVisible(true);
             }
         } catch (err) {
@@ -205,9 +146,9 @@ function AddPost() {
     interface numberTypes {
         quantity: number;
     }
+
     interface recipeInfo extends stringTypes, numberTypes {}
 
-    // dynamic form
     const [formFields, setFormfields] = useState<recipeInfo[]>([
         { name: '', quantity: 0, measureUnit: '' } as recipeInfo,
     ]);
@@ -241,13 +182,6 @@ function AddPost() {
         setFormfields(data);
     };
 
-    const handleProfileSpace = () => {
-        setProfileSpace(true);
-    };
-    const handleVisibleGroups = () => {
-        setVisibleGroups(true);
-    };
-
     return (
         <Grid.Container gap={2} justify="center" alignItems="center">
             <Grid sm={12} md={5}>
@@ -264,7 +198,7 @@ function AddPost() {
                             }}
                             weight="bold"
                         >
-                            Share your recipe with the world!
+                            Edit your recipe
                         </Text>
                     </Card.Header>
                     <Card.Divider />
@@ -273,48 +207,53 @@ function AddPost() {
                             <Input
                                 aria-label="Title-Add-Post"
                                 bordered
-                                labelPlaceholder="Title"
+                                initialValue={newPostTitle || post?.title}
+                                label="Title"
                                 onChange={e => setNewPostTitle(e.target.value)}
                                 css={{ width: '100%' }}
                             />
-                            <Spacer y={2} />
+                            <Spacer y={1} />
                             <Row>
-                                <Input
-                                    aria-label="TimeCost-Add-Post"
-                                    bordered
-                                    labelPlaceholder="TimeCost"
-                                    type="number"
-                                    min="0"
-                                    onChange={e => setNewTimeCost(Number(e.target.value))}
-                                    css={{ width: '300px' }}
-                                />
-                                <Spacer x={0.5} />
-                                <form style={{ marginLeft: 0 }}>
-                                    <label>
-                                        <select
-                                            value={newTimeUnit}
-                                            onChange={e => setNewTimeUnit(e.target.value)}
-                                            style={{
-                                                padding: '8px',
-                                                border: '1px solid #ccc',
-                                                borderRadius: '12px',
-                                                width: '140px',
-                                            }}
-                                        >
-                                            <option value="">Time Unit</option>
-                                            <option value="h">h</option>
-                                            <option value="min">min</option>
-                                        </select>
-                                    </label>
-                                    <br />
-                                    <br />
-                                </form>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Input
+                                        aria-label="TimeCost-Add-Post"
+                                        bordered
+                                        initialValue={post?.timeCost as unknown as string}
+                                        label="TimeCost"
+                                        type="number"
+                                        min="0"
+                                        onChange={e => setNewTimeCost(Number(e.target.value))}
+                                        css={{ width: '300px' }}
+                                    />
+                                    <Spacer x={0.5} />
+                                    <form style={{ marginLeft: 0 }}>
+                                        <label>
+                                            <select
+                                                name="timeUnit"
+                                                value={newTimeUnit || post?.timeUnit}
+                                                onChange={e => setNewTimeUnit(e.target.value)}
+                                                style={{
+                                                    padding: '8px',
+                                                    border: '1px solid #ccc',
+                                                    borderRadius: '12px',
+                                                    width: '140px',
+                                                    marginTop: '25px',
+                                                }}
+                                            >
+                                                <option value="">Time Unit</option>
+                                                <option value="h">h</option>
+                                                <option value="min">min</option>
+                                            </select>
+                                        </label>
+                                    </form>
+                                </div>
                             </Row>
                             <Spacer y={1} />
                             <Textarea
                                 aria-label="Description-Add-Post"
                                 bordered
-                                labelPlaceholder="Description"
+                                initialValue={newDescription || post?.description}
+                                label="Description"
                                 onChange={e => setNewDescription(e.target.value)}
                                 css={{ width: '100%' }}
                             />
@@ -407,39 +346,6 @@ function AddPost() {
                                     <Spacer y={3} />
                                 </Row>
                             </div>
-                            <Checkbox value="profile" onChange={handleProfileSpace}>
-                                <Text>Profile</Text>
-                            </Checkbox>
-                            <Spacer y={1} />
-                            <Row>
-                                <Checkbox value="groups" onChange={handleVisibleGroups}>
-                                    <Text>Groups</Text>
-                                </Checkbox>
-                            </Row>
-                            {visibleGroups && (
-                                <div>
-                                    <Row style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                                        <Dropdown>
-                                            <Dropdown.Button flat color="secondary" css={{ tt: 'capitalize' }}>
-                                                {selectedValue}
-                                            </Dropdown.Button>
-                                            <Dropdown.Menu
-                                                aria-label="Multiple selection actions"
-                                                color="secondary"
-                                                disallowEmptySelection
-                                                selectionMode="multiple"
-                                                selectedKeys={Array.from(selected)}
-                                                onSelectionChange={handleSelectionChange}
-                                            >
-                                                {groupNamesDrop.map(groupName => (
-                                                    <Dropdown.Item key={groupName}>{groupName}</Dropdown.Item>
-                                                ))}
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </Row>
-                                </div>
-                            )}
-
                             <Spacer y={1} />
 
                             <div
@@ -452,7 +358,7 @@ function AddPost() {
                             >
                                 <Row justify="center">
                                     <Text aria-label="Upload-picture-add-post" b color="#ec9127">
-                                        Upload a picture of your recipe:
+                                        Change recipe picture:
                                     </Text>
                                     <Spacer x={0.5} />
                                     <input
@@ -480,7 +386,7 @@ function AddPost() {
                                 )}
                                 <Spacer y={1} />
                                 <VerificationModal
-                                    modalTitle="Post Added Successfully"
+                                    modalTitle="Post Updated Successfully"
                                     modalBody=""
                                     visible={visible}
                                     buttonMessage="OK"
@@ -490,7 +396,7 @@ function AddPost() {
 
                                 <ErrPopButton
                                     error={err}
-                                    buttonName={'Post'}
+                                    buttonName={'Update recipe'}
                                     setError={setErr}
                                     clickFunc={handler}
                                     placement="right"
@@ -505,4 +411,4 @@ function AddPost() {
     );
 }
 
-export default AddPost;
+export default EditPostCard;

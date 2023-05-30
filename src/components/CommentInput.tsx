@@ -17,16 +17,7 @@ const CommentInput = ({ postID, setReloadComments, reloadComments }: CommentInpu
     const [loading, setLoading] = useState(false);
 
     const handleSendComment = async () => {
-        if (!comment || comment[0] === ' ') {
-            alert('Comment cannot be empty or start with a space');
-            return;
-        }
         if (!user || userLoading) {
-            return;
-        }
-        if (comment === '') {
-            //TODO: add a warning ala Dragos
-            alert('Please enter a comment');
             return;
         }
         const addCommentToDatabase = async () => {

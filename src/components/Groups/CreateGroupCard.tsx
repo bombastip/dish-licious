@@ -35,7 +35,7 @@ function CreateGroupCard() {
 
     const closeHandler = () => {
         setVisible(false);
-        navigate('/login');
+        navigate('/groups');
     };
 
     useEffect(() => {

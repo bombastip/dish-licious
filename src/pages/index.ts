@@ -15,3 +15,5 @@ export { default as SearchPeople } from './SearchPeople';
 export { default as Recipe } from './Recipe';
 export { default as FavoriteRecipes } from './FavoriteRecipes';
 export { default as SearchGroups } from './SearchGroups';
+export { default as EditPost } from './EditPost';
+export { default as EmptyFeed } from './EmptyFeed';
