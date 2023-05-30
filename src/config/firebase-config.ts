@@ -3,12 +3,19 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 const firebaseConfig = {
-    apiKey: 'AIzaSyCMkF-jIdQ3egqehoZUXqePsmZdK7Nfobw',
-    authDomain: 'dish-licous.firebaseapp.com',
-    projectId: 'dish-licous',
-    storageBucket: 'dish-licous.appspot.com',
-    messagingSenderId: '17275476772',
-    appId: '1:17275476772:web:507696febc6633c5e4f1b1',
+    apiKey: 'AIzaSyAjD-agitq7bjctgnE5JwJbs4q3M3F_lyA',
+
+    authDomain: 'dish-licious-ec16a.firebaseapp.com',
+
+    projectId: 'dish-licious-ec16a',
+
+    storageBucket: 'dish-licious-ec16a.appspot.com',
+
+    messagingSenderId: '96006170974',
+
+    appId: '1:96006170974:web:d10cb2912d99868dd347cf',
+
+    measurementId: 'G-B84HWK1BL2',
 };
 
 export const actionCodeSettings = {
