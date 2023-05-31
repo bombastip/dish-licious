@@ -455,7 +455,6 @@ export async function follow(wantToFollow: string, user: string) {
                     });
             }
         }
-        
     }
 }
 
