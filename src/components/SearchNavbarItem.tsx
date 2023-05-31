@@ -1,4 +1,4 @@
-import { Button, Dropdown, Navbar } from '@nextui-org/react';
+import { Button, Dropdown } from '@nextui-org/react';
 import ChevronDownIcon from '../assets/ChevronDownIcon';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,22 +19,20 @@ const SearchNavbarItem = () => {
 
     return (
         <Dropdown>
-            <Navbar.Item>
-                <Dropdown.Button
-                    auto
-                    light
-                    css={{
-                        px: 0,
-                        dflex: 'center',
-                        svg: { pe: 'none' },
-                        mw: '100%',
-                    }}
-                    iconRight={<ChevronDownIcon />}
-                    ripple={false}
-                >
-                    Search
-                </Dropdown.Button>
-            </Navbar.Item>
+            <Dropdown.Button
+                auto
+                light
+                css={{
+                    px: 0,
+                    dflex: 'center',
+                    svg: { pe: 'none' },
+                    mw: '100%',
+                }}
+                iconRight={<ChevronDownIcon />}
+                ripple={false}
+            >
+                Search
+            </Dropdown.Button>
             <Dropdown.Menu
                 aria-label="Search"
                 css={{

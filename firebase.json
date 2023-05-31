@@ -1,9 +1,8 @@
 {
     "hosting": {
-        "site": "dish--licious",
-
         "public": "dist",
-
+        "site": "dish-liciouss",
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
             {
                 "source": "**",

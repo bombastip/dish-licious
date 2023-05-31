@@ -1,4 +1,4 @@
-import { Badge, Loading, Dropdown, Navbar, Text, Container, Button } from '@nextui-org/react';
+import { Badge, Loading, Dropdown, Text, Container, Button } from '@nextui-org/react';
 import NotificationsIcon from '../assets/NotificationsIcon';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
@@ -179,29 +179,27 @@ function Notifications() {
 
     return (
         <Dropdown>
-            <Navbar.Item>
-                <Dropdown.Button
-                    onPress={handleNotif}
-                    auto
-                    light
-                    css={{
-                        px: 0,
-                        dflex: 'center',
-                        svg: { pe: 'none' },
-                        mw: '100%',
-                    }}
-                    ripple={false}
+            <Dropdown.Button
+                onPress={handleNotif}
+                auto
+                light
+                css={{
+                    px: 0,
+                    dflex: 'center',
+                    svg: { pe: 'none' },
+                    mw: '100%',
+                }}
+                ripple={false}
+            >
+                <Badge
+                    color="error"
+                    content={followersIds.length + possibleMembersIds.length}
+                    isInvisible={!(possibleMembersIds.length + followersIds.length) ? true : false}
+                    shape="circle"
                 >
-                    <Badge
-                        color="error"
-                        content={followersIds.length + possibleMembersIds.length}
-                        isInvisible={!(possibleMembersIds.length + followersIds.length) ? true : false}
-                        shape="circle"
-                    >
-                        <NotificationsIcon fill="currentColor" size={30} />
-                    </Badge>
-                </Dropdown.Button>
-            </Navbar.Item>
+                    <NotificationsIcon fill="currentColor" size={30} />
+                </Badge>
+            </Dropdown.Button>
             <Dropdown.Menu
                 disabledKeys={disabledKeys}
                 onAction={actionKey => handleAction(actionKey as string)}
@@ -210,6 +208,7 @@ function Notifications() {
                     $$dropdownMenuWidth: '340px',
                     $$dropdownItemHeight: '95px',
                     zIndex: '100',
+                    justifyContent: 'center',
                     '& .nextui-dropdown-item': {
                         py: '$4',
                         svg: {

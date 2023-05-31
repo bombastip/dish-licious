@@ -1,30 +1,22 @@
-import { Link, Navbar } from '@nextui-org/react';
+import { Navbar } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
+import { Notifications, SearchNavbarItem } from '.';
 
 const NavbarCollapse = () => {
-    const collapseItems = ['Add Post', 'Feed', 'Favorites', 'Notifications', 'Search'];
-
     return (
         <Navbar.Collapse>
-            {collapseItems.map((item, index) => (
-                <Navbar.CollapseItem
-                    key={item}
-                    activeColor="#fedebe"
-                    css={{
-                        color: index === collapseItems.length - 1 ? '$error' : '',
-                    }}
-                    isActive={index === 2}
-                >
-                    <Link
-                        color="secondary"
-                        css={{
-                            minWidth: '100%',
-                        }}
-                        href="#"
-                    >
-                        {item}
-                    </Link>
-                </Navbar.CollapseItem>
-            ))}
+            <Navbar.CollapseItem key={'add-post'}>
+                <Link to={`add-post`}>Add Post</Link>
+            </Navbar.CollapseItem>
+            <Navbar.CollapseItem key={'favourites'}>
+                <Link to={`favourites`}>Favourites</Link>
+            </Navbar.CollapseItem>
+            <Navbar.CollapseItem key={'search'}>
+                <SearchNavbarItem />
+            </Navbar.CollapseItem>
+            <Navbar.CollapseItem key={'notifications'}>
+                <Notifications />
+            </Navbar.CollapseItem>
         </Navbar.Collapse>
     );
 };
