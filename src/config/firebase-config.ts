@@ -6,7 +6,7 @@ const firebaseConfig = {
     apiKey: 'AIzaSyBdaoI40WmGw_hXVQq6eu0I5tKnWowAHwQ',
     authDomain: 'dish-liciouss.web.app',
     projectId: 'dish-liciouss',
-    storageBucket: 'dish-liciouss.appspot.com',
+    storageBucket: 'kiouss.appspot.com',
     messagingSenderId: '660093546283',
     appId: '1:660093546283:web:a7c32c60df9e947cad5f6e',
 };

@@ -421,6 +421,7 @@ export async function deletePost(post: string) {
 export async function follow(wantToFollow: string, user: string) {
     const followRef = doc(db, 'users', user);
     const followingList = await getFollowing(user);
+    await addNotification(wantToFollow, user);
     if (followingList) {
         if (
             followingList.some((element: string) => {
@@ -454,7 +455,7 @@ export async function follow(wantToFollow: string, user: string) {
                     });
             }
         }
-        addNotification(wantToFollow, user);
+        
     }
 }
 
