@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { PostType } from '../interfaces';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { deletePost } from '../database';
 import { DeleteDocumentIcon } from '../assets/DeleteDocumentIcon';
 import { EditIcon } from '../assets/EditIcon';
@@ -29,6 +29,7 @@ function SinglePost({ post }: Props) {
     const [deleted, setDeleted] = useState(false);
     const [unfav, setUnfav] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     if (post.id === '') {
         return <> </>;
@@ -95,8 +96,10 @@ function SinglePost({ post }: Props) {
     };
 
     const removeFromFav = async () => {
-        if (user) {
+        if (user && location.pathname === '/favourites') {
             setUnfav(true);
+        }
+        if (user) {
             const userDocRef = doc(userCollectionRef, user.uid);
             try {
                 await updateDoc(userDocRef, {
